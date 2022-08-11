@@ -90,8 +90,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\glad.c" />
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="Source\GLSLProgram.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Scenes\BasicScene.cpp" />
+    <ClCompile Include="Source\stb\stb_image.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shaders\Basic.frag" />
+    <None Include="Source\Shaders\Basic.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\GLSLProgram.h" />
+    <ClInclude Include="Source\Runner.h" />
+    <ClInclude Include="Source\Scenes\BasicScene.h" />
+    <ClInclude Include="Source\Scenes\Scene.h" />
+    <ClInclude Include="Source\stb\stb_image.h" />
+    <ClInclude Include="Source\stb\stb_image_write.h" />
+    <ClInclude Include="Source\SystemInformation.h" />
+    <ClInclude Include="Source\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
