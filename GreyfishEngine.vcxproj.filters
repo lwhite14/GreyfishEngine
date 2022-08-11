@@ -36,6 +36,12 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Drawables\Cube.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Drawables\ObjMesh.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -68,6 +74,21 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\GLSLProgram.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Drawables\aabb.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Drawables\Cube.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Drawables\Drawable.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Drawables\ObjMesh.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Drawables\TriangleMesh.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

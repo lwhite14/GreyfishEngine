@@ -7,13 +7,14 @@
 #include "Scene.h"
 #include "../GLSLProgram.h"
 #include "../Texture.h"
+#include "../Drawables/Cube.h"
 
 class BasicScene : public Scene 
 {
 private:
 	GLSLProgram m_prog;
+	Cube m_cube;
 	GLuint m_tex1, m_tex2;
-	unsigned int m_VBO, m_VAO;
 
 	void CompileShaders();
 public:
