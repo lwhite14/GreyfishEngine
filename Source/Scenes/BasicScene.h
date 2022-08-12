@@ -8,14 +8,14 @@
 #include "../GLSLProgram.h"
 #include "../Texture.h"
 #include "../SceneObjects/SceneObject.h"
-#include "../UserInterface/Framerate.h"
+#include "../UserInterface/MasterUI.h"
 
 class BasicScene : public Scene 
 {
 private:
 	GLSLProgram m_prog;
 	SceneObject m_cubeObject;
-	Framerate m_framerate;
+	MasterUI m_masterUI;
 	GLuint m_tex1, m_tex2;
 
 	void CompileShaders();

@@ -66,6 +66,9 @@
     <ClCompile Include="Source\imgui\imgui_widgets.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UserInterface\MasterUI.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -149,6 +152,15 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\UserInterface\Framerate.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserInterface\GameWindow.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserInterface\UserInterface.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserInterface\MasterUI.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

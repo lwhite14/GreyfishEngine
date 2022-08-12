@@ -106,6 +106,7 @@
     <ClCompile Include="Source\Scenes\BasicScene.cpp" />
     <ClCompile Include="Source\stb\stb_image.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\UserInterface\MasterUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.frag" />
@@ -137,6 +138,9 @@
     <ClInclude Include="Source\SystemInformation.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\UserInterface\Framerate.h" />
+    <ClInclude Include="Source\UserInterface\GameWindow.h" />
+    <ClInclude Include="Source\UserInterface\MasterUI.h" />
+    <ClInclude Include="Source\UserInterface\UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
