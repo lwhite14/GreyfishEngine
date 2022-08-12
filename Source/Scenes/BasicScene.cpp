@@ -30,8 +30,8 @@ void BasicScene::CompileShaders()
 {
     try
     {
-        m_prog.CompileShader("Source/Shaders/Basic.vert");
-        m_prog.CompileShader("Source/Shaders/Basic.frag");
+        m_prog.CompileShader("Source/Shaders/BasicLit.vert");
+        m_prog.CompileShader("Source/Shaders/BasicLit.frag");
         m_prog.Link();
     }
     catch (GLSLProgramException& e)
@@ -61,12 +61,17 @@ void BasicScene::Render()
     cubeObjectModel = glm::rotate(cubeObjectModel, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
     m_prog.Use();
-    m_prog.SetUniform("view", m_view);
-    m_prog.SetUniform("projection", m_projection);
-    m_prog.SetUniform("texture1", 0);
-    m_prog.SetUniform("texture2", 1);
+    m_prog.SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
+    m_prog.SetUniform("Light.La", glm::vec3(0.6f));
+    m_prog.SetUniform("Light.Ld", glm::vec3(0.85f, 0.2f, 0.2f));
+    m_prog.SetUniform("Light.Ls", glm::vec3(1.0f));
+    m_prog.SetUniform("Material.Ka", glm::vec3(0.5f, 0.25f, 0.25f));
+    m_prog.SetUniform("Material.Kd", glm::vec3(0.5f, 0.25f, 0.25f));
+    m_prog.SetUniform("Material.Ks", glm::vec3(0.5f));
+    m_prog.SetUniform("Material.Shininess", 64.0f);
+
     m_cubeObject.SetModel(&cubeObjectModel);
-    m_cubeObject.Render(&m_prog);
+    m_cubeObject.Render(&m_prog, m_view, m_projection);
 }
 
 void BasicScene::CleanUp()

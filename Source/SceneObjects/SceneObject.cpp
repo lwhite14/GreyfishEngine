@@ -23,18 +23,26 @@ void SceneObject::Update()
 	}
 }
 
-void SceneObject::Render(GLSLProgram* prog)
+void SceneObject::Render(GLSLProgram* prog, glm::mat4& view, glm::mat4& projection)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, m_position);
 	model = model * m_model;
 
 	prog->Use();
-	prog->SetUniform("model", model);
+	SetMatrices(prog, view, model, projection);
 	for (unsigned int i = 0; i < m_components.size(); i++)
 	{
 		m_components[i]->Render();
 	}
+}
+
+void SceneObject::SetMatrices(GLSLProgram* prog, glm::mat4& view, glm::mat4& model, glm::mat4& projection)
+{
+	glm::mat4 mv = view * model;
+	prog->SetUniform("MVP", projection * mv);
+	prog->SetUniform("ModelViewMatrix", mv);
+	prog->SetUniform("NormalMatrix", glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
 }
 
 void SceneObject::AddComponent(Component* component)

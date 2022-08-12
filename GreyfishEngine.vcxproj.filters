@@ -77,6 +77,8 @@
     <None Include="Source\Shaders\Basic.frag">
       <Filter>Source\Private</Filter>
     </None>
+    <None Include="Source\Shaders\BasicLit.frag" />
+    <None Include="Source\Shaders\BasicLit.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">

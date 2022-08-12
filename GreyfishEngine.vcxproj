@@ -111,6 +111,8 @@
   <ItemGroup>
     <None Include="Source\Shaders\Basic.frag" />
     <None Include="Source\Shaders\Basic.vert" />
+    <None Include="Source\Shaders\BasicLit.frag" />
+    <None Include="Source\Shaders\BasicLit.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Drawables\aabb.h" />
