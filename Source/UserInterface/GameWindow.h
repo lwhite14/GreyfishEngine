@@ -11,6 +11,7 @@ class GameWindow : public UserInterface
 private:
     unsigned int m_gameViewFbo;
     int m_width, m_height;
+    bool m_hasResized;
 
 public:
     void DrawElements() 
@@ -28,13 +29,19 @@ public:
         //windowFlags |= ImGuiWindowFlags_NoDocking;
         //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 
+        if (!m_hasResized) 
+        {
+            ImGui::SetNextWindowPos(ImVec2(150, 0));
+            ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
+            m_hasResized = true;
+        }
 
         ImGui::Begin("Game View", NULL, windowFlags);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_width, m_height), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
-    GameWindow(int width, int height) : m_width{ width }, m_height{height}
+    GameWindow(int width, int height) : m_width{ width }, m_height{ height }, m_gameViewFbo{ 0 }, m_hasResized{ false }
     {
 
         ImGuiStyle& style = ImGui::GetStyle();
@@ -98,9 +105,6 @@ public:
         colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
         colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
         colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
     }
 
     void SetGameViewFbo(unsigned int gameViewFbo) 

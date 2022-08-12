@@ -15,7 +15,7 @@ void MasterUI::Init(GLFWwindow* window)
     ImGui_ImplOpenGL3_Init("#version 460");
 
     m_framerate = new Framerate();
-    m_gameWindow = new GameWindow(800, 600);
+    m_gameWindow = new GameWindow(900, 600);
 }
 
 void MasterUI::PerFrame()

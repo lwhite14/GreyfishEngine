@@ -74,7 +74,7 @@ void BasicScene::Render()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.0f, 0.25f, 1.0f, 1.0f);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     int gameViewWidth, gameViewHeight;
@@ -102,7 +102,7 @@ void BasicScene::Render()
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     m_masterUI.SetGameWindowRender(m_framebuffer);
     m_masterUI.PerFrame();

@@ -21,7 +21,7 @@ public:
         ImGui::Begin("Framerate", NULL, windowFlags);
         ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
         ImGui::SetWindowPos(ImVec2(0, 0));
-        ImGui::SetWindowSize(ImVec2(500, 260));
+        ImGui::SetWindowSize(ImVec2(100, 100));
         ImGui::End();
     }
 
