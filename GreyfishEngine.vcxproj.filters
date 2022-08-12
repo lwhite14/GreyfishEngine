@@ -42,6 +42,9 @@
     <ClCompile Include="Source\Drawables\ObjMesh.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneObjects\SceneObject.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -89,6 +92,12 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\Drawables\TriangleMesh.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneObjects\SceneObject.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneObjects\Component.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

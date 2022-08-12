@@ -46,3 +46,13 @@ Cube::Cube(GLfloat size)
 
     InitBuffers(&indices, &points, &normal, &texCoords);
 }
+
+void Cube::Update() 
+{
+    // Nothing to update
+}
+
+void Cube::Render() 
+{
+    RenderDrawable();
+}

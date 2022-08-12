@@ -116,7 +116,7 @@ protected:
     }
 
 public:
-	void Render() 
+	void RenderDrawable()
     {
         if (vao == 0) return;
 

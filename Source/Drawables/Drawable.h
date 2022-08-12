@@ -3,5 +3,5 @@
 class Drawable
 {
 public:
-	virtual void Render() = 0;
+	virtual void RenderDrawable() = 0;
 };

@@ -1,8 +1,11 @@
 #include "BasicScene.h"
+#include "../Drawables/Cube.h"
 
-BasicScene::BasicScene() : m_cube{1.0f}
+BasicScene::BasicScene() : 
+    m_tex1{0},
+    m_tex2{0}
 {
-
+    m_cubeObject.AddComponent(new Cube(1.0f));
 }
 
 void BasicScene::Start(GLFWwindow* window)
@@ -13,7 +16,6 @@ void BasicScene::Start(GLFWwindow* window)
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, -3.0f));
     m_projection = glm::mat4(1.0f);
-
 
     m_tex1 = Texture::LoadTexture("Media/Images/container.jpg");
     m_tex2 = Texture::LoadTexture("Media/Images/awesomeface.png");
@@ -36,7 +38,7 @@ void BasicScene::CompileShaders()
 
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
-
+    m_cubeObject.Update();
 }
 
 void BasicScene::Render()
@@ -59,7 +61,7 @@ void BasicScene::Render()
     m_prog.SetUniform("texture1", 0);
     m_prog.SetUniform("texture2", 1);
 
-    m_cube.Render();
+    m_cubeObject.Render();
 }
 
 void BasicScene::CleanUp()

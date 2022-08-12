@@ -17,7 +17,7 @@ using std::istringstream;
 
 ObjMesh::ObjMesh() : drawAdj(false) { }
 
-void ObjMesh::Render() 
+void ObjMesh::RenderDrawable() 
 {
     if (drawAdj) 
     {
@@ -27,7 +27,7 @@ void ObjMesh::Render()
     }
     else 
     {
-        TriangleMesh::Render();
+        TriangleMesh::RenderDrawable();
     }
 }
 

@@ -7,6 +7,7 @@
 
 #include "Scenes/Scene.h"
 #include "SystemInformation.h"
+#include "stb/stb_image.h"
 
 class Runner 
 {
@@ -32,6 +33,16 @@ public:
 			exit(EXIT_FAILURE);
 		}
 		glfwMakeContextCurrent(window);
+
+		int iWidth, iHeight;
+		int channels;
+		unsigned char* iPixels = stbi_load("Media/Images/GreyfishEngine.png", &iWidth, &iHeight, &channels, 4);
+
+		GLFWimage images[1];
+		images[0].width = iWidth;
+		images[0].height = iHeight;
+		images[0].pixels = iPixels;
+		glfwSetWindowIcon(window, 1, images);
 
 		glfwGetFramebufferSize(window, &m_fbw, &m_fbh);
 

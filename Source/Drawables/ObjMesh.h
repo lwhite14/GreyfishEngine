@@ -18,7 +18,7 @@ public:
     static ObjMesh* Load(const char* fileName, bool center = false, bool genTangents = false);
     static ObjMesh* LoadWithAdjacency(const char* fileName, bool center = false);
 
-    void Render() override;
+    void RenderDrawable() override;
 
 protected:
     ObjMesh();
