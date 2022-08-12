@@ -9,7 +9,7 @@ class Scene
 {
 public:
 	int m_width, m_height;
-	glm::mat4 m_view, m_model, m_projection;
+	glm::mat4 m_view, m_projection;
 
 	virtual void Start(GLFWwindow* window) = 0;
 	virtual void Update(GLFWwindow* window, float deltaTime) = 0;

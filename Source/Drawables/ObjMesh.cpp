@@ -35,7 +35,7 @@ void ObjMesh::RenderDrawable()
 ObjMesh* ObjMesh::Load(const char* fileName, bool center, bool genTangents) 
 {
 
-    ObjMesh* mesh(new ObjMesh());
+    ObjMesh* mesh = new ObjMesh();
 
     ObjMeshData meshData;
     meshData.Load(fileName, mesh->bbox);
@@ -426,5 +426,15 @@ void ObjMesh::GlMeshData::ConvertFacesToAdjancencyFormat()
 
     // Copy all data back into el
     faces = elAdj;
+}
+
+void ObjMesh::Update() 
+{
+
+}
+
+void ObjMesh::Render()
+{
+    ObjMesh::RenderDrawable();
 }
 

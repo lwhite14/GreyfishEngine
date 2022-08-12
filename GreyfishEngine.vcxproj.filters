@@ -18,7 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp">
+    <ClCompile Include="Source\AppEntry.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">

@@ -6,14 +6,18 @@
 #include <vector>
 
 #include "Component.h"
+#include "../GLSLProgram.h"
 
 class SceneObject 
 {
 public:
 	SceneObject();
+	SceneObject(glm::vec3 position);
 	void Update();
-	void Render();
+	void Render(GLSLProgram* prog);
 	void AddComponent(Component* component);
+	void SetPosition(glm::vec3* position);
+	void SetModel(glm::mat4* modelMatrix);
 
 private:
 	glm::mat4 m_model;

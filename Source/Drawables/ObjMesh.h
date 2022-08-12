@@ -1,22 +1,28 @@
-#pragma once
+#ifndef OBJMESH_H
+#define OBJMESH_H
 
 #include "TriangleMesh.h"
 #include <glad/glad.h>
-#include "aabb.h"
-
 #include <vector>
 #include <glm/glm.hpp>
 #include <string>
 #include <memory>
 
+#include "aabb.h"
+#include "../SceneObjects/Component.h"
 
-class ObjMesh : public TriangleMesh {
+
+class ObjMesh : public TriangleMesh, public Component 
+{
 private:
     bool drawAdj;
 
 public:
     static ObjMesh* Load(const char* fileName, bool center = false, bool genTangents = false);
     static ObjMesh* LoadWithAdjacency(const char* fileName, bool center = false);
+
+    void Update();
+    void Render();
 
     void RenderDrawable() override;
 
@@ -85,3 +91,5 @@ protected:
         void ToGlMesh(GlMeshData& data);
     };
 };
+
+#endif
