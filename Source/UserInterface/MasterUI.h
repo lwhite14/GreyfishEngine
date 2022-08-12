@@ -3,17 +3,23 @@
 
 #include <GLFW/glfw3.h>
 #include <vector>
-#include "UserInterface.h"
+#include "Framerate.h"
+#include "GameWindow.h"
 
 class MasterUI 
 {
 private:
-    std::vector<UserInterface*> m_windows;
+    Framerate* m_framerate;
+    GameWindow* m_gameWindow;
 
 public:
     void Init(GLFWwindow* window);
     void PerFrame();
     void CleanUp();
+
+    void SetGameWindowRender(unsigned int gameViewFbo);
+    Framerate* GetFramerate();
+    GameWindow* GetGameWindow();
 };
 
 #endif //MASTERUI_H

@@ -16,7 +16,9 @@ private:
 	GLSLProgram m_prog;
 	SceneObject m_cubeObject;
 	MasterUI m_masterUI;
-	GLuint m_tex1, m_tex2;
+
+	unsigned int m_framebuffer;
+	unsigned int m_textureColorbuffer;
 
 	void CompileShaders();
 public:

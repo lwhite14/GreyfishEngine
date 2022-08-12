@@ -14,21 +14,19 @@ void MasterUI::Init(GLFWwindow* window)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
-    m_windows.push_back(new Framerate());
-    m_windows.push_back(new GameWindow());
+    m_framerate = new Framerate();
+    m_gameWindow = new GameWindow(800, 600);
 }
 
-void MasterUI::PerFrame() 
+void MasterUI::PerFrame()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     //ImGui::ShowDemoWindow();
-    for (unsigned int i = 0; i < m_windows.size(); i++) 
-    {
-        m_windows[i]->DrawElements();
-    }
+    m_framerate->DrawElements();
+    m_gameWindow->DrawElements();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -48,3 +46,11 @@ void MasterUI::CleanUp()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
+
+void MasterUI::SetGameWindowRender(unsigned int gameViewFbo)
+{
+    m_gameWindow->SetGameViewFbo(gameViewFbo);
+}
+
+Framerate* MasterUI::GetFramerate() { return m_framerate; }
+GameWindow* MasterUI::GetGameWindow() { return m_gameWindow; }

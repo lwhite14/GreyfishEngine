@@ -10,7 +10,7 @@
 
 class Framerate : public UserInterface
 {
-private:
+public:
 	void DrawElements() 
     {
         ImGuiWindowFlags windowFlags = 0;
@@ -25,7 +25,6 @@ private:
         ImGui::End();
     }
 
-public:
     Framerate() 
     {
     

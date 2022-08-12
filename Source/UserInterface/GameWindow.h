@@ -9,6 +9,10 @@
 class GameWindow : public UserInterface
 {
 private:
+    unsigned int m_gameViewFbo;
+    int m_width, m_height;
+
+public:
     void DrawElements() 
     {
         ImGuiWindowFlags windowFlags = 0;
@@ -17,7 +21,6 @@ private:
         windowFlags |= ImGuiWindowFlags_NoScrollbar;
         //windowFlags |= ImGuiWindowFlags_MenuBar;
         //windowFlags |= ImGuiWindowFlags_NoMove;
-        windowFlags |= ImGuiWindowFlags_NoResize;
         windowFlags |= ImGuiWindowFlags_NoCollapse;
         //windowFlags |= ImGuiWindowFlags_NoNav;
         //windowFlags |= ImGuiWindowFlags_NoBackground;
@@ -25,15 +28,13 @@ private:
         //windowFlags |= ImGuiWindowFlags_NoDocking;
         //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 
-        ImGui::SetNextWindowPos(ImVec2(20, 0), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
 
         ImGui::Begin("Game View", NULL, windowFlags);
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_width, m_height), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
-public:
-    GameWindow()
+    GameWindow(int width, int height) : m_width{ width }, m_height{height}
     {
 
         ImGuiStyle& style = ImGui::GetStyle();
@@ -97,7 +98,18 @@ public:
         colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
         colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
         colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
     }
+
+    void SetGameViewFbo(unsigned int gameViewFbo) 
+    {
+        m_gameViewFbo = gameViewFbo;
+    }
+
+    int GetWidth() { return m_width; }
+    int GetHeight() { return m_height; }
 };
 
 #endif //GAMEWINDOW_H
