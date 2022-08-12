@@ -13,6 +13,9 @@ BasicScene::BasicScene() :
 
 void BasicScene::Start(GLFWwindow* window)
 {
+    m_framerate = Framerate();
+    m_framerate.Init(window);
+
     glEnable(GL_DEPTH_TEST);
     CompileShaders();
 
@@ -41,6 +44,7 @@ void BasicScene::CompileShaders()
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
     m_cubeObject.Update();
+    m_framerate.PerFrame();
 }
 
 void BasicScene::Render()
@@ -67,5 +71,5 @@ void BasicScene::Render()
 
 void BasicScene::CleanUp()
 {
-
+    m_framerate.CleanUp();
 }
