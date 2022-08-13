@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "Framerate.h"
 #include "GameWindow.h"
 
@@ -25,6 +27,7 @@ public:
     void SetGameWindowRender(unsigned int gameViewFbo);
     Framerate* GetFramerate();
     GameWindow* GetGameWindow();
+    glm::vec2 GetGameWindowOffset();
 };
 
 #endif //MASTERUI_H

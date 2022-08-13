@@ -25,14 +25,14 @@ public:
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-		window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
-		if (!window)
+		m_window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
+		if (!m_window)
 		{
 			std::cerr << "UNABLE TO CREATE OPENGL CONTEXT" << std::endl;
 			glfwTerminate();
 			exit(EXIT_FAILURE);
 		}
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(m_window);
 
 		int iWidth, iHeight;
 		int channels;
@@ -42,9 +42,9 @@ public:
 		images[0].width = iWidth;
 		images[0].height = iHeight;
 		images[0].pixels = iPixels;
-		glfwSetWindowIcon(window, 1, images);
+		glfwSetWindowIcon(m_window, 1, images);
 
-		glfwGetFramebufferSize(window, &m_fbw, &m_fbh);
+		glfwGetFramebufferSize(m_window, &m_fbw, &m_fbh);
 
 		if (!gladLoadGL())
 		{
@@ -58,10 +58,10 @@ public:
 
 	int Run(Scene& scene)
 	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 		scene.SetDimensions(m_fbw, m_fbh);
-		scene.Start(window);
+		scene.Start(m_window);
 		scene.Resize(m_fbw, m_fbh);
 
 		MainLoop(scene);
@@ -74,21 +74,21 @@ public:
 	}
 
 private:
-	GLFWwindow* window;
+	GLFWwindow* m_window;
 	int m_fbw, m_fbh;
 	float m_deltaTime;
 	float m_lastFrame;
 
 	void MainLoop(Scene& scene)
 	{
-		while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
+		while (!glfwWindowShouldClose(m_window) && !glfwGetKey(m_window, GLFW_KEY_ESCAPE))
 		{
-			glfwSwapBuffers(window);
+			glfwSwapBuffers(m_window);
 			glfwPollEvents();
 
 			UpdateDeltaTime();
 			scene.Render();
-			scene.Update(window, m_deltaTime);
+			scene.Update(m_window, m_deltaTime);
 		}
 	}
 

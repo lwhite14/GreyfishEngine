@@ -20,6 +20,14 @@ private:
 	unsigned int m_framebuffer;
 	unsigned int m_textureColorbuffer;
 
+	glm::vec3 m_cameraPos; // = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_cameraFront; // = glm::vec3(0.0f, 0.0f, 1.0f);
+    glm::vec3 cameraUp; // = glm::vec3(0.0, 1.0, 0.0);
+	float m_lastX;
+	float m_lastY;
+	float m_yaw;
+	float m_pitch;
+
 	void CompileShaders();
 public:
 	BasicScene();

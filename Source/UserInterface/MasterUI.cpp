@@ -25,6 +25,7 @@ void MasterUI::Init(GLFWwindow* window)
     style.FrameBorderSize = 1.0f;
     style.FrameRounding = 10.0f;
     style.WindowRounding = 10.0f;
+    style.ChildRounding = 10.0f;
 
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -96,7 +97,7 @@ void MasterUI::Init(GLFWwindow* window)
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 
     m_framerate = new Framerate();
-    m_gameWindow = new GameWindow(600, 400);
+    m_gameWindow = new GameWindow(window, 600, 400);
 }
 
 void MasterUI::PerFrame()
@@ -105,7 +106,7 @@ void MasterUI::PerFrame()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
     m_framerate->DrawElements();
 
     if (!m_hasResized) 
@@ -148,3 +149,4 @@ void MasterUI::SetGameWindowRender(unsigned int gameViewFbo)
 
 Framerate* MasterUI::GetFramerate() { return m_framerate; }
 GameWindow* MasterUI::GetGameWindow() { return m_gameWindow; }
+glm::vec2 MasterUI::GetGameWindowOffset() { return m_gameWindow->GetOffset(); }

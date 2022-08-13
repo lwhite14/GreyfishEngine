@@ -3,7 +3,14 @@
 #include "../Drawables/ObjMesh.h"
 
 BasicScene::BasicScene() : 
-    m_cubeObject{glm::vec3(0.0f, 0.0f, -3.0f)}
+    m_cubeObject{glm::vec3(0.0f, 0.0f, -3.0f)},
+    m_cameraPos{0.0f, 0.0f, 0.0f},
+    m_cameraFront{0.0f, 0.0f, 1.0f},
+    cameraUp{0.0, 1.0, 0.0},
+    m_lastX{m_width / 2.0f},
+    m_lastY{m_height / 2.0f},
+    m_yaw{-90.0f},
+    m_pitch{0.0f}
 {
     m_cubeObject.AddComponent(new Cube(1.0f));
 }
@@ -68,6 +75,35 @@ void BasicScene::CompileShaders()
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
     m_cubeObject.Update();
+
+    float xoffset = -m_masterUI.GetGameWindowOffset().x - m_lastX;
+    float yoffset = m_lastY + m_masterUI.GetGameWindowOffset().y;
+    m_lastX = -m_masterUI.GetGameWindowOffset().x;
+    m_lastY = -m_masterUI.GetGameWindowOffset().y;
+
+    float sensitivity = 0.4f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    m_yaw += xoffset;
+    m_pitch += yoffset;
+
+    if (m_pitch > 89.0f)
+    {
+        m_pitch = 89.0f;
+    }
+    if (m_pitch < -89.0f)
+    {
+        m_pitch = -89.0f;
+    }
+
+    glm::vec3 front;
+    front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    front.y = sin(glm::radians(m_pitch));
+    front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    m_cameraFront = glm::normalize(front);
+
+    m_view = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, cameraUp);
 }
 
 void BasicScene::Render()
