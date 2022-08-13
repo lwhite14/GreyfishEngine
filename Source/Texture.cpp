@@ -1,4 +1,4 @@
-#include "texture.h"
+#include "Texture.h"
 #include "stb/stb_image.h"
 
 GLuint Texture::LoadTexture(const std::string& filePath) 

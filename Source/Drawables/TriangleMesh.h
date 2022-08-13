@@ -4,7 +4,7 @@
 #include <vector>
 using std::vector;
 
-#include "drawable.h"
+#include "Drawable.h"
 
 class TriangleMesh : public Drawable
 {
