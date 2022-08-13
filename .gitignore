@@ -355,3 +355,4 @@ MigrationBackup/
 glad.c
 *.out
 *.o
+.vscode/**
