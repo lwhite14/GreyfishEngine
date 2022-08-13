@@ -8,7 +8,7 @@ SOURCES = Source/AppEntry.cpp Source/Drawables/Cube.cpp Source/Drawables/ObjMesh
 build:
 	if [ ! -d "./$(B)" ];then mkdir $(B); fi
 
-	g++ -std=c++20 -Wall -o $(B)$(OUTFILE) $(SOURCES) -ldl -lglfw
+	g++ -std=c++20 -o $(B)$(OUTFILE) $(SOURCES) -ldl -lglfw
 
 run:
 	./$(B)$(OUTFILE)

@@ -11,8 +11,13 @@ class MasterUI
 private:
     Framerate* m_framerate;
     GameWindow* m_gameWindow;
+    ImGuiWindowFlags m_windowFlags;
+    bool m_hasResized;
+    int m_width, m_height;
 
 public:
+    MasterUI();
+    MasterUI(int width, int height);
     void Init(GLFWwindow* window);
     void PerFrame();
     void CleanUp();

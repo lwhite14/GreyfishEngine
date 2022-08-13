@@ -10,7 +10,7 @@ BasicScene::BasicScene() :
 
 void BasicScene::Start(GLFWwindow* window)
 {
-    m_masterUI = MasterUI();
+    m_masterUI = MasterUI(900, 460);
     m_masterUI.Init(window);
 
     glEnable(GL_DEPTH_TEST);
