@@ -5,13 +5,12 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Framerate.h"
 #include "GameWindow.h"
 
 class MasterUI 
 {
 private:
-    Framerate* m_framerate;
+    GLFWwindow* m_window;
     GameWindow* m_gameWindow;
     ImGuiWindowFlags m_windowFlags;
     bool m_hasResized;
@@ -25,7 +24,6 @@ public:
     void CleanUp();
 
     void SetGameWindowRender(unsigned int gameViewFbo);
-    Framerate* GetFramerate();
     GameWindow* GetGameWindow();
     glm::vec2 GetGameWindowOffset();
 };

@@ -3,7 +3,6 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
-#include "Framerate.h"
 #include "GameWindow.h"
 
 MasterUI::MasterUI() { }
@@ -15,10 +14,12 @@ MasterUI::MasterUI(int width, int height) : m_windowFlags{0}, m_width{width}, m_
 
 void MasterUI::Init(GLFWwindow* window)
 {
+    m_window = window;
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
     ImGuiStyle& style = ImGui::GetStyle();
@@ -96,8 +97,7 @@ void MasterUI::Init(GLFWwindow* window)
     //windowFlags |= ImGuiWindowFlags_NoDocking;
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 
-    m_framerate = new Framerate();
-    m_gameWindow = new GameWindow(window, 600, 400);
+    m_gameWindow = new GameWindow(m_window, 600, 400);
 }
 
 void MasterUI::PerFrame()
@@ -107,19 +107,40 @@ void MasterUI::PerFrame()
     ImGui::NewFrame();
 
     //ImGui::ShowDemoWindow();
-    m_framerate->DrawElements();
 
+    /////////////
+    // Windows //
+    /////////////
+
+    // Framerate Window
+    bool p_open = true;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 window_pos, window_pos_pivot;
+    window_pos_pivot.x = (0 & 1) ? 1.0f : 0.0f;
+    window_pos_pivot.y = (0 & 2) ? 1.0f : 0.0f;
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    window_flags |= ImGuiWindowFlags_NoMove; 
+    if (ImGui::Begin("Example: Simple overlay", &p_open, window_flags))
+    {
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+    }
+    ImGui::End();
+    
+    // Workspace Window
     if (!m_hasResized) 
     {
         ImGui::SetNextWindowPos(ImVec2(150, 0));
         ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
         m_hasResized = true;
     }
-
     ImGui::Begin("Workspace", NULL, m_windowFlags);
+    // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(ImGui::GetContentRegionAvail().x * 0.3f, ImGui::GetContentRegionAvail().y), true);
     ImGui::EndChild();
     ImGui::SameLine();
+    // Game View Child
     m_gameWindow->DrawElements();
     ImGui::End();
 
@@ -147,6 +168,5 @@ void MasterUI::SetGameWindowRender(unsigned int gameViewFbo)
     m_gameWindow->SetGameViewFbo(gameViewFbo);
 }
 
-Framerate* MasterUI::GetFramerate() { return m_framerate; }
 GameWindow* MasterUI::GetGameWindow() { return m_gameWindow; }
 glm::vec2 MasterUI::GetGameWindowOffset() { return m_gameWindow->GetOffset(); }
