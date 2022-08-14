@@ -1,6 +1,7 @@
 #include "BasicScene.h"
 #include "../Drawables/Cube.h"
 #include "../Drawables/ObjMesh.h"
+#include "../imgui/imgui.h"
 
 BasicScene::BasicScene() : 
     m_cubeObject{glm::vec3(0.0f, 0.0f, -3.0f)},
@@ -17,8 +18,8 @@ BasicScene::BasicScene() :
 
 void BasicScene::Start(GLFWwindow* window)
 {
-    m_masterUI = MasterUI(900, 460);
-    m_masterUI.Init(window);
+    m_masterUI = MasterUI(window, ImVec2(900.0f, 460.0f));
+    m_masterUI.Init();
 
     glEnable(GL_DEPTH_TEST);
     CompileShaders();
@@ -27,8 +28,8 @@ void BasicScene::Start(GLFWwindow* window)
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
     int gameViewWidth, gameViewHeight;
-    gameViewWidth = m_masterUI.GetGameWindow()->GetWidth();
-    gameViewHeight = m_masterUI.GetGameWindow()->GetHeight();
+    gameViewWidth = m_masterUI.GetGameViewSize().x;
+    gameViewHeight = m_masterUI.GetGameViewSize().y;
 
     // framebuffer configuration
     // -------------------------
@@ -76,10 +77,10 @@ void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
     m_cubeObject.Update();
 
-    float xoffset = -m_masterUI.GetGameWindowOffset().x - m_lastX;
-    float yoffset = m_lastY + m_masterUI.GetGameWindowOffset().y;
-    m_lastX = -m_masterUI.GetGameWindowOffset().x;
-    m_lastY = -m_masterUI.GetGameWindowOffset().y;
+    float xoffset = -m_masterUI.GetOffset().x - m_lastX;
+    float yoffset = m_lastY + m_masterUI.GetOffset().y;
+    m_lastX = -m_masterUI.GetOffset().x;
+    m_lastY = -m_masterUI.GetOffset().y;
 
     float sensitivity = 0.4f;
     xoffset *= sensitivity;
@@ -114,8 +115,8 @@ void BasicScene::Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     int gameViewWidth, gameViewHeight;
-    gameViewWidth = m_masterUI.GetGameWindow()->GetWidth();
-    gameViewHeight = m_masterUI.GetGameWindow()->GetHeight();
+    gameViewWidth = m_masterUI.GetGameViewSize().x;
+    gameViewHeight = m_masterUI.GetGameViewSize().y;
     glViewport(0, 0, gameViewWidth, gameViewHeight);
 
     glm::mat4 cubeObjectModel = glm::mat4(1.0f);
@@ -140,7 +141,7 @@ void BasicScene::Render()
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    m_masterUI.SetGameWindowRender(m_framebuffer);
+    m_masterUI.SetGameViewFBO(m_framebuffer);
     m_masterUI.PerFrame();
 
 }

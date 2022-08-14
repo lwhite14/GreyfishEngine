@@ -3,19 +3,23 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
-#include "GameWindow.h"
 
 MasterUI::MasterUI() { }
 
-MasterUI::MasterUI(int width, int height) : m_windowFlags{0}, m_width{width}, m_height{height}
+MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) : 
+    m_window{window}, 
+    m_size{size}, 
+    m_gameViewSize{m_size.x * 0.5f, m_size.y},
+    m_optionsViewSize{m_size.x * 0.5f, m_size.y},
+    m_windowFlags{0}, m_offset{0, 0}, 
+    m_gameViewFbo{0},
+    m_hasResized{false}
 {
     
 }
 
-void MasterUI::Init(GLFWwindow* window)
+void MasterUI::Init()
 {
-    m_window = window;
-
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -96,8 +100,6 @@ void MasterUI::Init(GLFWwindow* window)
     //windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
     //windowFlags |= ImGuiWindowFlags_NoDocking;
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
-
-    m_gameWindow = new GameWindow(m_window, 600, 400);
 }
 
 void MasterUI::PerFrame()
@@ -132,7 +134,7 @@ void MasterUI::PerFrame()
     if (!m_hasResized) 
     {
         ImGui::SetNextWindowPos(ImVec2(150, 0));
-        ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
+        ImGui::SetNextWindowSize(m_size);
         m_hasResized = true;
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
@@ -141,7 +143,19 @@ void MasterUI::PerFrame()
     ImGui::EndChild();
     ImGui::SameLine();
     // Game View Child
-    m_gameWindow->DrawElements();
+    ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
+    ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), ImVec2(0, 1), ImVec2(1, 0), 0);
+    if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+    {
+        m_offset.x += ImGui::GetIO().MouseDelta.x;
+        m_offset.y += ImGui::GetIO().MouseDelta.y;
+        glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    }
+    else
+    {
+        glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    ImGui::EndChild();
     ImGui::End();
 
     ImGui::Render();
@@ -163,10 +177,16 @@ void MasterUI::CleanUp()
     ImGui::DestroyContext();
 }
 
-void MasterUI::SetGameWindowRender(unsigned int gameViewFbo)
-{
-    m_gameWindow->SetGameViewFbo(gameViewFbo);
-}
+GLFWwindow* MasterUI::GetWindow() { return m_window; }
+ImVec2 MasterUI::GetSize() { return m_size; }
+ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
+ImVec2 MasterUI::GetOptionsViewSize() { return m_optionsViewSize; } 
+ImVec2 MasterUI::GetOffset() { return m_offset; }
+unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 
-GameWindow* MasterUI::GetGameWindow() { return m_gameWindow; }
-glm::vec2 MasterUI::GetGameWindowOffset() { return m_gameWindow->GetOffset(); }
+void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
+void MasterUI::SetSize(ImVec2 size) { m_size = size; }
+void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
+void MasterUI::SetOptionsViewSize(ImVec2 optionsViewSize) { m_optionsViewSize = optionsViewSize; } 
+void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
+void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
