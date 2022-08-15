@@ -149,11 +149,6 @@ void MasterUI::PerFrame()
     {
         m_offset.x += ImGui::GetIO().MouseDelta.x;
         m_offset.y += ImGui::GetIO().MouseDelta.y;
-        glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    }
-    else
-    {
-        glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
     ImGui::EndChild();
     ImGui::End();

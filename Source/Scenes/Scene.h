@@ -7,10 +7,11 @@
 
 class Scene
 {
-public:
+protected:
 	int m_width, m_height;
 	glm::mat4 m_view, m_projection;
 
+public:
 	virtual void Start(GLFWwindow* window) = 0;
 	virtual void Update(GLFWwindow* window, float deltaTime) = 0;
 	virtual void Render() = 0;
