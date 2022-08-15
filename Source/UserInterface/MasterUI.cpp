@@ -1,5 +1,6 @@
 #include "MasterUI.h"
 
+#include <iostream>
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
@@ -13,7 +14,9 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_optionsViewSize{m_size.x * 0.5f, m_size.y},
     m_windowFlags{0}, m_offset{0, 0}, 
     m_gameViewFbo{0},
-    m_hasResized{false}
+    m_hasResized{false},
+    m_mouseWheel{0.0f},
+    m_camMotion{false, false, false, false}
 {
     
 }
@@ -108,11 +111,12 @@ void MasterUI::PerFrame()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     /////////////
     // Windows //
     /////////////
+    ImGuiIO& io = ImGui::GetIO();
 
     // Framerate Window
     bool p_open = true;
@@ -145,10 +149,23 @@ void MasterUI::PerFrame()
     // Game View Child
     ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
     ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), ImVec2(0, 1), ImVec2(1, 0), 0);
-    if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+    if (ImGui::IsItemHovered())
     {
-        m_offset.x += ImGui::GetIO().MouseDelta.x;
-        m_offset.y += ImGui::GetIO().MouseDelta.y;
+        if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+        {
+            m_offset.x += ImGui::GetIO().MouseDelta.x;
+            m_offset.y += ImGui::GetIO().MouseDelta.y;
+        }
+        m_mouseWheel = io.MouseWheel;
+        if (ImGui::IsKeyDown(ImGuiKey_A)) { m_camMotion.Left = true; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = false;}
+        else if (ImGui::IsKeyDown(ImGuiKey_D)) { m_camMotion.Left = false; m_camMotion.Right = true; m_camMotion.Down = false; m_camMotion.Up = false; }
+        else if (ImGui::IsKeyDown(ImGuiKey_S)) { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = true; m_camMotion.Up = false; }
+        else if (ImGui::IsKeyDown(ImGuiKey_W)) { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = true; }
+        else { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = false; }
+    }
+    else
+    {
+        m_mouseWheel = 0;
     }
     ImGui::EndChild();
     ImGui::End();
@@ -178,6 +195,8 @@ ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
 ImVec2 MasterUI::GetOptionsViewSize() { return m_optionsViewSize; } 
 ImVec2 MasterUI::GetOffset() { return m_offset; }
 unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
+float MasterUI::GetMouseWheel() { return m_mouseWheel; }
+Motion MasterUI::GetCamMotion() { return m_camMotion; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
@@ -185,3 +204,5 @@ void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewS
 void MasterUI::SetOptionsViewSize(ImVec2 optionsViewSize) { m_optionsViewSize = optionsViewSize; } 
 void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
+void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }
+void MasterUI::SetCamMotion(Motion motion) { m_camMotion = motion; }

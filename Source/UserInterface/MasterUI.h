@@ -8,6 +8,7 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
+#include "../Motion.h"
 
 class MasterUI 
 {
@@ -20,6 +21,8 @@ private:
     ImVec2 m_optionsViewSize;
     ImVec2 m_offset;
     unsigned int m_gameViewFbo;
+    float m_mouseWheel;
+    Motion m_camMotion;
     
 public:
     MasterUI();
@@ -34,6 +37,8 @@ public:
     ImVec2 GetOptionsViewSize();
     ImVec2 GetOffset();
     unsigned int GetGameViewFBO();
+    float GetMouseWheel();
+    Motion GetCamMotion();
 
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
@@ -41,6 +46,8 @@ public:
     void SetOptionsViewSize(ImVec2 optionsViewSize);
     void SetOffset(ImVec2 offset);
     void SetGameViewFBO(unsigned int gameViewFbo);
+    void SetMouseWheel(float mouseWheel);
+    void SetCamMotion(Motion motion);
 };
 
 #endif //MASTERUI_H

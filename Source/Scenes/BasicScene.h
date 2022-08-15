@@ -22,7 +22,8 @@ private:
 
 	glm::vec3 m_cameraPos; // = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_cameraFront; // = glm::vec3(0.0f, 0.0f, 1.0f);
-    glm::vec3 cameraUp; // = glm::vec3(0.0, 1.0, 0.0);
+    glm::vec3 m_cameraUp; // = glm::vec3(0.0, 1.0, 0.0);
+	glm::vec3 m_cameraRight; // = glm::vec3(1.0, 0.0, 0.0);
 	float m_lastX;
 	float m_lastY;
 	float m_yaw;
