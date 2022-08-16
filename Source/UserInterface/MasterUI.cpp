@@ -157,10 +157,13 @@ void MasterUI::PerFrame()
             m_offset.y += ImGui::GetIO().MouseDelta.y;
         }
         m_mouseWheel = io.MouseWheel;
-        if (ImGui::IsKeyDown(ImGuiKey_A)) { m_camMotion.Left = true; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = false;}
-        else if (ImGui::IsKeyDown(ImGuiKey_D)) { m_camMotion.Left = false; m_camMotion.Right = true; m_camMotion.Down = false; m_camMotion.Up = false; }
-        else if (ImGui::IsKeyDown(ImGuiKey_S)) { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = true; m_camMotion.Up = false; }
-        else if (ImGui::IsKeyDown(ImGuiKey_W)) { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = true; }
+        if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_LeftArrow) || ImGui::IsKeyDown(ImGuiKey_RightArrow) || ImGui::IsKeyDown(ImGuiKey_UpArrow) || ImGui::IsKeyDown(ImGuiKey_DownArrow))
+        {    
+            if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_LeftArrow)) { m_camMotion.Left = true; } else { m_camMotion.Left = false; } 
+            if (ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_RightArrow)) { m_camMotion.Right = true; } else { m_camMotion.Right = false; } 
+            if (ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_DownArrow)) { m_camMotion.Down = true; } else { m_camMotion.Down = false; } 
+            if (ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_UpArrow)) { m_camMotion.Up = true; } else { m_camMotion.Up = false; } 
+        }
         else { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = false; }
     }
     else
