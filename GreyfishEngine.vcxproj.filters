@@ -72,6 +72,9 @@
     <ClCompile Include="Source\SceneObjects\CameraGameView.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneObjects\Dimensions.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -179,6 +182,9 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framebuffer.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneObjects\Dimensions.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

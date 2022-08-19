@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include "../Dependencies/imgui/imgui.h"
 
 Cube::Cube(GLfloat size)
 {
@@ -55,4 +56,11 @@ void Cube::Update()
 void Cube::Render() 
 {
     RenderDrawable();
+}
+
+void Cube::DrawUI() 
+{
+    ImGui::BeginChild("Cube", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
+    ImGui::Text("Cube");
+    ImGui::EndChild();
 }

@@ -438,3 +438,8 @@ void ObjMesh::Render()
     ObjMesh::RenderDrawable();
 }
 
+void ObjMesh::DrawUI() 
+{
+
+}
+

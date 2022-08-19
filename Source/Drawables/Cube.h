@@ -9,4 +9,5 @@ public:
 	Cube(GLfloat size = 1.0f);
 	void Update();
 	void Render();
+	void DrawUI();
 };

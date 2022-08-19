@@ -23,6 +23,7 @@ public:
 
     void Update();
     void Render();
+    void DrawUI();
 
     void RenderDrawable() override;
 
