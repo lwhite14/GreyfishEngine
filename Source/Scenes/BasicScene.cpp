@@ -6,7 +6,7 @@
 #include "../Motion.h"
 
 BasicScene::BasicScene() : 
-    m_cubeObject{glm::vec3(0.0f, 0.0f, -3.0f)}
+    m_cubeObject{glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)}
 {
     m_cubeObject.AddComponent(new Cube(1.0f));
 }
@@ -15,6 +15,9 @@ void BasicScene::Start(GLFWwindow* window)
 {
     m_masterUI = MasterUI(window, ImVec2(900.0f, 460.0f));
     m_masterUI.Init();
+    m_masterUI.SetObjectPosition(m_cubeObject.GetPosition());
+    m_masterUI.SetObjectRotation(m_cubeObject.GetRotation());
+    m_masterUI.SetObjectScale(m_cubeObject.GetScale());
 
     m_cameraGameView = new CameraGameView(m_width, m_height);
 
@@ -72,6 +75,12 @@ void BasicScene::CompileShaders()
 
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
+    glm::vec3 tempPosition = m_masterUI.GetObjectPosition();
+    glm::vec3 tempRotation = m_masterUI.GetObjectRotation();
+    glm::vec3 tempScale = m_masterUI.GetObjectScale();
+    m_cubeObject.SetPosition(&tempPosition);
+    m_cubeObject.SetRotation(&tempRotation);
+    m_cubeObject.SetScale(&tempScale);
     m_cubeObject.Update();
     m_cameraGameView->Update(deltaTime, &m_masterUI, m_view);
 }
@@ -89,7 +98,7 @@ void BasicScene::Render()
     glViewport(0, 0, gameViewWidth, gameViewHeight);
 
     glm::mat4 cubeObjectModel = glm::mat4(1.0f);
-    cubeObjectModel = glm::rotate(cubeObjectModel, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+    //cubeObjectModel = glm::rotate(cubeObjectModel, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
     m_prog.Use();
     m_prog.SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));

@@ -16,7 +16,10 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_gameViewFbo{0},
     m_hasResized{false},
     m_mouseWheel{0.0f},
-    m_camMotion{false, false, false, false}
+    m_camMotion{false, false, false, false},
+    m_objectPosition{0.0f, 0.0f, 0.0f},
+    m_objectRotation{0.0f, 0.0f, 0.0f},
+    m_objectScale{1.0f, 1.0f, 1.0f}
 {
     
 }
@@ -144,6 +147,9 @@ void MasterUI::PerFrame()
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(ImGui::GetContentRegionAvail().x * 0.3f, ImGui::GetContentRegionAvail().y), true);
+    ImGui::DragFloat3("Positon", m_objectPosition, 0.05f, -1000.0f, 1000.0f);
+    ImGui::DragFloat3("Rotation", m_objectRotation, 0.05f, -1000.0f, 1000.0f);
+    ImGui::DragFloat3("Scale", m_objectScale, 0.01f, -1000.0f, 1000.0f);
     ImGui::EndChild();
     ImGui::SameLine();
     // Game View Child
@@ -201,6 +207,10 @@ unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 float MasterUI::GetMouseWheel() { return m_mouseWheel; }
 Motion MasterUI::GetCamMotion() { return m_camMotion; }
 
+glm::vec3 MasterUI::GetObjectPosition() { return glm::vec3(m_objectPosition[0], m_objectPosition[1], m_objectPosition[2]); }
+glm::vec3 MasterUI::GetObjectRotation() { return glm::vec3(m_objectRotation[0], m_objectRotation[1], m_objectRotation[2]); }
+glm::vec3 MasterUI::GetObjectScale() { return glm::vec3(m_objectScale[0], m_objectScale[1], m_objectScale[2]); }
+
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
 void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
@@ -209,3 +219,7 @@ void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }
 void MasterUI::SetCamMotion(Motion motion) { m_camMotion = motion; }
+
+void MasterUI::SetObjectPosition(glm::vec3 objectPosition) { m_objectPosition[0] = objectPosition.x; m_objectPosition[1] = objectPosition.y; m_objectPosition[2] = objectPosition.z; }
+void MasterUI::SetObjectRotation(glm::vec3 objectRotation) { m_objectRotation[0] = objectRotation.x; m_objectRotation[1] = objectRotation.y; m_objectRotation[2] = objectRotation.z; }
+void MasterUI::SetObjectScale(glm::vec3 objectScale) { m_objectScale[0] = objectScale.x; m_objectScale[1] = objectScale.y; m_objectScale[2] = objectScale.z; }

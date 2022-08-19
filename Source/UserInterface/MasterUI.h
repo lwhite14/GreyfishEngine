@@ -23,6 +23,10 @@ private:
     unsigned int m_gameViewFbo;
     float m_mouseWheel;
     Motion m_camMotion;
+
+    float m_objectPosition[3];
+    float m_objectRotation[3];
+    float m_objectScale[3];
     
 public:
     MasterUI();
@@ -40,6 +44,10 @@ public:
     float GetMouseWheel();
     Motion GetCamMotion();
 
+    glm::vec3 GetObjectPosition();
+    glm::vec3 GetObjectRotation();
+    glm::vec3 GetObjectScale();
+
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
     void SetGameViewSize(ImVec2 gameViewSize);
@@ -48,6 +56,10 @@ public:
     void SetGameViewFBO(unsigned int gameViewFbo);
     void SetMouseWheel(float mouseWheel);
     void SetCamMotion(Motion motion);
+
+    void SetObjectPosition(glm::vec3 objectPosition);
+    void SetObjectRotation(glm::vec3 objectRotation);
+    void SetObjectScale(glm::vec3 objectScale);
 };
 
 #endif //MASTERUI_H
