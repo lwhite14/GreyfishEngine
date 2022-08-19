@@ -46,8 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(ProjectName)\Intermediate\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\Luker\Documents\OpenGLProjects\dependancies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Luker\Documents\OpenGLProjects\dependancies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Luker\Documents\OpenGL\Dependancies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Luker\Documents\OpenGL\Dependancies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
@@ -102,6 +102,7 @@
     <ClCompile Include="Source\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\imgui\imgui_tables.cpp" />
     <ClCompile Include="Source\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\SceneObjects\CameraGameView.cpp" />
     <ClCompile Include="Source\SceneObjects\SceneObject.cpp" />
     <ClCompile Include="Source\Scenes\BasicScene.cpp" />
     <ClCompile Include="Source\stb\stb_image.cpp" />
@@ -109,6 +110,10 @@
     <ClCompile Include="Source\UserInterface\MasterUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="imgui.ini" />
+    <None Include="Makefile" />
+    <None Include="README.md" />
     <None Include="Source\Shaders\Basic.frag" />
     <None Include="Source\Shaders\Basic.vert" />
     <None Include="Source\Shaders\BasicLit.frag" />
@@ -131,6 +136,7 @@
     <ClInclude Include="Source\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Runner.h" />
+    <ClInclude Include="Source\SceneObjects\CameraGameView.h" />
     <ClInclude Include="Source\SceneObjects\Component.h" />
     <ClInclude Include="Source\SceneObjects\SceneObject.h" />
     <ClInclude Include="Source\Scenes\BasicScene.h" />

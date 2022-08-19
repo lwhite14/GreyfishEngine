@@ -69,6 +69,9 @@
     <ClCompile Include="Source\UserInterface\MasterUI.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneObjects\CameraGameView.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -79,6 +82,10 @@
     </None>
     <None Include="Source\Shaders\BasicLit.frag" />
     <None Include="Source\Shaders\BasicLit.vert" />
+    <None Include=".gitignore" />
+    <None Include="imgui.ini" />
+    <None Include="Makefile" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">
@@ -163,6 +170,9 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\UserInterface\MasterUI.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneObjects\CameraGameView.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>
