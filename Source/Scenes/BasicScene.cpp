@@ -2,7 +2,7 @@
 
 #include "../Drawables/Cube.h"
 #include "../Drawables/ObjMesh.h"
-#include "../imgui/imgui.h"
+#include "../Dependencies/imgui/imgui.h"
 #include "../Motion.h"
 
 BasicScene::BasicScene() : 

@@ -1,9 +1,9 @@
 #include "MasterUI.h"
 
 #include <iostream>
-#include "../imgui/imgui.h"
-#include "../imgui/imgui_impl_glfw.h"
-#include "../imgui/imgui_impl_opengl3.h"
+#include "../Dependencies/imgui/imgui.h"
+#include "../Dependencies/imgui/imgui_impl_glfw.h"
+#include "../Dependencies/imgui/imgui_impl_opengl3.h"
 
 MasterUI::MasterUI() { }
 

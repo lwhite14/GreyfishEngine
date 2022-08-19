@@ -7,7 +7,7 @@
 
 #include "Scenes/Scene.h"
 #include "SystemInformation.h"
-#include "stb/stb_image.h"
+#include "Dependencies/stb/stb_image.h"
 
 class Runner 
 {
