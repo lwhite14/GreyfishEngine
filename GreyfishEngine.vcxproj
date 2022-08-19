@@ -125,6 +125,7 @@
     <ClInclude Include="Source\Drawables\Drawable.h" />
     <ClInclude Include="Source\Drawables\ObjMesh.h" />
     <ClInclude Include="Source\Drawables\TriangleMesh.h" />
+    <ClInclude Include="Source\Framebuffer.h" />
     <ClInclude Include="Source\GLSLProgram.h" />
     <ClInclude Include="Source\Dependencies\imgui\imconfig.h" />
     <ClInclude Include="Source\Dependencies\imgui\imgui.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Source\Dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\Motion.h" />
     <ClInclude Include="Source\Runner.h" />
     <ClInclude Include="Source\SceneObjects\CameraGameView.h" />
     <ClInclude Include="Source\SceneObjects\Component.h" />

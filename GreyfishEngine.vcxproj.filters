@@ -175,5 +175,11 @@
     <ClInclude Include="Source\SceneObjects\CameraGameView.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Motion.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framebuffer.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

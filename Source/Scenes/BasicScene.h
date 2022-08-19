@@ -10,6 +10,7 @@
 #include "../SceneObjects/SceneObject.h"
 #include "../SceneObjects/CameraGameView.h"
 #include "../UserInterface/MasterUI.h"
+#include "../Framebuffer.h"
 
 class BasicScene : public Scene 
 {
@@ -18,9 +19,7 @@ private:
 	SceneObject m_cubeObject;
 	MasterUI m_masterUI;
 	CameraGameView* m_cameraGameView;
-
-	unsigned int m_framebuffer;
-	unsigned int m_textureColorbuffer;
+	Framebuffer m_framebuffer;
 
 	void CompileShaders();
 public:
