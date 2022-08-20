@@ -1,7 +1,9 @@
 #include "Cube.h"
 #include "../Dependencies/imgui/imgui.h"
 
-Cube::Cube(GLfloat size)
+Cube::Cube(GLSLProgram* prog, Texture* texture = nullptr, GLfloat size = 1.0f) :
+    m_prog{ prog }, 
+    m_texture{ texture }
 {
     GLfloat side = size / 2.0f;
 
@@ -55,6 +57,12 @@ void Cube::Update()
 
 void Cube::Render() 
 {
+    if (m_texture != nullptr) 
+    {
+        m_prog->Use();
+        m_texture->Bind();
+        m_prog->SetUniform("Texture", m_texture->GetTexture());
+    }
     RenderDrawable();
 }
 
@@ -62,5 +70,16 @@ void Cube::DrawUI()
 {
     ImGui::BeginChild("Cube", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Text("Cube");
+    ImGui::InputText("##", m_textureName, 64); ImGui::SameLine();
+    if (ImGui::Button("Texture")) 
+    {
+        std::string str = "Media/Images/";
+        for (unsigned int i = 0; i < 64; i++)
+        {
+            if (m_textureName[i] != '\0') { str.push_back(m_textureName[i]); }
+            else { break; }
+        }
+        m_texture = new Texture(str.c_str());
+    }
     ImGui::EndChild();
 }
