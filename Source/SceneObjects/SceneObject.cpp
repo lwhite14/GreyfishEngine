@@ -31,18 +31,10 @@ void SceneObject::Render(GLSLProgram* prog, glm::mat4& view, glm::mat4& projecti
 	model = model * m_model;
 
 	prog->Use();
-	prog->SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
-	prog->SetUniform("Light.La", glm::vec3(0.6f));
-	prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.2f, 0.2f));
-	prog->SetUniform("Light.Ls", glm::vec3(1.0f));
-	prog->SetUniform("Material.Ka", glm::vec3(0.5f, 0.25f, 0.25f));
-	prog->SetUniform("Material.Kd", glm::vec3(0.5f, 0.25f, 0.25f));
-	prog->SetUniform("Material.Ks", glm::vec3(0.5f));
-	prog->SetUniform("Material.Shininess", 64.0f);
 	SetMatrices(prog, view, model, projection);
 	for (unsigned int i = 0; i < m_components.size(); i++)
 	{
-		m_components[i]->Render();
+		m_components[i]->Render(prog);
 	}
 }
 

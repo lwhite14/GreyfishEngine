@@ -9,9 +9,9 @@
 class MasterShaders
 {
 public:
-	std::vector<GLSLProgram*> shaderList;
+	inline static std::vector<GLSLProgram*> shaderList;
 
-	void NewShader(std::string shaderName) 
+    inline static void NewShader(std::string shaderName)
 	{
 		GLSLProgram* prog = new GLSLProgram();
 

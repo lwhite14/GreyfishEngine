@@ -433,12 +433,12 @@ void ObjMesh::Update()
 
 }
 
-void ObjMesh::Render()
+void ObjMesh::Render(GLSLProgram* prog)
 {
     ObjMesh::RenderDrawable();
 }
 
-void ObjMesh::DrawUI() 
+void ObjMesh::DrawUI()
 {
 
 }

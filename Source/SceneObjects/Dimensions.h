@@ -18,7 +18,7 @@ private:
 public:
 	Dimensions(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void Update();
-	void Render();
+	void Render(GLSLProgram* prog);
 	void DrawUI();
 
 	void SetPosition(glm::vec3 position);

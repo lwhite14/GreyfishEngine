@@ -26,6 +26,7 @@ public:
 	Dimensions* GetDimensions();
 
 private:
+	GLSLProgram m_prog;
 	glm::mat4 m_model;
 	std::vector<Component*> m_components;
 	Dimensions* m_dimensions;

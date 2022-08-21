@@ -17,7 +17,7 @@ void Dimensions::Update()
 
 }
 
-void Dimensions::Render() 
+void Dimensions::Render(GLSLProgram* prog)
 {
 
 }

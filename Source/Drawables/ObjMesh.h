@@ -22,7 +22,7 @@ public:
     static ObjMesh* LoadWithAdjacency(const char* fileName, bool center = false);
 
     void Update();
-    void Render();
+    void Render(GLSLProgram* prog);
     void DrawUI();
 
     void RenderDrawable() override;

@@ -1,8 +1,8 @@
 #include "Cube.h"
 #include "../Dependencies/imgui/imgui.h"
+#include "../MasterShaders.h"
 
-Cube::Cube(GLSLProgram* prog, Texture* texture = nullptr, GLfloat size = 1.0f) :
-    m_prog{ prog }, 
+Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
     m_texture{ texture }
 {
     GLfloat side = size / 2.0f;
@@ -55,18 +55,26 @@ void Cube::Update()
     // Nothing to update
 }
 
-void Cube::Render() 
+void Cube::Render(GLSLProgram* prog)
 {
     if (m_texture != nullptr) 
     {
-        m_prog->Use();
+        prog->Use();
         m_texture->Bind();
-        m_prog->SetUniform("Texture", m_texture->GetTexture());
+        prog->SetUniform("Texture", m_texture->GetTexture());
     }
+    prog->SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
+    prog->SetUniform("Light.La", glm::vec3(0.6f));
+    prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.2f, 0.2f));
+    prog->SetUniform("Light.Ls", glm::vec3(1.0f));
+    prog->SetUniform("Material.Ka", glm::vec3(0.5f, 0.25f, 0.25f));
+    prog->SetUniform("Material.Kd", glm::vec3(0.5f, 0.25f, 0.25f));
+    prog->SetUniform("Material.Ks", glm::vec3(0.5f));
+    prog->SetUniform("Material.Shininess", 64.0f);
     RenderDrawable();
 }
 
-void Cube::DrawUI() 
+void Cube::DrawUI()
 {
     ImGui::BeginChild("Cube", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Text("Cube");
@@ -84,7 +92,28 @@ void Cube::DrawUI()
     ImGui::InputText("###", m_progName, 64); ImGui::SameLine();
     if (ImGui::Button("Shader"))
     {
+        GLSLProgram* newProg = new GLSLProgram();
 
+        std::string str = "Source/Shaders/";
+        for (unsigned int i = 0; i < 64; i++)
+        {
+            if (m_progName[i] != '\0') { str.push_back(m_progName[i]); }
+            else { break; }
+        }
+        std::string vert = str + ".vert";
+        std::string frag = str + ".frag";
+
+        try
+        {
+            newProg->CompileShader(vert.c_str());
+            newProg->CompileShader(frag.c_str());
+            newProg->Link();
+            MasterShaders::shaderList[0] = newProg;
+        }
+        catch (GLSLProgramException& e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
     }
     ImGui::EndChild();
 }

@@ -1,7 +1,9 @@
 #ifndef MASTERUI_H
 #define MASTERUI_H
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

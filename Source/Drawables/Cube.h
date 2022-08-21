@@ -9,14 +9,13 @@ class Cube : public TriangleMesh, public Component
 {
 private:
 	Texture* m_texture;
-	GLSLProgram *m_prog;
 
 	char m_textureName[64];
 	char m_progName[64];
 
 public:
-	Cube(GLSLProgram* prog, Texture* texture, GLfloat size);
+	Cube(Texture* texture, GLfloat size);
 	void Update();
-	void Render();
+	void Render(GLSLProgram* prog);
 	void DrawUI();
 };
