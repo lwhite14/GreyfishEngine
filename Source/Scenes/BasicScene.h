@@ -11,17 +11,17 @@
 #include "../SceneObjects/CameraGameView.h"
 #include "../UserInterface/MasterUI.h"
 #include "../Framebuffer.h"
+#include "../MasterShaders.h"
 
 class BasicScene : public Scene 
 {
 private:
-	GLSLProgram m_prog;
+	MasterShaders m_masterShaders;
 	SceneObject m_cubeObject;
 	MasterUI m_masterUI;
 	CameraGameView* m_cameraGameView;
 	Framebuffer m_framebuffer;
 
-	void CompileShaders();
 public:
 	BasicScene();
 	void Start(GLFWwindow* window);

@@ -12,6 +12,7 @@ private:
 	GLSLProgram *m_prog;
 
 	char m_textureName[64];
+	char m_progName[64];
 
 public:
 	Cube(GLSLProgram* prog, Texture* texture, GLfloat size);

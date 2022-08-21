@@ -81,5 +81,10 @@ void Cube::DrawUI()
         }
         m_texture = new Texture(str.c_str());
     }
+    ImGui::InputText("###", m_progName, 64); ImGui::SameLine();
+    if (ImGui::Button("Shader"))
+    {
+
+    }
     ImGui::EndChild();
 }

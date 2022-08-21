@@ -19,29 +19,15 @@ void BasicScene::Start(GLFWwindow* window)
     m_cameraGameView = new CameraGameView(m_width, m_height);
 
     glEnable(GL_DEPTH_TEST);
-    CompileShaders();
+    m_masterShaders.NewShader("Basic");
+    m_masterShaders.NewShader("BasicLit");
 
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
     m_framebuffer = Framebuffer(m_masterUI.GetGameViewSize().x, m_masterUI.GetGameViewSize().y);
 
-    m_cubeObject.AddComponent(new Cube(&m_prog, new Texture("Media/Images/container.jpg"),1.0f));
-}
-
-void BasicScene::CompileShaders()
-{
-    try
-    {
-        m_prog.CompileShader("Source/Shaders/Basic.vert");
-        m_prog.CompileShader("Source/Shaders/Basic.frag");
-        m_prog.Link();
-    }
-    catch (GLSLProgramException& e)
-    {
-        std::cerr << e.what() << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    m_cubeObject.AddComponent(new Cube(m_masterShaders.shaderList[1], new Texture("Media/Images/container.jpg"), 1.0f));
 }
 
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
@@ -58,7 +44,7 @@ void BasicScene::Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, m_masterUI.GetGameViewSize().x, m_masterUI.GetGameViewSize().y);
   
-    m_cubeObject.Render(&m_prog, m_view, m_projection);
+    m_cubeObject.Render(m_masterShaders.shaderList[1], m_view, m_projection);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);

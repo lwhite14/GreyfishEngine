@@ -187,5 +187,8 @@
     <ClInclude Include="Source\SceneObjects\Dimensions.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MasterShaders.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
