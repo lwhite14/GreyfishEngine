@@ -119,6 +119,8 @@
     <None Include="Source\Shaders\Basic.vert" />
     <None Include="Source\Shaders\BasicLit.frag" />
     <None Include="Source\Shaders\BasicLit.vert" />
+    <None Include="Source\Shaders\PSX.frag" />
+    <None Include="Source\Shaders\PSX.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Drawables\aabb.h" />

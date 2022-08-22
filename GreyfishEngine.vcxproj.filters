@@ -89,6 +89,8 @@
     <None Include="imgui.ini" />
     <None Include="Makefile" />
     <None Include="README.md" />
+    <None Include="Source\Shaders\PSX.vert" />
+    <None Include="Source\Shaders\PSX.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">

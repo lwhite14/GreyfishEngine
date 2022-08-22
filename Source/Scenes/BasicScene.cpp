@@ -20,6 +20,7 @@ void BasicScene::Start(GLFWwindow* window)
     glEnable(GL_DEPTH_TEST);
     MasterShaders::NewShader("Basic");
     MasterShaders::NewShader("BasicLit");
+    MasterShaders::NewShader("PSX");
 
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
