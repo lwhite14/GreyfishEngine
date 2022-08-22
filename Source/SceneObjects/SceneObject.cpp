@@ -99,6 +99,7 @@ void SceneObject::AddComponent(Component* component)
 void SceneObject::SetModel(glm::mat4* modelMatrix) { m_model = *modelMatrix; }
 void SceneObject::SetDimensions(Dimensions* dimensions) { m_dimensions = dimensions; }
 
+std::string SceneObject::GetName() { return m_name; }
 glm::mat4 SceneObject::GetModel() { return m_model; }
 std::vector<Component*> SceneObject::GetComponents() { return m_components; }
 std::vector<Component*> SceneObject::GetAllComponents() 

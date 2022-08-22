@@ -4,6 +4,15 @@
 Texture::Texture(const char* filePath)
 {
     LoadTexture(filePath);
+    m_name = "";
+    std::string name = filePath;
+    for (unsigned int i = 0; i < name.size(); i++) 
+    {
+        if (!(i < 13)) 
+        {
+            m_name.push_back(name[i]);
+        }
+    }
 }
 
 void Texture::LoadTexture(const char* filePath) 
@@ -35,10 +44,11 @@ unsigned char* Texture::LoadPixels(const char* filePath, int& width, int& height
     return data;
 }
 
-GLuint Texture::GetTexture() { return m_texID; }
-
 void Texture::Bind() 
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texID);
 }
+
+GLuint Texture::GetTexture() { return m_texID; }
+std::string Texture::GetName() { return m_name; }

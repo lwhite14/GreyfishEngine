@@ -5,6 +5,15 @@
 Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
     m_texture{ texture }
 {
+    for (unsigned int i = 0; i < sizeof(m_textureName); i++) 
+    {
+        if (texture->GetName()[i] == '\0') 
+        {
+            break;
+        }
+        m_textureName[i] = texture->GetName()[i];
+    }
+
     GLfloat side = size / 2.0f;
 
     std::vector<GLfloat> points = 

@@ -10,8 +10,8 @@ MasterUI::MasterUI() { }
 MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) : 
     m_window{window}, 
     m_size{size}, 
-    m_gameViewSize{m_size.x * 0.5f, m_size.y},
-    m_optionsViewSize{m_size.x * 0.5f, m_size.y},
+    //m_gameViewSize{m_size.x * 0.5f, m_size.y},
+    //m_optionsViewSize{m_size.x * 0.5f, m_size.y},
     m_windowFlags{0}, m_offset{0, 0}, 
     m_gameViewFbo{0},
     m_hasResized{false},
@@ -106,13 +106,15 @@ void MasterUI::Init()
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 }
 
-void MasterUI::PerFrame(SceneObject* obj)
+void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*> allSceneObjects)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     ImGui::ShowDemoWindow();
+
+    m_selectedSceneObject = selectedSceneObject;
 
     /////////////
     // Windows //
@@ -143,10 +145,25 @@ void MasterUI::PerFrame(SceneObject* obj)
         m_hasResized = true;
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
+    // SceneObjects Child
+    ImGui::BeginChild("SceneObjects View", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
+    static int item_current_idx = 0;
+    if (ImGui::BeginListBox("##", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+    {
+        for (unsigned int i = 0; i < allSceneObjects.size(); i++)
+        {
+            const bool is_selected = (item_current_idx == i);
+            if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  item_current_idx = i; }
+            if (is_selected) { ImGui::SetItemDefaultFocus(); }
+        }
+        ImGui::EndListBox();
+    }
+    ImGui::EndChild();
+    ImGui::SameLine();
     // Options Child
-    ImGui::BeginChild("Game View Options", ImVec2(ImGui::GetContentRegionAvail().x * 0.3f, ImGui::GetContentRegionAvail().y), true);
-    obj->DrawHeaderUI();
-    std::vector<Component*> components = obj->GetAllComponents();
+    ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
+    selectedSceneObject->DrawHeaderUI();
+    std::vector<Component*> components = selectedSceneObject->GetAllComponents();
     for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
     ImGui::EndChild();
     ImGui::SameLine();
@@ -201,9 +218,10 @@ void MasterUI::CleanUp()
 }
 
 GLFWwindow* MasterUI::GetWindow() { return m_window; }
+SceneObject* MasterUI::GetSelectedSceneObject() { return m_selectedSceneObject; }
 ImVec2 MasterUI::GetSize() { return m_size; }
-ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
-ImVec2 MasterUI::GetOptionsViewSize() { return m_optionsViewSize; } 
+//ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
+//ImVec2 MasterUI::GetOptionsViewSize() { return m_optionsViewSize; } 
 ImVec2 MasterUI::GetOffset() { return m_offset; }
 unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 float MasterUI::GetMouseWheel() { return m_mouseWheel; }
@@ -211,8 +229,8 @@ Motion MasterUI::GetCamMotion() { return m_camMotion; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
-void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
-void MasterUI::SetOptionsViewSize(ImVec2 optionsViewSize) { m_optionsViewSize = optionsViewSize; } 
+//void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
+//void MasterUI::SetOptionsViewSize(ImVec2 optionsViewSize) { m_optionsViewSize = optionsViewSize; } 
 void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }

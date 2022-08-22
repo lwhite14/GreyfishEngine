@@ -6,6 +6,7 @@
 class Texture 
 {
 private:
+	std::string m_name;
 	GLuint m_texID;
 
 	void LoadTexture(const char* filePath);
@@ -13,8 +14,9 @@ private:
 public:
 	Texture(const char* filePath);
 	unsigned char* LoadPixels(const char*, int& width, int& height, bool flip = true);
-	GLuint GetTexture();
 	void Bind();
+	GLuint GetTexture();
+	std::string GetName();
 
 };
 

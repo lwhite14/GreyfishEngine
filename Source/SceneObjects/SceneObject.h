@@ -21,6 +21,7 @@ public:
 	void SetModel(glm::mat4* modelMatrix);
 	void SetDimensions(Dimensions* dimensions);
 
+	std::string GetName();
 	glm::mat4 GetModel();
 	std::vector<Component*> GetComponents();
 	std::vector<Component*> GetAllComponents();

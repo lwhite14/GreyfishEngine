@@ -19,10 +19,12 @@ class MasterUI
 private:
     GLFWwindow* m_window;
     ImGuiWindowFlags m_windowFlags;
+    SceneObject* m_selectedSceneObject;
+
     bool m_hasResized;
     ImVec2 m_size;
-    ImVec2 m_gameViewSize;
-    ImVec2 m_optionsViewSize;
+    //ImVec2 m_gameViewSize;
+    //ImVec2 m_optionsViewSize;
     ImVec2 m_offset;
     unsigned int m_gameViewFbo;
     float m_mouseWheel;
@@ -32,13 +34,14 @@ public:
     MasterUI();
     MasterUI(GLFWwindow* window, ImVec2 size);
     void Init();
-    void PerFrame(SceneObject* obj);
+    void PerFrame(SceneObject* obj, std::vector<SceneObject*> objs);
     void CleanUp();
 
     GLFWwindow* GetWindow();
+    SceneObject* GetSelectedSceneObject();
     ImVec2 GetSize();
-    ImVec2 GetGameViewSize();
-    ImVec2 GetOptionsViewSize();
+    //ImVec2 GetGameViewSize();
+    //ImVec2 GetOptionsViewSize();
     ImVec2 GetOffset();
     unsigned int GetGameViewFBO();
     float GetMouseWheel();
@@ -46,8 +49,8 @@ public:
 
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
-    void SetGameViewSize(ImVec2 gameViewSize);
-    void SetOptionsViewSize(ImVec2 optionsViewSize);
+    //void SetGameViewSize(ImVec2 gameViewSize);
+    //void SetOptionsViewSize(ImVec2 optionsViewSize);
     void SetOffset(ImVec2 offset);
     void SetGameViewFBO(unsigned int gameViewFbo);
     void SetMouseWheel(float mouseWheel);

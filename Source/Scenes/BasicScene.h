@@ -17,7 +17,8 @@ class BasicScene : public Scene
 {
 private:
 	MasterShaders m_masterShaders;
-	SceneObject* m_cubeObject;
+	std::vector<SceneObject*> m_sceneObjects;
+	SceneObject* m_selectedObject;
 	MasterUI m_masterUI;
 	CameraGameView* m_cameraGameView;
 	Framebuffer m_framebuffer;
@@ -28,6 +29,7 @@ public:
 	void Update(GLFWwindow* window, float deltaTime);
 	void Render();
 	void CleanUp();
+
 };
 
 #endif

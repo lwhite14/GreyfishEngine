@@ -12,7 +12,7 @@ BasicScene::BasicScene()
 
 void BasicScene::Start(GLFWwindow* window)
 {
-    m_masterUI = MasterUI(window, ImVec2(900.0f, 460.0f));
+    m_masterUI = MasterUI(window, ImVec2(1100.0f, 500.0f));
     m_masterUI.Init();
 
     m_cameraGameView = new CameraGameView(m_width, m_height);
@@ -27,15 +27,18 @@ void BasicScene::Start(GLFWwindow* window)
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
-    m_framebuffer = Framebuffer(m_masterUI.GetGameViewSize().x, m_masterUI.GetGameViewSize().y);
+    m_framebuffer = Framebuffer(m_width * 0.5f, m_height * 0.5f);
 
-    m_cubeObject = new SceneObject("CubeObject", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[1]);
-    m_cubeObject->AddComponent(new Cube(new Texture("Media/Images/container.jpg"), 1.0f));
+    m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[1]));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(new Texture("Media/Images/container.jpg"), 1.0f));
+    m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[1]));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", new Texture("Media/Images/container.jpg")));
+    m_selectedObject = m_sceneObjects[0];
 }
 
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
-    m_cubeObject->Update();
+    for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Update(); }
     m_cameraGameView->Update(deltaTime, &m_masterUI, m_view);
 }
 
@@ -45,9 +48,9 @@ void BasicScene::Render()
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, m_masterUI.GetGameViewSize().x, m_masterUI.GetGameViewSize().y);
+    glViewport(0, 0, m_width * 0.5f, m_height * 0.5f);
   
-    m_cubeObject->Render(m_view, m_projection);
+    for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Render(m_view, m_projection); }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -55,8 +58,8 @@ void BasicScene::Render()
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, m_width, m_height);
     m_masterUI.SetGameViewFBO(m_framebuffer.GetFramebuffer());
-    m_masterUI.PerFrame(m_cubeObject);
-
+    m_masterUI.PerFrame(m_selectedObject, m_sceneObjects);
+    m_selectedObject = m_masterUI.GetSelectedSceneObject();
 }
 
 void BasicScene::CleanUp()
