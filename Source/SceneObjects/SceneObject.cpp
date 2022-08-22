@@ -5,11 +5,19 @@
 #include "../Drawables/ObjMesh.h"
 #include "../Drawables/Cube.h"
 #include "Dimensions.h"
+#include "../MasterShaders.h"
+#include "../Dependencies/imgui/imgui.h"
 
-SceneObject::SceneObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) : 
-	m_model{ glm::mat4(1.0f) }
+SceneObject::SceneObject(std::string name, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, GLSLProgram* prog) :
+	m_name{ name },
+	m_model{ glm::mat4(1.0f) },
+	m_prog{ prog }
 {
 	m_dimensions = new Dimensions(position, rotation, scale);
+	if (prog == nullptr) 
+	{
+		m_prog = MasterShaders::shaderList[0];
+	}
 }
 
 void SceneObject::Update()
@@ -20,7 +28,7 @@ void SceneObject::Update()
 	}
 }
 
-void SceneObject::Render(GLSLProgram* prog, glm::mat4& view, glm::mat4& projection)
+void SceneObject::Render(glm::mat4& view, glm::mat4& projection)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, m_dimensions->GetPosition());
@@ -30,11 +38,11 @@ void SceneObject::Render(GLSLProgram* prog, glm::mat4& view, glm::mat4& projecti
 	model = glm::scale(model, m_dimensions->GetScale());
 	model = model * m_model;
 
-	prog->Use();
-	SetMatrices(prog, view, model, projection);
+	m_prog->Use();
+	SetMatrices(m_prog, view, model, projection);
 	for (unsigned int i = 0; i < m_components.size(); i++)
 	{
-		m_components[i]->Render(prog);
+		m_components[i]->Render(m_prog);
 	}
 }
 
@@ -44,6 +52,36 @@ void SceneObject::SetMatrices(GLSLProgram* prog, glm::mat4& view, glm::mat4& mod
 	prog->SetUniform("MVP", projection * mv);
 	prog->SetUniform("ModelViewMatrix", mv);
 	prog->SetUniform("NormalMatrix", glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
+}
+
+void SceneObject::DrawHeaderUI() 
+{
+	ImGui::BeginChild("SceneObject", ImVec2(ImGui::GetContentRegionAvail().x, 60), true);
+	ImGui::Text(m_name.c_str());
+	ImGui::InputText("###", m_progName, 64); ImGui::SameLine();
+	if (ImGui::Button("Shader"))
+	{
+		std::string str = "";
+		for (unsigned int i = 0; i < 64; i++)
+		{
+			if (m_progName[i] != '\0') { str.push_back(m_progName[i]); }
+			else { break; }
+		}
+		bool hasChanged = false;
+		for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++) 
+		{
+			if (str == MasterShaders::shaderList[i]->GetName()) 
+			{
+				m_prog = MasterShaders::shaderList[i];
+				hasChanged = true;
+			}
+		}
+		if (!hasChanged) 
+		{
+			std::cout << "CANNOT FIND SHADER (may not be compiled)" << std::endl;
+		}
+	}
+	ImGui::EndChild();
 }
 
 void SceneObject::AddComponent(Component* component)

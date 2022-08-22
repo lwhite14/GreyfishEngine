@@ -12,6 +12,7 @@
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
 #include "../Motion.h"
 #include "../SceneObjects/Component.h"
+#include "../SceneObjects/SceneObject.h"
 
 class MasterUI 
 {
@@ -31,7 +32,7 @@ public:
     MasterUI();
     MasterUI(GLFWwindow* window, ImVec2 size);
     void Init();
-    void PerFrame(std::vector<Component*> components);
+    void PerFrame(SceneObject* obj);
     void CleanUp();
 
     GLFWwindow* GetWindow();

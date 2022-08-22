@@ -89,31 +89,5 @@ void Cube::DrawUI()
         }
         m_texture = new Texture(str.c_str());
     }
-    ImGui::InputText("###", m_progName, 64); ImGui::SameLine();
-    if (ImGui::Button("Shader"))
-    {
-        GLSLProgram* newProg = new GLSLProgram();
-
-        std::string str = "Source/Shaders/";
-        for (unsigned int i = 0; i < 64; i++)
-        {
-            if (m_progName[i] != '\0') { str.push_back(m_progName[i]); }
-            else { break; }
-        }
-        std::string vert = str + ".vert";
-        std::string frag = str + ".frag";
-
-        try
-        {
-            newProg->CompileShader(vert.c_str());
-            newProg->CompileShader(frag.c_str());
-            newProg->Link();
-            MasterShaders::shaderList[0] = newProg;
-        }
-        catch (GLSLProgramException& e)
-        {
-            std::cerr << e.what() << std::endl;
-        }
-    }
     ImGui::EndChild();
 }

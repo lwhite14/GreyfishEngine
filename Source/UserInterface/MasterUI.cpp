@@ -4,7 +4,6 @@
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
-#include "../SceneObjects/Component.h"
 
 MasterUI::MasterUI() { }
 
@@ -106,7 +105,7 @@ void MasterUI::Init()
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 }
 
-void MasterUI::PerFrame(std::vector<Component*> components)
+void MasterUI::PerFrame(SceneObject* obj)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -145,6 +144,8 @@ void MasterUI::PerFrame(std::vector<Component*> components)
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(ImGui::GetContentRegionAvail().x * 0.3f, ImGui::GetContentRegionAvail().y), true);
+    obj->DrawHeaderUI();
+    std::vector<Component*> components = obj->GetAllComponents();
     for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
     ImGui::EndChild();
     ImGui::SameLine();

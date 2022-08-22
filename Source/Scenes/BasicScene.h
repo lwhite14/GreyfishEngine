@@ -17,7 +17,7 @@ class BasicScene : public Scene
 {
 private:
 	MasterShaders m_masterShaders;
-	SceneObject m_cubeObject;
+	SceneObject* m_cubeObject;
 	MasterUI m_masterUI;
 	CameraGameView* m_cameraGameView;
 	Framebuffer m_framebuffer;

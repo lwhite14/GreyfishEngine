@@ -12,9 +12,10 @@
 class SceneObject 
 {
 public:
-	SceneObject(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
+	SceneObject(std::string name, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, GLSLProgram* prog = nullptr);
 	void Update();
-	void Render(GLSLProgram* prog, glm::mat4& view, glm::mat4& projection);
+	void Render(glm::mat4& view, glm::mat4& projection);
+	void DrawHeaderUI();
 	void AddComponent(Component* component);
 
 	void SetModel(glm::mat4* modelMatrix);
@@ -26,12 +27,14 @@ public:
 	Dimensions* GetDimensions();
 
 private:
-	GLSLProgram m_prog;
+	std::string m_name;
+	GLSLProgram* m_prog;
+	char m_progName[64];
 	glm::mat4 m_model;
 	std::vector<Component*> m_components;
 	Dimensions* m_dimensions;
 
-	void SetMatrices(GLSLProgram* prog, glm::mat4& view, glm::mat4& model, glm::mat4& projection);
+	static void SetMatrices(GLSLProgram* prog, glm::mat4& view, glm::mat4& model, glm::mat4& projection);
 };
 
 #endif //SCENEOBJECT_H

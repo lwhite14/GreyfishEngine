@@ -499,6 +499,16 @@ const char *GLSLProgram::getTypeString(GLenum type) {
     }
 }
 
+std::string GLSLProgram::GetName()
+{
+    return name;
+}
+
+void GLSLProgram::SetName(std::string newName)
+{
+    name = newName;
+}
+
 void GLSLProgram::Validate() {
     if (!IsLinked())
         throw GLSLProgramException("Program is not linked");
