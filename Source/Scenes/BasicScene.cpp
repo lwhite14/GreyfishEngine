@@ -21,13 +21,15 @@ void BasicScene::Start(GLFWwindow* window)
     MasterShaders::NewShader("Basic");
     MasterShaders::NewShader("BasicLit");
     MasterShaders::NewShader("PSX");
+    MasterShaders::shaderList[2]->Use();
+    MasterShaders::shaderList[2]->SetUniform("FogColour", glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
     m_framebuffer = Framebuffer(m_masterUI.GetGameViewSize().x, m_masterUI.GetGameViewSize().y);
 
-    m_cubeObject = new SceneObject("CubeObject", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    m_cubeObject = new SceneObject("CubeObject", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[1]);
     m_cubeObject->AddComponent(new Cube(new Texture("Media/Images/container.jpg"), 1.0f));
 }
 

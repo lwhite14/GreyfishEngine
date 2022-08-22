@@ -14,8 +14,14 @@ using std::ifstream;
 #include <sstream>
 using std::istringstream;
 #include <map>
+#include "../Dependencies/imgui/imgui.h"
 
-ObjMesh::ObjMesh() : drawAdj(false) { }
+ObjMesh::ObjMesh(Texture* texture) : 
+    drawAdj{ false },
+    m_texture{ texture }
+{
+
+}
 
 void ObjMesh::RenderDrawable() 
 {
@@ -32,10 +38,10 @@ void ObjMesh::RenderDrawable()
 }
 
 
-ObjMesh* ObjMesh::Load(const char* fileName, bool center, bool genTangents) 
+ObjMesh* ObjMesh::Load(const char* fileName, Texture* texture, bool center, bool genTangents)
 {
 
-    ObjMesh* mesh = new ObjMesh();
+    ObjMesh* mesh = new ObjMesh(texture);
 
     ObjMeshData meshData;
     meshData.Load(fileName, mesh->bbox);
@@ -67,9 +73,9 @@ ObjMesh* ObjMesh::Load(const char* fileName, bool center, bool genTangents)
     return mesh;
 }
 
-ObjMesh* ObjMesh::LoadWithAdjacency(const char* fileName, bool center) {
+ObjMesh* ObjMesh::LoadWithAdjacency(const char* fileName, Texture* texture, bool center) {
 
-    ObjMesh* mesh(new ObjMesh());
+    ObjMesh* mesh(new ObjMesh(texture));
 
     ObjMeshData meshData;
     meshData.Load(fileName, mesh->bbox);
@@ -435,11 +441,38 @@ void ObjMesh::Update()
 
 void ObjMesh::Render(GLSLProgram* prog)
 {
+    if (m_texture != nullptr)
+    {
+        prog->Use();
+        m_texture->Bind();
+        prog->SetUniform("Texture", m_texture->GetTexture());
+    }
+    prog->SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
+    prog->SetUniform("Light.La", glm::vec3(0.6f));
+    prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.85f, 0.85f));
+    prog->SetUniform("Light.Ls", glm::vec3(1.0f));
+    prog->SetUniform("Material.Ka", glm::vec3(0.25f, 0.25f, 0.25f));
+    prog->SetUniform("Material.Kd", glm::vec3(0.25f, 0.25f, 0.25f));
+    prog->SetUniform("Material.Ks", glm::vec3(0.5f));
+    prog->SetUniform("Material.Shininess", 64.0f);
     ObjMesh::RenderDrawable();
 }
 
 void ObjMesh::DrawUI()
 {
-
+    ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
+    ImGui::Text("ObjMesh");
+    ImGui::InputText("##", m_textureName, 64); ImGui::SameLine();
+    if (ImGui::Button("Texture"))
+    {
+        std::string str = "Media/Images/";
+        for (unsigned int i = 0; i < 64; i++)
+        {
+            if (m_textureName[i] != '\0') { str.push_back(m_textureName[i]); }
+            else { break; }
+        }
+        m_texture = new Texture(str.c_str());
+    }
+    ImGui::EndChild();
 }
 

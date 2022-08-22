@@ -58,28 +58,17 @@ void SceneObject::DrawHeaderUI()
 {
 	ImGui::BeginChild("SceneObject", ImVec2(ImGui::GetContentRegionAvail().x, 60), true);
 	ImGui::Text(m_name.c_str());
-	ImGui::InputText("###", m_progName, 64); ImGui::SameLine();
-	if (ImGui::Button("Shader"))
+	if (ImGui::BeginCombo("Shader", m_prog->GetName().c_str()))
 	{
-		std::string str = "";
-		for (unsigned int i = 0; i < 64; i++)
+		for (int i = 0; i < MasterShaders::shaderList.size(); i++)
 		{
-			if (m_progName[i] != '\0') { str.push_back(m_progName[i]); }
-			else { break; }
-		}
-		bool hasChanged = false;
-		for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++) 
-		{
-			if (str == MasterShaders::shaderList[i]->GetName()) 
+			//if (ImGui::Button(MasterShaders::shaderList[i]->GetName().c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 0.0f))) 
+			if (ImGui::Selectable(MasterShaders::shaderList[i]->GetName().c_str()))
 			{
 				m_prog = MasterShaders::shaderList[i];
-				hasChanged = true;
 			}
 		}
-		if (!hasChanged) 
-		{
-			std::cout << "CANNOT FIND SHADER (may not be compiled)" << std::endl;
-		}
+		ImGui::EndCombo();
 	}
 	ImGui::EndChild();
 }

@@ -10,16 +10,19 @@
 
 #include "aabb.h"
 #include "../SceneObjects/Component.h"
+#include "../Texture.h"
 
 
 class ObjMesh : public TriangleMesh, public Component 
 {
 private:
     bool drawAdj;
+    Texture* m_texture;
+    char m_textureName[64];
 
 public:
-    static ObjMesh* Load(const char* fileName, bool center = false, bool genTangents = false);
-    static ObjMesh* LoadWithAdjacency(const char* fileName, bool center = false);
+    static ObjMesh* Load(const char* fileName, Texture* texture = nullptr, bool center = false, bool genTangents = false);
+    static ObjMesh* LoadWithAdjacency(const char* fileName, Texture* texture = nullptr, bool center = false);
 
     void Update();
     void Render(GLSLProgram* prog);
@@ -28,7 +31,7 @@ public:
     void RenderDrawable() override;
 
 protected:
-    ObjMesh();
+    ObjMesh(Texture* texture);
 
     Aabb bbox;
 

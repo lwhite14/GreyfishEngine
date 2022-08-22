@@ -34,6 +34,7 @@ void MasterUI::Init()
     style.FrameRounding = 10.0f;
     style.WindowRounding = 10.0f;
     style.ChildRounding = 10.0f;
+    style.PopupRounding = 10.0f;
 
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);

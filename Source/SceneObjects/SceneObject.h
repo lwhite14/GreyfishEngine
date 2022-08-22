@@ -29,7 +29,6 @@ public:
 private:
 	std::string m_name;
 	GLSLProgram* m_prog;
-	char m_progName[64];
 	glm::mat4 m_model;
 	std::vector<Component*> m_components;
 	Dimensions* m_dimensions;
