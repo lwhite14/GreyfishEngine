@@ -140,7 +140,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     // Workspace Window
     if (!m_hasResized) 
     {
-        ImGui::SetNextWindowPos(ImVec2(150, 0));
+        ImGui::SetNextWindowPos(ImVec2(10, 50));
         ImGui::SetNextWindowSize(m_size);
         m_hasResized = true;
     }

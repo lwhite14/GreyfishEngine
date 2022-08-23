@@ -32,7 +32,7 @@ void BasicScene::Start(GLFWwindow* window)
     m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[1]));
     m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(new Texture("Media/Images/container.jpg"), 1.0f));
     m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[1]));
-    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", new Texture("Media/Images/container.jpg")));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", new Texture("Media/Images/metal.jpg")));
     m_selectedObject = m_sceneObjects[0];
 }
 

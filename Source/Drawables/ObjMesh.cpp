@@ -20,7 +20,14 @@ ObjMesh::ObjMesh(Texture* texture) :
     drawAdj{ false },
     m_texture{ texture }
 {
-
+    for (unsigned int i = 0; i < sizeof(m_textureName); i++)
+    {
+        if (texture->GetName()[i] == '\0')
+        {
+            break;
+        }
+        m_textureName[i] = texture->GetName()[i];
+    }
 }
 
 void ObjMesh::RenderDrawable() 
