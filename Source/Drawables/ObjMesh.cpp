@@ -470,7 +470,7 @@ void ObjMesh::DrawUI()
     ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Text("ObjMesh");
     ImGui::InputText("##", m_textureName, 64); ImGui::SameLine();
-    if (ImGui::Button("Texture"))
+    if (ImGui::Button("Texture", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
     {
         std::string str = "Media/Images/";
         for (unsigned int i = 0; i < 64; i++)

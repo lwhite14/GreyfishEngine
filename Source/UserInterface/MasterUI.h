@@ -19,6 +19,7 @@ class MasterUI
 private:
     GLFWwindow* m_window;
     ImGuiWindowFlags m_windowFlags;
+    ImGuiIO* m_io;
     SceneObject* m_selectedSceneObject;
 
     bool m_hasResized;

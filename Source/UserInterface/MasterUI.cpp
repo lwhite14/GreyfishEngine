@@ -29,12 +29,42 @@ void MasterUI::Init()
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
+    m_io = &ImGui::GetIO();
+    m_io->Fonts->AddFontFromFileTTF("Media/Fonts/Lato-Black.ttf", 12);
+
     ImGuiStyle& style = ImGui::GetStyle();
+
+    style.WindowPadding = ImVec2(4.0f, 4.0f);
+    style.FramePadding = ImVec2(4.0f, 4.0f);
+    style.CellPadding = ImVec2(4.0f, 4.0f);
+    style.ItemSpacing = ImVec2(4.0f, 4.0f);
+    style.ItemInnerSpacing = ImVec2(4.0f, 4.0f);
+    style.TouchExtraPadding = ImVec2(0.0f, 0.0f);
+    style.IndentSpacing = 10.0f;
+    style.ScrollbarSize = 10.0f;
+    style.GrabMinSize = 10.0f;
+
+    style.WindowBorderSize = 1.0f;
+    style.ChildBorderSize = 1.0f;
+    style.PopupBorderSize = 1.0f;
     style.FrameBorderSize = 1.0f;
-    style.FrameRounding = 10.0f;
+    style.TabBorderSize = 1.0f;
+
     style.WindowRounding = 10.0f;
     style.ChildRounding = 10.0f;
+    style.FrameRounding = 10.0f;
     style.PopupRounding = 10.0f;
+    style.ScrollbarRounding = 10.0f;
+    style.GrabRounding = 10.0f;
+    style.LogSliderDeadzone = 10.0f;
+    style.TabRounding = 10.0f;
+
+    style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+    style.WindowMenuButtonPosition = ImGuiDir_Left;
+    style.ColorButtonPosition = ImGuiDir_Right;
+    style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
+    style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
+    style.DisplaySafeAreaPadding = ImVec2(3.0f, 3.0f);
 
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -44,35 +74,35 @@ void MasterUI::Init()
     colors[ImGuiCol_PopupBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_Border] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-    colors[ImGuiCol_FrameBg] = ImVec4(0.16f, 0.29f, 0.48f, 0.78f);
-    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
-    colors[ImGuiCol_FrameBgActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+    colors[ImGuiCol_FrameBg] = ImVec4(0.67f, 0.67f, 0.67f, 0.35f);
+    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
+    colors[ImGuiCol_FrameBgActive] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
     colors[ImGuiCol_TitleBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_TitleBgActive] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImGuiCol_MenuBarBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
-    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
-    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
-    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
-    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
-    colors[ImGuiCol_CheckMark] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_SliderGrab] = ImVec4(0.24f, 0.52f, 0.88f, 1.00f);
-    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_Button] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_ButtonActive] = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
-    colors[ImGuiCol_Header] = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
-    colors[ImGuiCol_HeaderHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
-    colors[ImGuiCol_HeaderActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(1.00f, 0.99f, 1.00f, 1.00f);
+    colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_SliderGrab] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+    colors[ImGuiCol_Button] = ImVec4(0.67f, 0.67f, 0.67f, 0.35f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
+    colors[ImGuiCol_Header] = ImVec4(0.67f, 0.67f, 0.67f, 0.35f);
+    colors[ImGuiCol_HeaderHovered] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
     colors[ImGuiCol_Separator] = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
     colors[ImGuiCol_SeparatorHovered] = ImVec4(0.10f, 0.40f, 0.75f, 0.78f);
     colors[ImGuiCol_SeparatorActive] = ImVec4(0.10f, 0.40f, 0.75f, 1.00f);
     colors[ImGuiCol_ResizeGrip] = ImVec4(0.26f, 0.59f, 0.98f, 0.20f);
     colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
     colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
-    colors[ImGuiCol_Tab] = ImVec4(0.18f, 0.35f, 0.58f, 0.86f);
-    colors[ImGuiCol_TabHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
-    colors[ImGuiCol_TabActive] = ImVec4(0.20f, 0.41f, 0.68f, 1.00f);
+    colors[ImGuiCol_Tab] = ImVec4(0.67f, 0.67f, 0.67f, 0.35f);
+    colors[ImGuiCol_TabHovered] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
+    colors[ImGuiCol_TabActive] = ImVec4(0.16f, 0.16f, 0.16f, 0.35f);
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.07f, 0.10f, 0.15f, 0.97f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.14f, 0.26f, 0.42f, 1.00f);
     colors[ImGuiCol_DockingPreview] = ImVec4(0.26f, 0.59f, 0.98f, 0.70f);
@@ -119,7 +149,6 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     /////////////
     // Windows //
     /////////////
-    ImGuiIO& io = ImGui::GetIO();
 
     // Framerate Window
     bool p_open = true;
@@ -129,11 +158,12 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     window_pos_pivot.x = (0 & 1) ? 1.0f : 0.0f;
     window_pos_pivot.y = (0 & 2) ? 1.0f : 0.0f;
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    ImGui::SetNextWindowSize(ImVec2(85, 20));
     ImGui::SetNextWindowViewport(viewport->ID);
     window_flags |= ImGuiWindowFlags_NoMove; 
     if (ImGui::Begin("Example: Simple overlay", &p_open, window_flags))
     {
-        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::Text("FPS: %.1f", m_io->Framerate);
     }
     ImGui::End();
     
@@ -146,9 +176,8 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     // SceneObjects Child
-    ImGui::BeginChild("SceneObjects View", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
     static int item_current_idx = 0;
-    if (ImGui::BeginListBox("##", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+    if (ImGui::BeginListBox("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y)))
     {
         for (unsigned int i = 0; i < allSceneObjects.size(); i++)
         {
@@ -158,7 +187,6 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         }
         ImGui::EndListBox();
     }
-    ImGui::EndChild();
     ImGui::SameLine();
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
@@ -177,7 +205,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
             m_offset.x += ImGui::GetIO().MouseDelta.x;
             m_offset.y += ImGui::GetIO().MouseDelta.y;
         }
-        m_mouseWheel = io.MouseWheel;
+        m_mouseWheel = m_io->MouseWheel;
         if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_LeftArrow) || ImGui::IsKeyDown(ImGuiKey_RightArrow) || ImGui::IsKeyDown(ImGuiKey_UpArrow) || ImGui::IsKeyDown(ImGuiKey_DownArrow))
         {    
             if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_LeftArrow)) { m_camMotion.Left = true; } else { m_camMotion.Left = false; } 
