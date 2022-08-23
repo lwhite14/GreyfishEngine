@@ -29,6 +29,7 @@ public:
 
 private:
 	std::string m_name;
+	char m_nameArr[64];
 	GLSLProgram* m_prog;
 	glm::mat4 m_model;
 	std::vector<Component*> m_components;

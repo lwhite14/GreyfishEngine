@@ -56,13 +56,29 @@ void SceneObject::SetMatrices(GLSLProgram* prog, glm::mat4& view, glm::mat4& mod
 
 void SceneObject::DrawHeaderUI() 
 {
-	ImGui::BeginChild("SceneObject", ImVec2(ImGui::GetContentRegionAvail().x, 60), true);
-	ImGui::Text(m_name.c_str());
+	// Load name into InputText
+	for (unsigned int i = 0; i < sizeof(m_nameArr); i++)
+	{
+		if (m_name[i] == '\0')
+		{
+			break;
+		}
+		m_nameArr[i] = m_name[i];
+	}
+
+	// Draw UI from imgui library
+	ImGui::BeginChild("SceneObject", ImVec2(ImGui::GetContentRegionAvail().x, 70), true);
+	ImGui::Text("SceneObject");
+	if (ImGui::InputText("##", m_nameArr, 64)) 
+	{
+		if (m_nameArr[0] != '\0') { m_name = m_nameArr; } else { m_nameArr[0] = '?'; m_name = m_nameArr; }
+	}
+	ImGui::SameLine();
+	ImGui::Text("Object Name");
 	if (ImGui::BeginCombo("Shader", m_prog->GetName().c_str()))
 	{
 		for (int i = 0; i < MasterShaders::shaderList.size(); i++)
 		{
-			//if (ImGui::Button(MasterShaders::shaderList[i]->GetName().c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 0.0f))) 
 			if (ImGui::Selectable(MasterShaders::shaderList[i]->GetName().c_str()))
 			{
 				m_prog = MasterShaders::shaderList[i];

@@ -176,17 +176,17 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     // SceneObjects Child
+    ImGui::BeginChild("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
+    ImGui::Text("SceneObjects in Scene:");
+    ImGui::Spacing();
     static int item_current_idx = 0;
-    if (ImGui::BeginListBox("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y)))
+    for (unsigned int i = 0; i < allSceneObjects.size(); i++)
     {
-        for (unsigned int i = 0; i < allSceneObjects.size(); i++)
-        {
-            const bool is_selected = (item_current_idx == i);
-            if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  item_current_idx = i; }
-            if (is_selected) { ImGui::SetItemDefaultFocus(); }
-        }
-        ImGui::EndListBox();
+        const bool is_selected = (item_current_idx == i);
+        if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  item_current_idx = i; }
+        if (is_selected) { ImGui::SetItemDefaultFocus(); }
     }
+    ImGui::EndChild();
     ImGui::SameLine();
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
