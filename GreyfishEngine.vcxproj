@@ -139,6 +139,7 @@
     <ClInclude Include="Source\Dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\MasterTextures.h" />
     <ClInclude Include="Source\Motion.h" />
     <ClInclude Include="Source\Runner.h" />
     <ClInclude Include="Source\SceneObjects\CameraGameView.h" />

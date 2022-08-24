@@ -192,5 +192,8 @@
     <ClInclude Include="Source\MasterShaders.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MasterTextures.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,6 +18,13 @@ void BasicScene::Start(GLFWwindow* window)
     m_cameraGameView = new CameraGameView(m_width, m_height);
 
     glEnable(GL_DEPTH_TEST);
+
+    m_framebuffer = Framebuffer(m_width * 0.5f, m_height * 0.5f);
+
+    MasterTextures::NewTexture("awesomeface.png");
+    MasterTextures::NewTexture("container.jpg");
+    MasterTextures::NewTexture("metal.jpg");
+
     MasterShaders::NewShader("Basic");
     MasterShaders::NewShader("BasicLit");
     MasterShaders::NewShader("PSX");
@@ -27,12 +34,10 @@ void BasicScene::Start(GLFWwindow* window)
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
-    m_framebuffer = Framebuffer(m_width * 0.5f, m_height * 0.5f);
-
-    m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[1]));
-    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(new Texture("Media/Images/container.jpg"), 1.0f));
-    m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[1]));
-    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", new Texture("Media/Images/metal.jpg")));
+    m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[2]));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(MasterTextures::textureList[1], 1.0f));
+    m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[2]));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[1]));
     m_selectedObject = m_sceneObjects[0];
 }
 

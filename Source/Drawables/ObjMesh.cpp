@@ -15,19 +15,13 @@ using std::ifstream;
 using std::istringstream;
 #include <map>
 #include "../Dependencies/imgui/imgui.h"
+#include "../MasterTextures.h"
 
 ObjMesh::ObjMesh(Texture* texture) : 
     drawAdj{ false },
     m_texture{ texture }
 {
-    for (unsigned int i = 0; i < sizeof(m_textureName); i++)
-    {
-        if (texture->GetName()[i] == '\0')
-        {
-            break;
-        }
-        m_textureName[i] = texture->GetName()[i];
-    }
+
 }
 
 void ObjMesh::RenderDrawable() 
@@ -469,16 +463,16 @@ void ObjMesh::DrawUI()
 {
     ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Text("ObjMesh");
-    ImGui::InputText("##", m_textureName, 64); ImGui::SameLine();
-    if (ImGui::Button("Texture", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+    if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
-        std::string str = "Media/Images/";
-        for (unsigned int i = 0; i < 64; i++)
+        for (int i = 0; i < MasterTextures::textureList.size(); i++)
         {
-            if (m_textureName[i] != '\0') { str.push_back(m_textureName[i]); }
-            else { break; }
+            if (ImGui::Selectable(MasterTextures::textureList[i]->GetName().c_str()))
+            {
+                m_texture = MasterTextures::textureList[i];
+            }
         }
-        m_texture = new Texture(str.c_str());
+        ImGui::EndCombo();
     }
     ImGui::EndChild();
 }

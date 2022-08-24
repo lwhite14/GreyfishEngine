@@ -9,7 +9,6 @@ class Cube : public TriangleMesh, public Component
 {
 private:
 	Texture* m_texture;
-	char m_textureName[64];
 
 public:
 	Cube(Texture* texture, GLfloat size);

@@ -1,19 +1,11 @@
 #include "Cube.h"
 #include "../Dependencies/imgui/imgui.h"
 #include "../MasterShaders.h"
+#include "../MasterTextures.h"
 
 Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
     m_texture{ texture }
 {
-    for (unsigned int i = 0; i < sizeof(m_textureName); i++) 
-    {
-        if (texture->GetName()[i] == '\0') 
-        {
-            break;
-        }
-        m_textureName[i] = texture->GetName()[i];
-    }
-
     GLfloat side = size / 2.0f;
 
     std::vector<GLfloat> points = 
@@ -87,16 +79,16 @@ void Cube::DrawUI()
 {
     ImGui::BeginChild("Cube", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Text("Cube");
-    ImGui::InputText("##", m_textureName, 64); ImGui::SameLine();
-    if (ImGui::Button("Texture", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+    if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
-        std::string str = "Media/Images/";
-        for (unsigned int i = 0; i < 64; i++)
+        for (int i = 0; i < MasterTextures::textureList.size(); i++)
         {
-            if (m_textureName[i] != '\0') { str.push_back(m_textureName[i]); }
-            else { break; }
+            if (ImGui::Selectable(MasterTextures::textureList[i]->GetName().c_str()))
+            {
+                m_texture = MasterTextures::textureList[i];
+            }
         }
-        m_texture = new Texture(str.c_str());
+        ImGui::EndCombo();
     }
     ImGui::EndChild();
 }

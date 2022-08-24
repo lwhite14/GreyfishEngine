@@ -18,7 +18,6 @@ class ObjMesh : public TriangleMesh, public Component
 private:
     bool drawAdj;
     Texture* m_texture;
-    char m_textureName[64];
 
 public:
     static ObjMesh* Load(const char* fileName, Texture* texture = nullptr, bool center = false, bool genTangents = false);
