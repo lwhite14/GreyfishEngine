@@ -4,6 +4,9 @@
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
+#include "../Drawables/Cube.h"
+#include "../Drawables/ObjMesh.h"
+#include "../SceneObjects/Spinner.h"
 
 MasterUI::MasterUI() { }
 
@@ -175,6 +178,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         m_hasResized = true;
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
+
     // SceneObjects Child
     ImGui::BeginChild("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
     ImGui::Text("SceneObjects in Scene:");
@@ -188,13 +192,30 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::EndChild();
     ImGui::SameLine();
+
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
     selectedSceneObject->DrawHeaderUI();
     std::vector<Component*> components = selectedSceneObject->GetAllComponents();
     for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
+    if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvail().x, 0))) { ImGui::OpenPopup("AddComponentPopup"); }
+    if (ImGui::BeginPopup("AddComponentPopup"))
+    {
+        ImGui::BeginChild("AddComponent", ImVec2(200, 20));
+        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        if (ImGui::BeginCombo("##", NULL))
+        {
+            if (ImGui::Selectable("Cube")) { selectedSceneObject->AddComponent(new Cube(nullptr, 1.0f)); }
+            if (ImGui::Selectable("ObjMesh")) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj")); }
+            if (ImGui::Selectable("Spinner")) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr())); }
+            ImGui::EndCombo();
+        }
+        ImGui::EndChild();
+        ImGui::EndPopup();
+    }
     ImGui::EndChild();
     ImGui::SameLine();
+
     // Game View Child
     ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
     ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), ImVec2(0, 1), ImVec2(1, 0), 0);
@@ -226,9 +247,10 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     ImGui::EndChild();
     ImGui::End();
 
+
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         GLFWwindow* backup_current_context = glfwGetCurrentContext();

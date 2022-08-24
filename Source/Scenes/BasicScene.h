@@ -17,8 +17,6 @@
 class BasicScene : public Scene 
 {
 private:
-	MasterShaders m_masterShaders;
-	MasterTextures m_masterTextures;
 	std::vector<SceneObject*> m_sceneObjects;
 	SceneObject* m_selectedObject;
 	MasterUI m_masterUI;
