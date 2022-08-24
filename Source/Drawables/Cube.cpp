@@ -4,6 +4,7 @@
 #include "../MasterTextures.h"
 
 Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
+    Component{ "Drawable" },
     m_texture{ texture }
 {
     GLfloat side = size / 2.0f;

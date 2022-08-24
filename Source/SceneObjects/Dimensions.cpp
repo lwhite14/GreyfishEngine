@@ -2,6 +2,7 @@
 #include "../Dependencies/imgui/imgui.h"
 
 Dimensions::Dimensions(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) :
+	Component{ "Dimensions" },
 	m_position{ position },
 	m_rotation{ rotation },
 	m_scale{ scale },

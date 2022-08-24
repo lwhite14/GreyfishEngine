@@ -91,36 +91,18 @@ void SceneObject::DrawHeaderUI()
 
 void SceneObject::AddComponent(Component* component)
 {
-	if (typeid(*component) == typeid(Drawable)
-		|| typeid(*component) == typeid(ObjMesh)
-		|| typeid(*component) == typeid(Cube))
+	bool isAlreadyOnObject = false;
+	for (unsigned int i = 0; i < m_components.size(); i++) 
 	{
-
-
-		bool drawableComponenet = false;
-		for (unsigned int i = 0; i < m_components.size(); i++)
+		if (m_components[i]->GetName() == component->GetName()) 
 		{
-			if (typeid(*m_components[i]) == typeid(Drawable)
-				|| typeid(*m_components[i]) == typeid(ObjMesh)
-				|| typeid(*m_components[i]) == typeid(Cube))
-			{
-				drawableComponenet = true;
-			}
-		}
-
-		if (drawableComponenet)
-		{
-			std::cout << "Unable to add component: Another drawable already on SceneObject" << std::endl;
-		}
-		else
-		{
-			m_components.push_back(component);
+			isAlreadyOnObject = true;
 		}
 	}
-	else 
-	{
-		m_components.push_back(component);
-	}
+
+	if (isAlreadyOnObject) { std::cout << "UNABLE TO ADD COMPONENT (Component type already in scene)" << std::endl; }
+	else { m_components.push_back(component); }
+
 }
 
 void SceneObject::SetModel(glm::mat4* modelMatrix) { m_model = *modelMatrix; }

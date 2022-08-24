@@ -18,6 +18,7 @@ using std::istringstream;
 #include "../MasterTextures.h"
 
 ObjMesh::ObjMesh(Texture* texture) : 
+    Component{ "Drawable" },
     drawAdj{ false },
     m_texture{ texture }
 {

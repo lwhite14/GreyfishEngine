@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 Spinner::Spinner(glm::mat4* model) : 
+    Component{ "Spinner" },
     m_model{ model },
     m_speed{ 0.05f }
 {
