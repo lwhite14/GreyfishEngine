@@ -13,7 +13,7 @@ class SceneObject
 {
 public:
 	SceneObject(std::string name, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, GLSLProgram* prog = nullptr);
-	void Update();
+	void Update(float deltaTime);
 	void Render(glm::mat4& view, glm::mat4& projection);
 	void DrawHeaderUI();
 	void AddComponent(Component* component);
@@ -23,6 +23,7 @@ public:
 
 	std::string GetName();
 	glm::mat4 GetModel();
+	glm::mat4* GetModelPtr();
 	std::vector<Component*> GetComponents();
 	std::vector<Component*> GetAllComponents();
 	Dimensions* GetDimensions();

@@ -12,7 +12,7 @@ Dimensions::Dimensions(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) 
 
 }
 
-void Dimensions::Update() 
+void Dimensions::Update(float deltaTime)
 {
 
 }
@@ -41,5 +41,8 @@ void Dimensions::SetRotation(glm::vec3 rotation) { m_rotation = rotation; }
 void Dimensions::SetScale(glm::vec3 scale) { m_scale = scale; }
 
 glm::vec3 Dimensions::GetPosition() { return m_position; }
+glm::vec3* Dimensions::GetPositionPtr() { return &m_position; }
 glm::vec3 Dimensions::GetRotation() { return m_rotation; }
+glm::vec3* Dimensions::GetRotationPtr() { return &m_rotation; }
 glm::vec3 Dimensions::GetScale() { return m_scale; }
+glm::vec3* Dimensions::GetScalePtr() { return &m_scale; }

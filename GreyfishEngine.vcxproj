@@ -105,6 +105,7 @@
     <ClCompile Include="Source\SceneObjects\CameraGameView.cpp" />
     <ClCompile Include="Source\SceneObjects\Dimensions.cpp" />
     <ClCompile Include="Source\SceneObjects\SceneObject.cpp" />
+    <ClCompile Include="Source\SceneObjects\Spinner.cpp" />
     <ClCompile Include="Source\Scenes\BasicScene.cpp" />
     <ClCompile Include="Source\Dependencies\stb\stb_image.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Source\SceneObjects\Component.h" />
     <ClInclude Include="Source\SceneObjects\Dimensions.h" />
     <ClInclude Include="Source\SceneObjects\SceneObject.h" />
+    <ClInclude Include="Source\SceneObjects\Spinner.h" />
     <ClInclude Include="Source\Scenes\BasicScene.h" />
     <ClInclude Include="Source\Scenes\Scene.h" />
     <ClInclude Include="Source\Dependencies\stb\stb_image.h" />

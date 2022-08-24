@@ -51,7 +51,7 @@ Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
     InitBuffers(&indices, &points, &normal, &texCoords);
 }
 
-void Cube::Update() 
+void Cube::Update(float deltaTime)
 {
     // Nothing to update
 }

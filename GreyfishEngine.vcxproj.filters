@@ -75,6 +75,9 @@
     <ClCompile Include="Source\SceneObjects\Dimensions.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneObjects\Spinner.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -193,6 +196,9 @@
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\MasterTextures.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneObjects\Spinner.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

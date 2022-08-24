@@ -17,7 +17,7 @@ private:
 
 public:
 	Dimensions(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
-	void Update();
+	void Update(float deltaTime);
 	void Render(GLSLProgram* prog);
 	void DrawUI();
 
@@ -26,8 +26,11 @@ public:
 	void SetScale(glm::vec3 scale);
 
 	glm::vec3 GetPosition();
+	glm::vec3* GetPositionPtr();
 	glm::vec3 GetRotation();
+	glm::vec3* GetRotationPtr();
 	glm::vec3 GetScale();
+	glm::vec3* GetScalePtr();
 };
 
 #endif

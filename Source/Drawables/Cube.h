@@ -12,7 +12,7 @@ private:
 
 public:
 	Cube(Texture* texture, GLfloat size);
-	void Update();
+	void Update(float deltaTime);
 	void Render(GLSLProgram* prog);
 	void DrawUI();
 };

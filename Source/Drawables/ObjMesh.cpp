@@ -435,7 +435,7 @@ void ObjMesh::GlMeshData::ConvertFacesToAdjancencyFormat()
     faces = elAdj;
 }
 
-void ObjMesh::Update() 
+void ObjMesh::Update(float deltaTime)
 {
 
 }

@@ -4,6 +4,7 @@
 #include "../Drawables/ObjMesh.h"
 #include "../Dependencies/imgui/imgui.h"
 #include "../Motion.h"
+#include "../SceneObjects/Spinner.h"
 
 BasicScene::BasicScene()
 {
@@ -36,6 +37,7 @@ void BasicScene::Start(GLFWwindow* window)
 
     m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[2]));
     m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(MasterTextures::textureList[1], 1.0f));
+    //m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Spinner(m_sceneObjects[m_sceneObjects.size() - 1]->GetModelPtr()));
     m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[2]));
     m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[1]));
     m_selectedObject = m_sceneObjects[0];
@@ -43,7 +45,7 @@ void BasicScene::Start(GLFWwindow* window)
 
 void BasicScene::Update(GLFWwindow* window, float deltaTime)
 {
-    for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Update(); }
+    for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Update(deltaTime); }
     m_cameraGameView->Update(deltaTime, &m_masterUI, m_view);
 }
 

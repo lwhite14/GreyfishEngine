@@ -20,11 +20,11 @@ SceneObject::SceneObject(std::string name, glm::vec3 position, glm::vec3 rotatio
 	}
 }
 
-void SceneObject::Update()
+void SceneObject::Update(float deltaTime)
 {
 	for (unsigned int i = 0; i < m_components.size(); i++) 
 	{
-		m_components[i]->Update();
+		m_components[i]->Update(deltaTime);
 	}
 }
 
@@ -91,20 +91,31 @@ void SceneObject::DrawHeaderUI()
 
 void SceneObject::AddComponent(Component* component)
 {
-	bool drawableComponenet = false;
-	for (unsigned int i = 0; i < m_components.size(); i++) 
+	if (typeid(*component) == typeid(Drawable)
+		|| typeid(*component) == typeid(ObjMesh)
+		|| typeid(*component) == typeid(Cube))
 	{
-		if (typeid(*m_components[i]) == typeid(Drawable) 
-			|| typeid(*m_components[i]) == typeid(ObjMesh)
-			|| typeid(*m_components[i]) == typeid(Cube))
-		{
-			drawableComponenet = true;
-		}
-	}
 
-	if (drawableComponenet) 
-	{
-		std::cout << "Unable to add component: Another drawable already on SceneObject" << std::endl;
+
+		bool drawableComponenet = false;
+		for (unsigned int i = 0; i < m_components.size(); i++)
+		{
+			if (typeid(*m_components[i]) == typeid(Drawable)
+				|| typeid(*m_components[i]) == typeid(ObjMesh)
+				|| typeid(*m_components[i]) == typeid(Cube))
+			{
+				drawableComponenet = true;
+			}
+		}
+
+		if (drawableComponenet)
+		{
+			std::cout << "Unable to add component: Another drawable already on SceneObject" << std::endl;
+		}
+		else
+		{
+			m_components.push_back(component);
+		}
 	}
 	else 
 	{
@@ -117,6 +128,7 @@ void SceneObject::SetDimensions(Dimensions* dimensions) { m_dimensions = dimensi
 
 std::string SceneObject::GetName() { return m_name; }
 glm::mat4 SceneObject::GetModel() { return m_model; }
+glm::mat4* SceneObject::GetModelPtr() { return &m_model; }
 std::vector<Component*> SceneObject::GetComponents() { return m_components; }
 std::vector<Component*> SceneObject::GetAllComponents() 
 {

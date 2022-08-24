@@ -23,7 +23,7 @@ public:
     static ObjMesh* Load(const char* fileName, Texture* texture = nullptr, bool center = false, bool genTangents = false);
     static ObjMesh* LoadWithAdjacency(const char* fileName, Texture* texture = nullptr, bool center = false);
 
-    void Update();
+    void Update(float deltaTime);
     void Render(GLSLProgram* prog);
     void DrawUI();
 
