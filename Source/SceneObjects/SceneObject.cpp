@@ -102,7 +102,19 @@ void SceneObject::AddComponent(Component* component)
 
 	if (isAlreadyOnObject) { std::cout << "UNABLE TO ADD COMPONENT (Component type already in scene)" << std::endl; component = NULL; }
 	else { m_components.push_back(component); }
+}
 
+void SceneObject::RemoveComponent(Component* component)
+{
+	int indexToRemove = -1;
+	for (unsigned int i = 0; i < m_components.size(); i++) 
+	{
+		if (m_components[i]->GetName() == component->GetName()) 
+		{
+			indexToRemove = i;
+		}
+	}
+	m_components.erase(m_components.begin() + indexToRemove);
 }
 
 void SceneObject::SetModel(glm::mat4* modelMatrix) { m_model = *modelMatrix; }

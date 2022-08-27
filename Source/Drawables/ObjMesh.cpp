@@ -17,8 +17,9 @@ using std::istringstream;
 #include "../Dependencies/imgui/imgui.h"
 #include "../MasterTextures.h"
 
-ObjMesh::ObjMesh(Texture* texture) : 
+ObjMesh::ObjMesh(Texture* texture, SceneObject* associatedObject) :
     Component{ "Drawable" },
+    m_associatedObject{ associatedObject },
     drawAdj{ false },
     m_texture{ texture },
     m_matAmbient{ glm::vec3(0.25f) },
@@ -48,10 +49,9 @@ void ObjMesh::RenderDrawable()
 }
 
 
-ObjMesh* ObjMesh::Load(const char* fileName, Texture* texture, bool center, bool genTangents)
+ObjMesh* ObjMesh::Load(const char* fileName, SceneObject* associatedObject, Texture* texture, bool center, bool genTangents)
 {
-
-    ObjMesh* mesh = new ObjMesh(texture);
+    ObjMesh* mesh = new ObjMesh(texture, associatedObject);
 
     ObjMeshData meshData;
     meshData.Load(fileName, mesh->bbox);
@@ -83,9 +83,9 @@ ObjMesh* ObjMesh::Load(const char* fileName, Texture* texture, bool center, bool
     return mesh;
 }
 
-ObjMesh* ObjMesh::LoadWithAdjacency(const char* fileName, Texture* texture, bool center) {
+ObjMesh* ObjMesh::LoadWithAdjacency(const char* fileName, SceneObject* associatedObject, Texture* texture, bool center) {
 
-    ObjMesh* mesh(new ObjMesh(texture));
+    ObjMesh* mesh(new ObjMesh(texture, associatedObject));
 
     ObjMeshData meshData;
     meshData.Load(fileName, mesh->bbox);
@@ -471,7 +471,13 @@ void ObjMesh::Render(GLSLProgram* prog)
 void ObjMesh::DrawUI()
 {
     ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 160), true);
-    ImGui::Text("ObjMesh");
+    ImGui::Selectable("ObjMesh");
+    if (ImGui::BeginPopupContextItem((const char*)0, ImGuiPopupFlags_MouseButtonLeft))
+    {
+        if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
+        ImGui::EndPopup();
+    }
+    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Left-click to open component options"); }
     if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
         for (int i = 0; i < MasterTextures::textureList.size(); i++)

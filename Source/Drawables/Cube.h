@@ -4,10 +4,12 @@
 #include "../SceneObjects/Component.h"
 #include "../Texture.h"
 #include "../GLSLProgram.h"
+#include "../SceneObjects/SceneObject.h"
 
 class Cube : public TriangleMesh, public Component
 {
 private:
+	SceneObject* m_associatedObject;
 	Texture* m_texture;
 	glm::vec3 m_matAmbient;
 	glm::vec3 m_matDiffuse;
@@ -20,7 +22,7 @@ private:
 	float m_matShininessArr;
 
 public:
-	Cube(Texture* texture, GLfloat size);
+	Cube(Texture* texture, GLfloat size, SceneObject* sceneObject);
 	void Update(float deltaTime);
 	void Render(GLSLProgram* prog);
 	void DrawUI();

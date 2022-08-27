@@ -3,8 +3,9 @@
 #include "../MasterShaders.h"
 #include "../MasterTextures.h"
 
-Cube::Cube(Texture* texture = nullptr, GLfloat size = 1.0f) :
+Cube::Cube(Texture* texture, GLfloat size, SceneObject* sceneObject) :
     Component{ "Drawable" },
+    m_associatedObject{ sceneObject },
     m_texture{ texture },
     m_matAmbient{ glm::vec3(0.25f) },
     m_matDiffuse{ glm::vec3(0.25f) },
@@ -87,7 +88,13 @@ void Cube::Render(GLSLProgram* prog)
 void Cube::DrawUI()
 {
     ImGui::BeginChild("Cube", ImVec2(ImGui::GetContentRegionAvail().x, 160), true);
-    ImGui::Text("Cube");
+    ImGui::Selectable("Cube");
+    if (ImGui::BeginPopupContextItem((const char*)0, ImGuiPopupFlags_MouseButtonLeft))
+    {
+        if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
+        ImGui::EndPopup();
+    }
+    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Left-click to open component options"); }
     if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
         for (int i = 0; i < MasterTextures::textureList.size(); i++)

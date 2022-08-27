@@ -11,12 +11,14 @@
 #include "aabb.h"
 #include "../SceneObjects/Component.h"
 #include "../Texture.h"
+#include "../SceneObjects/SceneObject.h"
 
 
 class ObjMesh : public TriangleMesh, public Component 
 {
 private:
     bool drawAdj;
+    SceneObject* m_associatedObject;
     Texture* m_texture;
     glm::vec3 m_matAmbient;
     glm::vec3 m_matDiffuse;
@@ -29,8 +31,8 @@ private:
     float m_matShininessArr;
 
 public:
-    static ObjMesh* Load(const char* fileName, Texture* texture = nullptr, bool center = false, bool genTangents = false);
-    static ObjMesh* LoadWithAdjacency(const char* fileName, Texture* texture = nullptr, bool center = false);
+    static ObjMesh* Load(const char* fileName, SceneObject* associatedObject, Texture* texture = nullptr, bool center = false, bool genTangents = false);
+    static ObjMesh* LoadWithAdjacency(const char* fileName, SceneObject* associatedObject, Texture* texture = nullptr, bool center = false);
 
     void Update(float deltaTime);
     void Render(GLSLProgram* prog);
@@ -44,7 +46,7 @@ public:
     void RenderDrawable() override;
 
 protected:
-    ObjMesh(Texture* texture);
+    ObjMesh(Texture* texture, SceneObject* associatedObject);
 
     Aabb bbox;
 

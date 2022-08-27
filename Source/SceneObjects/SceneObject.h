@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "Component.h"
-#include "Dimensions.h"
 #include "../GLSLProgram.h"
+#include "Dimensions.h"
 
 class SceneObject 
 {
@@ -17,6 +17,7 @@ public:
 	void Render(glm::mat4& view, glm::mat4& projection);
 	void DrawHeaderUI();
 	void AddComponent(Component* component);
+	void RemoveComponent(Component* component);
 
 	void SetModel(glm::mat4* modelMatrix);
 	void SetDimensions(Dimensions* dimensions);
