@@ -22,12 +22,13 @@ void BasicScene::Start(GLFWwindow* window)
 
     m_framebuffer = Framebuffer(m_width * 0.5f, m_height * 0.5f);
 
+    MasterTextures::NewTexture("devtex1.jpg");
     MasterTextures::NewTexture("awesomeface.png");
     MasterTextures::NewTexture("container.jpg");
     MasterTextures::NewTexture("metal.jpg");
 
-    MasterShaders::NewShader("Basic");
     MasterShaders::NewShader("BasicLit");
+    MasterShaders::NewShader("Basic");
     MasterShaders::NewShader("PSX");
     MasterShaders::shaderList[2]->Use();
     MasterShaders::shaderList[2]->SetUniform("FogColour", glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
@@ -36,10 +37,10 @@ void BasicScene::Start(GLFWwindow* window)
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
 
     m_sceneObjects.push_back(new SceneObject("CubeObject", glm::vec3(3.0f, 0.0f, -8.0f), glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), MasterShaders::shaderList[2]));
-    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(MasterTextures::textureList[1], 1.0f));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f));
     //m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Spinner(m_sceneObjects[m_sceneObjects.size() - 1]->GetModelPtr()));
     m_sceneObjects.push_back(new SceneObject("MonkObject", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[2]));
-    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[1]));
+    m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[0]));
     m_selectedObject = m_sceneObjects[0];
 }
 
