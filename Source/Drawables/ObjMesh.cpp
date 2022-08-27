@@ -20,7 +20,15 @@ using std::istringstream;
 ObjMesh::ObjMesh(Texture* texture) : 
     Component{ "Drawable" },
     drawAdj{ false },
-    m_texture{ texture }
+    m_texture{ texture },
+    m_matAmbient{ glm::vec3(0.25f) },
+    m_matDiffuse{ glm::vec3(0.25f) },
+    m_matSpecular{ glm::vec3(0.5f) },
+    m_matShininess{ 64.0f },
+    m_matAmbientArr{ m_matAmbient.x, m_matAmbient.y, m_matAmbient.z },
+    m_matDiffuseArr{ m_matDiffuse.x, m_matDiffuse.y, m_matDiffuse.z },
+    m_matSpecularArr{ m_matSpecular.x, m_matSpecular.y, m_matSpecular.z },
+    m_matShininessArr{ m_matShininess }
 {
 
 }
@@ -453,16 +461,16 @@ void ObjMesh::Render(GLSLProgram* prog)
     prog->SetUniform("Light.La", glm::vec3(0.6f));
     prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.85f, 0.85f));
     prog->SetUniform("Light.Ls", glm::vec3(1.0f));
-    prog->SetUniform("Material.Ka", glm::vec3(0.25f, 0.25f, 0.25f));
-    prog->SetUniform("Material.Kd", glm::vec3(0.25f, 0.25f, 0.25f));
-    prog->SetUniform("Material.Ks", glm::vec3(0.5f));
-    prog->SetUniform("Material.Shininess", 64.0f);
+    prog->SetUniform("Material.Ka", m_matAmbient);
+    prog->SetUniform("Material.Kd", m_matDiffuse);
+    prog->SetUniform("Material.Ks", m_matSpecular);
+    prog->SetUniform("Material.Shininess", m_matShininess);
     ObjMesh::RenderDrawable();
 }
 
 void ObjMesh::DrawUI()
 {
-    ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
+    ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 160), true);
     ImGui::Text("ObjMesh");
     if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
@@ -475,6 +483,20 @@ void ObjMesh::DrawUI()
         }
         ImGui::EndCombo();
     }
+    ImGui::Text("Material");
+    ImGui::DragFloat3("Ambient", m_matAmbientArr, 0.05f, 0.0f, 1.0f);
+    ImGui::DragFloat3("Diffuse", m_matDiffuseArr, 0.05f, 0.0f, 1.0f);
+    ImGui::DragFloat3("Specular", m_matSpecularArr, 0.05f, 0.0f, 1.0f);
+    ImGui::DragFloat("Shininess", &m_matShininessArr, 1.0f, 0.0f, 128.0f);
     ImGui::EndChild();
+
+    SetMatAmbient(glm::vec3(m_matAmbientArr[0], m_matAmbientArr[1], m_matAmbientArr[2]));
+    SetMatDiffuse(glm::vec3(m_matDiffuseArr[0], m_matDiffuseArr[1], m_matDiffuseArr[2]));
+    SetMatSpecular(glm::vec3(m_matSpecularArr[0], m_matSpecularArr[1], m_matSpecularArr[2]));
+    SetMatShininess(m_matShininessArr);
 }
 
+void ObjMesh::SetMatAmbient(glm::vec3 matAmbient) { m_matAmbient = matAmbient; }
+void ObjMesh::SetMatDiffuse(glm::vec3 matDiffuse) { m_matDiffuse = matDiffuse; }
+void ObjMesh::SetMatSpecular(glm::vec3 matSpecular) { m_matSpecular = matSpecular; }
+void ObjMesh::SetMatShininess(float matShininess) { m_matShininess = matShininess; }

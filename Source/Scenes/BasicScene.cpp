@@ -27,8 +27,8 @@ void BasicScene::Start(GLFWwindow* window)
     MasterTextures::NewTexture("container.jpg");
     MasterTextures::NewTexture("metal.jpg");
 
-    MasterShaders::NewShader("BasicLit");
     MasterShaders::NewShader("Basic");
+    MasterShaders::NewShader("BasicLit");
     MasterShaders::NewShader("PSX");
     MasterShaders::shaderList[2]->Use();
     MasterShaders::shaderList[2]->SetUniform("FogColour", glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
