@@ -59,9 +59,9 @@ void Cube::Update(float deltaTime)
 
 void Cube::Render(GLSLProgram* prog)
 {
+    prog->Use();
     if (m_texture != nullptr) 
     {
-        prog->Use();
         m_texture->Bind();
         prog->SetUniform("Texture", m_texture->GetTexture());
     }

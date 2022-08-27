@@ -7,6 +7,8 @@
 #include "../Drawables/Cube.h"
 #include "../Drawables/ObjMesh.h"
 #include "../SceneObjects/Spinner.h"
+#include "../MasterShaders.h"
+#include "../MasterTextures.h"
 
 MasterUI::MasterUI() { }
 
@@ -139,7 +141,7 @@ void MasterUI::Init()
     //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 }
 
-void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*> allSceneObjects)
+void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -190,6 +192,10 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  item_current_idx = i; }
         if (is_selected) { ImGui::SetItemDefaultFocus(); }
     }
+    if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) 
+    {
+        allSceneObjects.push_back(new SceneObject("?", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[2]));
+    }
     ImGui::EndChild();
     ImGui::SameLine();
 
@@ -205,8 +211,8 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
         if (ImGui::BeginCombo("##", NULL))
         {
-            if (ImGui::Selectable("Cube")) { selectedSceneObject->AddComponent(new Cube(nullptr, 1.0f)); }
-            if (ImGui::Selectable("ObjMesh")) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj")); }
+            if (ImGui::Selectable("Cube")) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[1], 1.0f)); }
+            if (ImGui::Selectable("ObjMesh")) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[1])); }
             if (ImGui::Selectable("Spinner")) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr())); }
             ImGui::EndCombo();
         }

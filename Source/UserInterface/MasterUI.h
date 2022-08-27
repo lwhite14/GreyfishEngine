@@ -35,7 +35,7 @@ public:
     MasterUI();
     MasterUI(GLFWwindow* window, ImVec2 size);
     void Init();
-    void PerFrame(SceneObject* obj, std::vector<SceneObject*> objs);
+    void PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void CleanUp();
 
     GLFWwindow* GetWindow();

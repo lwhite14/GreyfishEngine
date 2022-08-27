@@ -100,7 +100,7 @@ void SceneObject::AddComponent(Component* component)
 		}
 	}
 
-	if (isAlreadyOnObject) { std::cout << "UNABLE TO ADD COMPONENT (Component type already in scene)" << std::endl; }
+	if (isAlreadyOnObject) { std::cout << "UNABLE TO ADD COMPONENT (Component type already in scene)" << std::endl; component = NULL; }
 	else { m_components.push_back(component); }
 
 }
