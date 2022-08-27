@@ -185,12 +185,38 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     ImGui::BeginChild("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
     ImGui::Text("SceneObjects in Scene:");
     ImGui::Spacing();
-    static int item_current_idx = 0;
+    static int itemCurrentIndex = 0;
     for (unsigned int i = 0; i < allSceneObjects.size(); i++)
     {
-        const bool is_selected = (item_current_idx == i);
-        if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  item_current_idx = i; }
+        const bool is_selected = (itemCurrentIndex == i);
+        if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  itemCurrentIndex = i; }
         if (is_selected) { ImGui::SetItemDefaultFocus(); }
+
+        if (allSceneObjects[i] == selectedSceneObject) 
+        {
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::Button("Remove Component")) 
+                { 
+                    ImGui::CloseCurrentPopup();
+                    // Remove SceneObject
+                
+                    int indexToRemove = -1;
+                    for (unsigned int j = 0; j < allSceneObjects.size(); j++) 
+                    {
+                        if (allSceneObjects[j] == selectedSceneObject) 
+                        {
+                            indexToRemove = j;
+                        }
+                    }
+                    selectedSceneObject = nullptr;
+                    m_selectedSceneObject = nullptr;
+                    allSceneObjects.erase(allSceneObjects.begin() + indexToRemove);
+                }
+                ImGui::EndPopup();
+            }
+            if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open component options"); }
+        }
     }
     if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) 
     {
@@ -203,6 +229,9 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         else
         {
             allSceneObjects.push_back(new SceneObject("?", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[0]));
+            selectedSceneObject = allSceneObjects[allSceneObjects.size() - 1];
+            m_selectedSceneObject = allSceneObjects[allSceneObjects.size() - 1];
+            itemCurrentIndex = allSceneObjects.size() - 1;
         }
     }
     if (ImGui::BeginPopup("NeedToRename"))
@@ -215,18 +244,21 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
 
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
-    selectedSceneObject->DrawHeaderUI();
-    std::vector<Component*> components = selectedSceneObject->GetAllComponents();
-    for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
-    if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) { ImGui::OpenPopup("AddComponentPopup"); }
-    ImGui::SameLine();
-    if (ImGui::BeginPopup("AddComponentPopup"))
+    if (selectedSceneObject != nullptr) 
     {
-        ImVec2 size = ImVec2(100, 0);
-        if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, selectedSceneObject)); }
-        if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", selectedSceneObject, MasterTextures::textureList[0])); }
-        if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr(), selectedSceneObject)); }
-        ImGui::EndPopup();
+        selectedSceneObject->DrawHeaderUI();
+        std::vector<Component*> components = selectedSceneObject->GetAllComponents();
+        for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
+        if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) { ImGui::OpenPopup("AddComponentPopup"); }
+        ImGui::SameLine();
+        if (ImGui::BeginPopup("AddComponentPopup"))
+        {
+            ImVec2 size = ImVec2(100, 0);
+            if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, selectedSceneObject)); }
+            if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", selectedSceneObject, MasterTextures::textureList[0])); }
+            if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr(), selectedSceneObject)); }
+            ImGui::EndPopup();
+        }
     }
     ImGui::EndChild();
     ImGui::SameLine();

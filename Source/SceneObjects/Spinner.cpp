@@ -28,12 +28,12 @@ void Spinner::DrawUI()
 {
     ImGui::BeginChild("Spinner", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
     ImGui::Selectable("Spinner");
-    if (ImGui::BeginPopupContextItem((const char*)0, ImGuiPopupFlags_MouseButtonLeft))
+    if (ImGui::BeginPopupContextItem())
     {
         if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
         ImGui::EndPopup();
     }
-    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Left-click to open component options"); }
+    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open component options"); }
     ImGui::DragFloat("Spin Speed", &m_speed, 0.005f);
     ImGui::EndChild();
 }
