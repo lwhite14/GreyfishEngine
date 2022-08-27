@@ -219,18 +219,13 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     std::vector<Component*> components = selectedSceneObject->GetAllComponents();
     for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
     if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) { ImGui::OpenPopup("AddComponentPopup"); }
+    ImGui::SameLine();
     if (ImGui::BeginPopup("AddComponentPopup"))
     {
-        ImGui::BeginChild("AddComponent", ImVec2(200, 20));
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-        if (ImGui::BeginCombo("##", NULL))
-        {
-            if (ImGui::Selectable("Cube")) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f)); }
-            if (ImGui::Selectable("ObjMesh")) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[0])); }
-            if (ImGui::Selectable("Spinner")) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr())); }
-            ImGui::EndCombo();
-        }
-        ImGui::EndChild();
+        ImVec2 size = ImVec2(100, 0);
+        if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f)); }
+        if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", MasterTextures::textureList[0])); }
+        if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr())); }
         ImGui::EndPopup();
     }
     ImGui::EndChild();
