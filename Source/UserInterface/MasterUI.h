@@ -38,6 +38,11 @@ public:
     void PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void CleanUp();
 
+    void FramerateWindow();
+    void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
+    void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
+    void GameViewWindow();
+
     GLFWwindow* GetWindow();
     SceneObject* GetSelectedSceneObject();
     ImVec2 GetSize();

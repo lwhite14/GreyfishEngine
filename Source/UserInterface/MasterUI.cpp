@@ -155,23 +155,8 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     // Windows //
     /////////////
 
-    // Framerate Window
-    bool p_open = true;
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImVec2 window_pos, window_pos_pivot;
-    window_pos_pivot.x = (0 & 1) ? 1.0f : 0.0f;
-    window_pos_pivot.y = (0 & 2) ? 1.0f : 0.0f;
-    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-    ImGui::SetNextWindowSize(ImVec2(85, 20));
-    ImGui::SetNextWindowViewport(viewport->ID);
-    window_flags |= ImGuiWindowFlags_NoMove; 
-    if (ImGui::Begin("Example: Simple overlay", &p_open, window_flags))
-    {
-        ImGui::Text("FPS: %.1f", m_io->Framerate);
-    }
-    ImGui::End();
-    
+    FramerateWindow();
+
     // Workspace Window
     if (!m_hasResized) 
     {
@@ -181,6 +166,42 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
 
+    SceneObjectsWindow(selectedSceneObject, allSceneObjects);
+    OptionsWindow(selectedSceneObject, allSceneObjects);
+    GameViewWindow();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+    }
+}
+
+void MasterUI::FramerateWindow() 
+{
+    bool p_open = true;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 window_pos, window_pos_pivot;
+    window_pos_pivot.x = (0 & 1) ? 1.0f : 0.0f;
+    window_pos_pivot.y = (0 & 2) ? 1.0f : 0.0f;
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    ImGui::SetNextWindowSize(ImVec2(85, 20));
+    ImGui::SetNextWindowViewport(viewport->ID);
+    window_flags |= ImGuiWindowFlags_NoMove;
+    if (ImGui::Begin("Example: Simple overlay", &p_open, window_flags))
+    {
+        ImGui::Text("FPS: %.1f", m_io->Framerate);
+    }
+    ImGui::End();
+}
+
+void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+{
     // SceneObjects Child
     ImGui::BeginChild("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
     ImGui::Text("SceneObjects in Scene:");
@@ -192,19 +213,19 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  itemCurrentIndex = i; }
         if (is_selected) { ImGui::SetItemDefaultFocus(); }
 
-        if (allSceneObjects[i] == selectedSceneObject) 
+        if (allSceneObjects[i] == selectedSceneObject)
         {
             if (ImGui::BeginPopupContextItem())
             {
-                if (ImGui::Button("Remove Component")) 
-                { 
+                if (ImGui::Button("Remove Component"))
+                {
                     ImGui::CloseCurrentPopup();
                     // Remove SceneObject
-                
+
                     int indexToRemove = -1;
-                    for (unsigned int j = 0; j < allSceneObjects.size(); j++) 
+                    for (unsigned int j = 0; j < allSceneObjects.size(); j++)
                     {
-                        if (allSceneObjects[j] == selectedSceneObject) 
+                        if (allSceneObjects[j] == selectedSceneObject)
                         {
                             indexToRemove = j;
                         }
@@ -218,11 +239,11 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
             if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open component options"); }
         }
     }
-    if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) 
+    if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0)))
     {
         bool needToRename = false;
         for (unsigned int i = 0; i < allSceneObjects.size(); i++) { if (allSceneObjects[i]->GetName() == "?") { needToRename = true; } }
-        if (needToRename) 
+        if (needToRename)
         {
             ImGui::OpenPopup("NeedToRename");
         }
@@ -241,10 +262,13 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::EndChild();
     ImGui::SameLine();
+}
 
+void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+{
     // Options Child
     ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
-    if (selectedSceneObject != nullptr) 
+    if (selectedSceneObject != nullptr)
     {
         selectedSceneObject->DrawHeaderUI();
         std::vector<Component*> components = selectedSceneObject->GetAllComponents();
@@ -262,7 +286,10 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
     ImGui::EndChild();
     ImGui::SameLine();
+}
 
+void MasterUI::GameViewWindow() 
+{
     // Game View Child
     ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
     ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), ImVec2(0, 1), ImVec2(1, 0), 0);
@@ -275,36 +302,28 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         }
         m_mouseWheel = m_io->MouseWheel;
         if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_LeftArrow) || ImGui::IsKeyDown(ImGuiKey_RightArrow) || ImGui::IsKeyDown(ImGuiKey_UpArrow) || ImGui::IsKeyDown(ImGuiKey_DownArrow))
-        {    
-            if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_LeftArrow)) { m_camMotion.Left = true; } else { m_camMotion.Left = false; } 
-            if (ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_RightArrow)) { m_camMotion.Right = true; } else { m_camMotion.Right = false; } 
-            if (ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_DownArrow)) { m_camMotion.Down = true; } else { m_camMotion.Down = false; } 
-            if (ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_UpArrow)) { m_camMotion.Up = true; } else { m_camMotion.Up = false; } 
+        {
+            if (ImGui::IsKeyDown(ImGuiKey_A) || ImGui::IsKeyDown(ImGuiKey_LeftArrow)) { m_camMotion.Left = true; }
+            else { m_camMotion.Left = false; }
+            if (ImGui::IsKeyDown(ImGuiKey_D) || ImGui::IsKeyDown(ImGuiKey_RightArrow)) { m_camMotion.Right = true; }
+            else { m_camMotion.Right = false; }
+            if (ImGui::IsKeyDown(ImGuiKey_S) || ImGui::IsKeyDown(ImGuiKey_DownArrow)) { m_camMotion.Down = true; }
+            else { m_camMotion.Down = false; }
+            if (ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_UpArrow)) { m_camMotion.Up = true; }
+            else { m_camMotion.Up = false; }
         }
         else { m_camMotion.Left = false; m_camMotion.Right = false; m_camMotion.Down = false; m_camMotion.Up = false; }
     }
     else
     {
         m_mouseWheel = 0;
-        m_camMotion.Left = false; 
-        m_camMotion.Right = false; 
-        m_camMotion.Down = false; 
+        m_camMotion.Left = false;
+        m_camMotion.Right = false;
+        m_camMotion.Down = false;
         m_camMotion.Up = false;
     }
     ImGui::EndChild();
     ImGui::End();
-
-
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        GLFWwindow* backup_current_context = glfwGetCurrentContext();
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-        glfwMakeContextCurrent(backup_current_context);
-    }
 }
 
 void MasterUI::CleanUp() 
