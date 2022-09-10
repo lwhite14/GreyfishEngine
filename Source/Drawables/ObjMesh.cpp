@@ -20,7 +20,7 @@ using std::istringstream;
 ObjMesh::ObjMesh(Texture* texture, SceneObject* associatedObject) :
     Component{ "Drawable" },
     m_associatedObject{ associatedObject },
-    drawAdj{ false },
+    m_drawAdj{ false },
     m_texture{ texture },
     m_matAmbient{ glm::vec3(0.25f) },
     m_matDiffuse{ glm::vec3(0.25f) },
@@ -36,7 +36,7 @@ ObjMesh::ObjMesh(Texture* texture, SceneObject* associatedObject) :
 
 void ObjMesh::RenderDrawable() 
 {
-    if (drawAdj) 
+    if (m_drawAdj) 
     {
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES_ADJACENCY, nVerts, GL_UNSIGNED_INT, 0);
@@ -99,7 +99,7 @@ ObjMesh* ObjMesh::LoadWithAdjacency(const char* fileName, SceneObject* associate
 
     if (center) glMesh.Center(mesh->bbox);
 
-    mesh->drawAdj = true;
+    mesh->m_drawAdj = true;
     glMesh.ConvertFacesToAdjancencyFormat();
 
     // Load into VAO
@@ -500,6 +500,29 @@ void ObjMesh::DrawUI()
     SetMatDiffuse(glm::vec3(m_matDiffuseArr[0], m_matDiffuseArr[1], m_matDiffuseArr[2]));
     SetMatSpecular(glm::vec3(m_matSpecularArr[0], m_matSpecularArr[1], m_matSpecularArr[2]));
     SetMatShininess(m_matShininessArr);
+}
+
+void ObjMesh::Serialization(YAML::Emitter& out)
+{
+    out << YAML::BeginMap;
+
+    out << YAML::Key << "objMesh" << YAML::Value;
+    out << YAML::BeginMap; // ObjMesh Map
+
+    out << YAML::Key << "texture" << YAML::Value << m_texture->GetName();
+    out << YAML::Key << "matAmbientX" << YAML::Value << std::to_string(m_matAmbient.x);
+    out << YAML::Key << "matAmbientY" << YAML::Value << std::to_string(m_matAmbient.y);
+    out << YAML::Key << "matAmbientZ" << YAML::Value << std::to_string(m_matAmbient.z);
+    out << YAML::Key << "matDiffuseX" << YAML::Value << std::to_string(m_matDiffuse.x);
+    out << YAML::Key << "matDiffuseY" << YAML::Value << std::to_string(m_matDiffuse.y);
+    out << YAML::Key << "matDiffuseZ" << YAML::Value << std::to_string(m_matDiffuse.z);
+    out << YAML::Key << "matSpecularX" << YAML::Value << std::to_string(m_matSpecular.x);
+    out << YAML::Key << "matSpecularY" << YAML::Value << std::to_string(m_matSpecular.y);
+    out << YAML::Key << "matSpecularZ" << YAML::Value << std::to_string(m_matSpecular.z);
+    out << YAML::Key << "matShininess" << YAML::Value << std::to_string(m_matShininess);
+
+    out << YAML::EndMap; // ObjMesh Map
+    out << YAML::EndMap;
 }
 
 void ObjMesh::SetMatAmbient(glm::vec3 matAmbient) { m_matAmbient = matAmbient; }

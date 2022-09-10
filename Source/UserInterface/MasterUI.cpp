@@ -1,6 +1,7 @@
 #include "MasterUI.h"
 
 #include <iostream>
+#include <yaml-cpp/yaml.h>
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
@@ -15,8 +16,6 @@ MasterUI::MasterUI() { }
 MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) : 
     m_window{window}, 
     m_size{size}, 
-    //m_gameViewSize{m_size.x * 0.5f, m_size.y},
-    //m_optionsViewSize{m_size.x * 0.5f, m_size.y},
     m_windowFlags{0}, m_offset{0, 0}, 
     m_gameViewFbo{0},
     m_hasResized{false},
@@ -129,16 +128,16 @@ void MasterUI::Init()
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
     m_windowFlags |= ImGuiWindowFlags_NoResize;
-    //windowFlags |= ImGuiWindowFlags_NoTitleBar;
+    //m_windowFlags |= ImGuiWindowFlags_NoTitleBar;
     m_windowFlags |= ImGuiWindowFlags_NoScrollbar;
-    //windowFlags |= ImGuiWindowFlags_MenuBar;
-    //windowFlags |= ImGuiWindowFlags_NoMove;
+    m_windowFlags |= ImGuiWindowFlags_MenuBar;
+    //m_windowFlags |= ImGuiWindowFlags_NoMove;
     m_windowFlags |= ImGuiWindowFlags_NoCollapse;
-    //windowFlags |= ImGuiWindowFlags_NoNav;
-    //windowFlags |= ImGuiWindowFlags_NoBackground;
-    //windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
-    //windowFlags |= ImGuiWindowFlags_NoDocking;
-    //windowFlags |= ImGuiWindowFlags_UnsavedDocument;
+    //m_windowFlags |= ImGuiWindowFlags_NoNav;
+    //m_windowFlags |= ImGuiWindowFlags_NoBackground;
+    //m_windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    //m_windowFlags |= ImGuiWindowFlags_NoDocking;
+    //m_windowFlags |= ImGuiWindowFlags_UnsavedDocument;
 }
 
 void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
@@ -164,11 +163,13 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
         ImGui::SetNextWindowSize(m_size);
         m_hasResized = true;
     }
-    ImGui::Begin("Workspace", NULL, m_windowFlags);
 
+    ImGui::Begin("Workspace", NULL, m_windowFlags);
+    Menu(allSceneObjects);
     SceneObjectsWindow(selectedSceneObject, allSceneObjects);
     OptionsWindow(selectedSceneObject, allSceneObjects);
     GameViewWindow();
+    ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -288,7 +289,7 @@ void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<Scene
     ImGui::SameLine();
 }
 
-void MasterUI::GameViewWindow() 
+void MasterUI::GameViewWindow()
 {
     // Game View Child
     ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
@@ -323,7 +324,64 @@ void MasterUI::GameViewWindow()
         m_camMotion.Up = false;
     }
     ImGui::EndChild();
-    ImGui::End();
+}
+
+void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
+{
+    if (ImGui::BeginMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("New")) {}
+            if (ImGui::MenuItem("Open")) 
+            {
+                
+            }
+            if (ImGui::MenuItem("Open Recent")) {}
+            if (ImGui::MenuItem("Save")) 
+            {
+                std::string path = "Media/Scenes/";
+                std::string name = "ExampleScene";
+                std::string extension = ".yaml";
+
+                std::ofstream newSceneFile{ path + name + extension };
+
+                YAML::Emitter out;
+                out << YAML::BeginMap; // SceneObjects Map
+
+                out << YAML::Key << "SceneObjects" << YAML::Value;
+                out << YAML::BeginSeq;
+                for (unsigned int i = 0; i < allSceneObjects.size(); i++)
+                {
+                    out << YAML::BeginMap; // Object Instance Map
+
+                    out << YAML::Key << "name" << YAML::Value << allSceneObjects[i]->GetName();
+                    out << YAML::Key << "glslProgramName" << YAML::Value << allSceneObjects[i]->GetGLSLProgram()->GetName();
+
+                    allSceneObjects[i]->GetDimensions()->Serialization(out);
+
+                    out << YAML::Key << "components" << YAML::Value;
+                    out << YAML::BeginSeq;
+
+                    for (unsigned int j = 0; j < allSceneObjects[i]->GetComponents().size(); j++)
+                    {
+                        allSceneObjects[i]->GetComponents()[j]->Serialization(out);
+                    }
+
+                    out << YAML::EndSeq;
+                    out << YAML::EndMap; // Object Instance Map 
+                }
+                out << YAML::EndSeq;
+                out << YAML::EndMap; // SceneObjects Map
+
+                newSceneFile << out.c_str();
+                newSceneFile.close();
+            }
+            if (ImGui::MenuItem("Save As")) {}
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+    }
 }
 
 void MasterUI::CleanUp() 
@@ -336,8 +394,6 @@ void MasterUI::CleanUp()
 GLFWwindow* MasterUI::GetWindow() { return m_window; }
 SceneObject* MasterUI::GetSelectedSceneObject() { return m_selectedSceneObject; }
 ImVec2 MasterUI::GetSize() { return m_size; }
-//ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
-//ImVec2 MasterUI::GetOptionsViewSize() { return m_optionsViewSize; } 
 ImVec2 MasterUI::GetOffset() { return m_offset; }
 unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 float MasterUI::GetMouseWheel() { return m_mouseWheel; }
@@ -345,8 +401,6 @@ Motion MasterUI::GetCamMotion() { return m_camMotion; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
-//void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
-//void MasterUI::SetOptionsViewSize(ImVec2 optionsViewSize) { m_optionsViewSize = optionsViewSize; } 
 void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }

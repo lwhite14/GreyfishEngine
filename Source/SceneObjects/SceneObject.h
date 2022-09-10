@@ -28,6 +28,7 @@ public:
 	std::vector<Component*> GetComponents();
 	std::vector<Component*> GetAllComponents();
 	Dimensions* GetDimensions();
+	GLSLProgram* GetGLSLProgram();
 
 private:
 	std::string m_name;

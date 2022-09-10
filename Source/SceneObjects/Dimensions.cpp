@@ -36,6 +36,22 @@ void Dimensions::DrawUI()
 	SetRotation(glm::vec3(m_rotationArr[0], m_rotationArr[1], m_rotationArr[2]));
 	SetScale(glm::vec3(m_scaleArr[0], m_scaleArr[1], m_scaleArr[2]));
 }
+void Dimensions::Serialization(YAML::Emitter& out)
+{
+    out << YAML::Key << "dimensions" << YAML::Value;
+
+    out << YAML::BeginMap; // Dimensions Map
+    out << YAML::Key << "posX" << YAML::Value << std::to_string(GetPosition().x);
+    out << YAML::Key << "posY" << YAML::Value << std::to_string(GetPosition().y);
+    out << YAML::Key << "posZ" << YAML::Value << std::to_string(GetPosition().z);
+    out << YAML::Key << "rotX" << YAML::Value << std::to_string(GetRotation().x);
+    out << YAML::Key << "rotY" << YAML::Value << std::to_string(GetRotation().y);
+    out << YAML::Key << "rotZ" << YAML::Value << std::to_string(GetRotation().z);
+    out << YAML::Key << "scaX" << YAML::Value << std::to_string(GetScale().x);
+    out << YAML::Key << "scaY" << YAML::Value << std::to_string(GetScale().y);
+    out << YAML::Key << "scaZ" << YAML::Value << std::to_string(GetScale().z);
+    out << YAML::EndMap; // Dimensions Map
+}
 
 void Dimensions::SetPosition(glm::vec3 position) { m_position = position; }
 void Dimensions::SetRotation(glm::vec3 rotation) { m_rotation = rotation; }

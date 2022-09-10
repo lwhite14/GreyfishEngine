@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,8 +26,6 @@ private:
 
     bool m_hasResized;
     ImVec2 m_size;
-    //ImVec2 m_gameViewSize;
-    //ImVec2 m_optionsViewSize;
     ImVec2 m_offset;
     unsigned int m_gameViewFbo;
     float m_mouseWheel;
@@ -39,6 +39,7 @@ public:
     void CleanUp();
 
     void FramerateWindow();
+    void Menu(std::vector<SceneObject*>& allSceneObjects);
     void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void GameViewWindow();
@@ -46,8 +47,6 @@ public:
     GLFWwindow* GetWindow();
     SceneObject* GetSelectedSceneObject();
     ImVec2 GetSize();
-    //ImVec2 GetGameViewSize();
-    //ImVec2 GetOptionsViewSize();
     ImVec2 GetOffset();
     unsigned int GetGameViewFBO();
     float GetMouseWheel();
@@ -55,8 +54,6 @@ public:
 
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
-    //void SetGameViewSize(ImVec2 gameViewSize);
-    //void SetOptionsViewSize(ImVec2 optionsViewSize);
     void SetOffset(ImVec2 offset);
     void SetGameViewFBO(unsigned int gameViewFbo);
     void SetMouseWheel(float mouseWheel);

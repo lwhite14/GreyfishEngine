@@ -37,3 +37,16 @@ void Spinner::DrawUI()
     ImGui::DragFloat("Spin Speed", &m_speed, 0.005f);
     ImGui::EndChild();
 }
+
+void Spinner::Serialization(YAML::Emitter& out)
+{
+    out << YAML::BeginMap;
+
+    out << YAML::Key << "spinner" << YAML::Value;
+    out << YAML::BeginMap; // Spinner Map
+
+    out << YAML::Key << "speed" << YAML::Value << std::to_string(m_speed);
+
+    out << YAML::EndMap; // Spinner Map
+    out << YAML::EndMap;
+}

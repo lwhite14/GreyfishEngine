@@ -132,3 +132,4 @@ std::vector<Component*> SceneObject::GetAllComponents()
 	return tempComponents;
 }
 Dimensions* SceneObject::GetDimensions() { return m_dimensions; }
+GLSLProgram* SceneObject::GetGLSLProgram() { return m_prog; }

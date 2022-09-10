@@ -26,6 +26,7 @@ public:
 	void Update(float deltaTime);
 	void Render(GLSLProgram* prog);
 	void DrawUI();
+	void Serialization(YAML::Emitter& out);
 
 	void SetMatAmbient(glm::vec3 matAmbient);
 	void SetMatDiffuse(glm::vec3 matDiffuse);

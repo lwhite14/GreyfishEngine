@@ -46,8 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(ProjectName)\Intermediate\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\Luker\Documents\OpenGL\Dependancies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Luker\Documents\OpenGL\Dependancies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Luker\Documents\Cpp\Dependancies\include;C:\Users\Luker\Documents\OpenGL\Dependancies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Luker\Documents\Cpp\Dependancies\lib;C:\Users\Luker\Documents\OpenGL\Dependancies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
@@ -67,7 +67,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;yaml-cppd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

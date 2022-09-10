@@ -119,6 +119,29 @@ void Cube::DrawUI()
     SetMatShininess(m_matShininessArr);
 }
 
+void Cube::Serialization(YAML::Emitter& out)
+{
+    out << YAML::BeginMap;
+
+    out << YAML::Key << "cube" << YAML::Value;
+    out << YAML::BeginMap; // Cube Map
+
+    out << YAML::Key << "texture" << YAML::Value << m_texture->GetName();
+    out << YAML::Key << "matAmbientX" << YAML::Value << std::to_string(m_matAmbient.x);
+    out << YAML::Key << "matAmbientY" << YAML::Value << std::to_string(m_matAmbient.y);
+    out << YAML::Key << "matAmbientZ" << YAML::Value << std::to_string(m_matAmbient.z);
+    out << YAML::Key << "matDiffuseX" << YAML::Value << std::to_string(m_matDiffuse.x);
+    out << YAML::Key << "matDiffuseY" << YAML::Value << std::to_string(m_matDiffuse.y);
+    out << YAML::Key << "matDiffuseZ" << YAML::Value << std::to_string(m_matDiffuse.z);
+    out << YAML::Key << "matSpecularX" << YAML::Value << std::to_string(m_matSpecular.x);
+    out << YAML::Key << "matSpecularY" << YAML::Value << std::to_string(m_matSpecular.y);
+    out << YAML::Key << "matSpecularZ" << YAML::Value << std::to_string(m_matSpecular.z);
+    out << YAML::Key << "matShininess" << YAML::Value << std::to_string(m_matShininess);
+
+    out << YAML::EndMap; // Cube Map
+    out << YAML::EndMap;
+}
+
 void Cube::SetMatAmbient(glm::vec3 matAmbient) { m_matAmbient = matAmbient; }
 void Cube::SetMatDiffuse(glm::vec3 matDiffuse) { m_matDiffuse = matDiffuse; }
 void Cube::SetMatSpecular(glm::vec3 matSpecular) { m_matSpecular = matSpecular; }

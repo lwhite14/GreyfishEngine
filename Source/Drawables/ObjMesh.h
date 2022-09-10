@@ -17,7 +17,7 @@
 class ObjMesh : public TriangleMesh, public Component 
 {
 private:
-    bool drawAdj;
+    bool m_drawAdj;
     SceneObject* m_associatedObject;
     Texture* m_texture;
     glm::vec3 m_matAmbient;
@@ -37,6 +37,7 @@ public:
     void Update(float deltaTime);
     void Render(GLSLProgram* prog);
     void DrawUI();
+    void Serialization(YAML::Emitter& out);
 
     void SetMatAmbient(glm::vec3 matAmbient);
     void SetMatDiffuse(glm::vec3 matDiffuse);

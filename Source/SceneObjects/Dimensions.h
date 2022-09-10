@@ -20,6 +20,7 @@ public:
 	void Update(float deltaTime);
 	void Render(GLSLProgram* prog);
 	void DrawUI();
+	void Serialization(YAML::Emitter& out);
 
 	void SetPosition(glm::vec3 position);
 	void SetRotation(glm::vec3 rotation);
