@@ -525,7 +525,7 @@ void ObjMesh::Serialization(YAML::Emitter& out)
     out << YAML::EndMap;
 }
 
-void ObjMesh::SetMatAmbient(glm::vec3 matAmbient) { m_matAmbient = matAmbient; }
-void ObjMesh::SetMatDiffuse(glm::vec3 matDiffuse) { m_matDiffuse = matDiffuse; }
-void ObjMesh::SetMatSpecular(glm::vec3 matSpecular) { m_matSpecular = matSpecular; }
-void ObjMesh::SetMatShininess(float matShininess) { m_matShininess = matShininess; }
+void ObjMesh::SetMatAmbient(glm::vec3 matAmbient) { m_matAmbient = matAmbient; m_matAmbientArr[0] = m_matAmbient.x; m_matAmbientArr[1] = m_matAmbient.y; m_matAmbientArr[2] = m_matAmbient.z; }
+void ObjMesh::SetMatDiffuse(glm::vec3 matDiffuse) { m_matDiffuse = matDiffuse; m_matDiffuseArr[0] = m_matDiffuse.x; m_matDiffuseArr[1] = m_matDiffuse.y; m_matDiffuseArr[2] = m_matDiffuse.z; }
+void ObjMesh::SetMatSpecular(glm::vec3 matSpecular) { m_matSpecular = matSpecular; m_matSpecularArr[0] = m_matSpecular.x; m_matSpecularArr[1] = m_matSpecular.y; m_matSpecularArr[2] = m_matSpecular.z; }
+void ObjMesh::SetMatShininess(float matShininess) { m_matShininess = matShininess; m_matShininessArr = m_matShininess; }

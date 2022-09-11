@@ -39,7 +39,7 @@ public:
     void CleanUp();
 
     void FramerateWindow();
-    void Menu(std::vector<SceneObject*>& allSceneObjects);
+    void Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void GameViewWindow();

@@ -50,3 +50,5 @@ void Spinner::Serialization(YAML::Emitter& out)
     out << YAML::EndMap; // Spinner Map
     out << YAML::EndMap;
 }
+
+void Spinner::SetSpeed(float speed) { m_speed = speed; }

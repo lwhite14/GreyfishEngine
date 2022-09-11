@@ -12,6 +12,7 @@ private:
 	void LoadTexture(const char* filePath);
 
 public:
+	Texture();
 	Texture(const char* filePath);
 	unsigned char* LoadPixels(const char*, int& width, int& height, bool flip = true);
 	void Bind();

@@ -1,6 +1,11 @@
 #include "Texture.h"
 #include "Dependencies/stb/stb_image.h"
 
+Texture::Texture()
+{
+
+}
+
 Texture::Texture(const char* filePath)
 {
     LoadTexture(filePath);

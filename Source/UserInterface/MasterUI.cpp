@@ -1,6 +1,5 @@
 #include "MasterUI.h"
 
-#include <iostream>
 #include <yaml-cpp/yaml.h>
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
@@ -165,7 +164,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
 
     ImGui::Begin("Workspace", NULL, m_windowFlags);
-    Menu(allSceneObjects);
+    Menu(selectedSceneObject, allSceneObjects);
     SceneObjectsWindow(selectedSceneObject, allSceneObjects);
     OptionsWindow(selectedSceneObject, allSceneObjects);
     GameViewWindow();
@@ -211,7 +210,7 @@ void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<
     for (unsigned int i = 0; i < allSceneObjects.size(); i++)
     {
         const bool is_selected = (itemCurrentIndex == i);
-        if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i];  itemCurrentIndex = i; }
+        if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), is_selected)) { m_selectedSceneObject = allSceneObjects[i]; itemCurrentIndex = i; }
         if (is_selected) { ImGui::SetItemDefaultFocus(); }
 
         if (allSceneObjects[i] == selectedSceneObject)
@@ -326,7 +325,7 @@ void MasterUI::GameViewWindow()
     ImGui::EndChild();
 }
 
-void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     if (ImGui::BeginMenuBar())
     {
@@ -335,7 +334,89 @@ void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
             if (ImGui::MenuItem("New")) {}
             if (ImGui::MenuItem("Open")) 
             {
-                
+                allSceneObjects = std::vector<SceneObject*>();
+
+                std::string path = "Media/Scenes/";
+                std::string name = "ExampleScene";
+                std::string extension = ".yaml";
+
+                YAML::Node config = YAML::LoadFile(path + name + extension);
+
+                for (unsigned int i = 0; i < config["SceneObjects"].size(); i++) 
+                {
+                    YAML::Node node = config["SceneObjects"][i];
+                    YAML::Node dimensions = node["dimensions"];
+                    std::string progName = node["glslProgramName"].as<std::string>();
+                    glm::vec3 position = glm::vec3(dimensions["posX"].as<float>(), dimensions["posY"].as<float>(), dimensions["posZ"].as<float>());
+                    glm::vec3 rotation = glm::vec3(dimensions["rotX"].as<float>(), dimensions["rotY"].as<float>(), dimensions["rotZ"].as<float>());
+                    glm::vec3 scale = glm::vec3(dimensions["scaX"].as<float>(), dimensions["scaY"].as<float>(), dimensions["scaZ"].as<float>());
+                    GLSLProgram* prog = new GLSLProgram;
+                    for (unsigned int j = 0; j < MasterShaders::shaderList.size(); j++) 
+                    {
+                        if (progName == MasterShaders::shaderList[j]->GetName()) 
+                        {
+                            prog = MasterShaders::shaderList[j];
+                        }
+                    }
+                    allSceneObjects.push_back(new SceneObject(node["name"].as<std::string>(), position, rotation, scale, prog));
+
+                    YAML::Node components = node["components"];
+                    for (unsigned int j = 0; j < components.size(); j++) 
+                    {
+                        if (components[j]["cube"]) 
+                        {
+                            std::string texName = components[j]["cube"]["texture"].as<std::string>();
+                            Texture* texture = new Texture;
+                            for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++) 
+                            {
+                                if (texName == MasterTextures::textureList[y]->GetName()) 
+                                {
+                                    texture = MasterTextures::textureList[y];
+                                }
+                            }
+                            glm::vec3 matAmbient = glm::vec3(components[j]["cube"]["matAmbientX"].as<float>(), components[j]["cube"]["matAmbientY"].as<float>(), components[j]["cube"]["matAmbientZ"].as<float>());
+                            glm::vec3 matDiffuse = glm::vec3(components[j]["cube"]["matDiffuseX"].as<float>(), components[j]["cube"]["matDiffuseY"].as<float>(), components[j]["cube"]["matDiffuseZ"].as<float>());
+                            glm::vec3 matSpecular = glm::vec3(components[j]["cube"]["matSpecularX"].as<float>(), components[j]["cube"]["matSpecularY"].as<float>(), components[j]["cube"]["matSpecularZ"].as<float>());
+                            float matShininess = components[j]["cube"]["matShininess"].as<float>();
+                            Cube* cube = new Cube(texture, 1.0f, allSceneObjects[i]);
+                            cube->SetMatAmbient(matAmbient);
+                            cube->SetMatDiffuse(matDiffuse);
+                            cube->SetMatSpecular(matSpecular);
+                            cube->SetMatShininess(matShininess);
+                            allSceneObjects[i]->AddComponent(cube);
+                        }
+                        if (components[j]["objMesh"])
+                        {
+                            std::string texName = components[j]["objMesh"]["texture"].as<std::string>();
+                            Texture* texture = new Texture;
+                            for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
+                            {
+                                if (texName == MasterTextures::textureList[y]->GetName())
+                                {
+                                    texture = MasterTextures::textureList[y];
+                                }
+                            }
+                            glm::vec3 matAmbient = glm::vec3(components[j]["objMesh"]["matAmbientX"].as<float>(), components[j]["objMesh"]["matAmbientY"].as<float>(), components[j]["objMesh"]["matAmbientZ"].as<float>());
+                            glm::vec3 matDiffuse = glm::vec3(components[j]["objMesh"]["matDiffuseX"].as<float>(), components[j]["objMesh"]["matDiffuseY"].as<float>(), components[j]["objMesh"]["matDiffuseZ"].as<float>());
+                            glm::vec3 matSpecular = glm::vec3(components[j]["objMesh"]["matSpecularX"].as<float>(), components[j]["objMesh"]["matSpecularY"].as<float>(), components[j]["objMesh"]["matSpecularZ"].as<float>());
+                            float matShininess = components[j]["objMesh"]["matShininess"].as<float>();
+                            ObjMesh* objMesh = ObjMesh::Load("Media/Models/suzanne.obj", allSceneObjects[i], texture);
+                            objMesh->SetMatAmbient(matAmbient);
+                            objMesh->SetMatDiffuse(matDiffuse);
+                            objMesh->SetMatSpecular(matSpecular);
+                            objMesh->SetMatShininess(matShininess);
+                            allSceneObjects[i]->AddComponent(objMesh);
+                        }
+                        if (components[j]["spinner"])
+                        { 
+                            Spinner* spinner = new Spinner(allSceneObjects[i]->GetModelPtr(), allSceneObjects[i]);
+                            spinner->SetSpeed(components[j]["spinner"]["speed"].as<float>());
+                            allSceneObjects[i]->AddComponent(spinner);
+                        }
+                    }
+                }
+                selectedSceneObject = nullptr;
+                m_selectedSceneObject = nullptr;
             }
             if (ImGui::MenuItem("Open Recent")) {}
             if (ImGui::MenuItem("Save")) 

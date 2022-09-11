@@ -17,6 +17,8 @@ public:
 	void Render(GLSLProgram* prog);
 	void DrawUI();
 	void Serialization(YAML::Emitter& out);
+
+	void SetSpeed(float speed);
 };
 
 
