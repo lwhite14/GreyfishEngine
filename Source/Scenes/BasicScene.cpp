@@ -13,14 +13,14 @@ BasicScene::BasicScene()
 
 void BasicScene::Start(GLFWwindow* window)
 {
-    m_masterUI = MasterUI(window, ImVec2(1100.0f, 500.0f));
+    m_masterUI = MasterUI(window, ImVec2(m_width, m_height));
     m_masterUI.Init();
 
     m_cameraGameView = new CameraGameView(m_width, m_height);
 
     glEnable(GL_DEPTH_TEST);
 
-    m_framebuffer = Framebuffer(m_width * 0.5f, m_height * 0.5f);
+    m_framebuffer = Framebuffer(m_width, m_height);
 
     MasterTextures::NewTexture("devtex1.jpg");
     MasterTextures::NewTexture("awesomeface.png");
@@ -55,7 +55,7 @@ void BasicScene::Render()
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, m_width * 0.5f, m_height * 0.5f);
+    glViewport(0, 0, m_framebuffer.GetGameViewWidth(), m_framebuffer.GetGameViewHeight());
   
     for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Render(m_view, m_projection); }
 

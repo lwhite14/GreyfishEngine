@@ -11,11 +11,17 @@ private:
     unsigned int m_framebuffer;
     unsigned int m_textureColorbuffer;
 
+    int m_gameViewWidth;
+    int m_gameViewHeight;
+
 public:
     Framebuffer() {  }
 
     Framebuffer(int gameViewWidth, int gameViewHeight)
     {
+        m_gameViewWidth = gameViewWidth;
+        m_gameViewHeight = gameViewHeight;
+
         // framebuffer configuration
         // -------------------------
         //unsigned int framebuffer;
@@ -48,6 +54,8 @@ public:
         return m_framebuffer;
     }
 
+    int GetGameViewWidth() { return m_gameViewWidth; }
+    int GetGameViewHeight() { return m_gameViewHeight; }
 };
 
 #endif //FRAMEBUFFER_H

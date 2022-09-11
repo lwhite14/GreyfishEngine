@@ -30,6 +30,9 @@ private:
     unsigned int m_gameViewFbo;
     float m_mouseWheel;
     Motion m_camMotion;
+
+    ImVec2 m_gameViewSize;
+    int m_sceneObjectIndex;
     
 public:
     MasterUI();
@@ -51,6 +54,7 @@ public:
     unsigned int GetGameViewFBO();
     float GetMouseWheel();
     Motion GetCamMotion();
+    ImVec2 GetGameViewSize();
 
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
@@ -58,6 +62,7 @@ public:
     void SetGameViewFBO(unsigned int gameViewFbo);
     void SetMouseWheel(float mouseWheel);
     void SetCamMotion(Motion motion);
+    void SetGameViewSize(ImVec2 gameViewSize);
 };
 
 #endif //MASTERUI_H

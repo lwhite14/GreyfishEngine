@@ -33,7 +33,7 @@ void Spinner::DrawUI()
         if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
         ImGui::EndPopup();
     }
-    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open component options"); }
+    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
     ImGui::DragFloat("Spin Speed", &m_speed, 0.005f);
     ImGui::EndChild();
 }

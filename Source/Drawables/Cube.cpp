@@ -94,7 +94,7 @@ void Cube::DrawUI()
         if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
         ImGui::EndPopup();
     }
-    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open component options"); }
+    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
     if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
     {
         for (int i = 0; i < MasterTextures::textureList.size(); i++)
