@@ -201,5 +201,8 @@
     <ClInclude Include="Source\SceneObjects\Spinner.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UserInterface\ImGuiUtils.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
