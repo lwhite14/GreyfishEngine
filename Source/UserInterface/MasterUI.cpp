@@ -1,6 +1,9 @@
 #include "MasterUI.h"
 
 #include <yaml-cpp/yaml.h>
+#include <nfd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
@@ -10,6 +13,7 @@
 #include "../MasterShaders.h"
 #include "../MasterTextures.h"
 #include "ImGuiUtils.h"
+#include "../SceneParser.h"
 
 MasterUI::MasterUI() { }
 
@@ -239,135 +243,106 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("New")) {}
+            if (ImGui::MenuItem("New")) 
+            {
+                std::cout << "New Scene." << std::endl;
+            }
             if (ImGui::MenuItem("Open")) 
             {
-                allSceneObjects = std::vector<SceneObject*>();
+                nfdchar_t* outPath = NULL;
+                nfdchar_t filters[] = "yaml";
+                nfdchar_t defaultPath[] = "Media\Scenes\\0";
+                nfdresult_t result = NFD_OpenDialog(filters, defaultPath, &outPath);
 
-                std::string path = "Media/Scenes/";
-                std::string name = "ExampleScene";
-                std::string extension = ".yaml";
-
-                YAML::Node config = YAML::LoadFile(path + name + extension);
-
-                for (unsigned int i = 0; i < config["SceneObjects"].size(); i++) 
+                if (result == NFD_OKAY)
                 {
-                    YAML::Node node = config["SceneObjects"][i];
-                    YAML::Node dimensions = node["dimensions"];
-                    std::string progName = node["glslProgramName"].as<std::string>();
-                    glm::vec3 position = glm::vec3(dimensions["posX"].as<float>(), dimensions["posY"].as<float>(), dimensions["posZ"].as<float>());
-                    glm::vec3 rotation = glm::vec3(dimensions["rotX"].as<float>(), dimensions["rotY"].as<float>(), dimensions["rotZ"].as<float>());
-                    glm::vec3 scale = glm::vec3(dimensions["scaX"].as<float>(), dimensions["scaY"].as<float>(), dimensions["scaZ"].as<float>());
-                    GLSLProgram* prog = new GLSLProgram;
-                    for (unsigned int j = 0; j < MasterShaders::shaderList.size(); j++) 
+                    puts("Success!");
+                    bool isFileEx = false;
+                    std::string ex = "";
+                    std::string filePath = "";
+                    for (char c = *outPath; c; c = *++outPath)
                     {
-                        if (progName == MasterShaders::shaderList[j]->GetName()) 
+                        filePath.push_back(c);
+                        if (isFileEx) 
                         {
-                            prog = MasterShaders::shaderList[j];
+                            ex.push_back(c);
+                        }
+                        if (c == '.') 
+                        {
+                            isFileEx = true;
                         }
                     }
-                    allSceneObjects.push_back(new SceneObject(node["name"].as<std::string>(), position, rotation, scale, prog));
-
-                    YAML::Node components = node["components"];
-                    for (unsigned int j = 0; j < components.size(); j++) 
+                    if (ex == "yaml") 
                     {
-                        if (components[j]["cube"]) 
-                        {
-                            std::string texName = components[j]["cube"]["texture"].as<std::string>();
-                            Texture* texture = new Texture;
-                            for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++) 
-                            {
-                                if (texName == MasterTextures::textureList[y]->GetName()) 
-                                {
-                                    texture = MasterTextures::textureList[y];
-                                }
-                            }
-                            glm::vec3 matAmbient = glm::vec3(components[j]["cube"]["matAmbientX"].as<float>(), components[j]["cube"]["matAmbientY"].as<float>(), components[j]["cube"]["matAmbientZ"].as<float>());
-                            glm::vec3 matDiffuse = glm::vec3(components[j]["cube"]["matDiffuseX"].as<float>(), components[j]["cube"]["matDiffuseY"].as<float>(), components[j]["cube"]["matDiffuseZ"].as<float>());
-                            glm::vec3 matSpecular = glm::vec3(components[j]["cube"]["matSpecularX"].as<float>(), components[j]["cube"]["matSpecularY"].as<float>(), components[j]["cube"]["matSpecularZ"].as<float>());
-                            float matShininess = components[j]["cube"]["matShininess"].as<float>();
-                            Cube* cube = new Cube(texture, 1.0f, allSceneObjects[i]);
-                            cube->SetMatAmbient(matAmbient);
-                            cube->SetMatDiffuse(matDiffuse);
-                            cube->SetMatSpecular(matSpecular);
-                            cube->SetMatShininess(matShininess);
-                            allSceneObjects[i]->AddComponent(cube);
-                        }
-                        if (components[j]["objMesh"])
-                        {
-                            std::string texName = components[j]["objMesh"]["texture"].as<std::string>();
-                            Texture* texture = new Texture;
-                            for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
-                            {
-                                if (texName == MasterTextures::textureList[y]->GetName())
-                                {
-                                    texture = MasterTextures::textureList[y];
-                                }
-                            }
-                            glm::vec3 matAmbient = glm::vec3(components[j]["objMesh"]["matAmbientX"].as<float>(), components[j]["objMesh"]["matAmbientY"].as<float>(), components[j]["objMesh"]["matAmbientZ"].as<float>());
-                            glm::vec3 matDiffuse = glm::vec3(components[j]["objMesh"]["matDiffuseX"].as<float>(), components[j]["objMesh"]["matDiffuseY"].as<float>(), components[j]["objMesh"]["matDiffuseZ"].as<float>());
-                            glm::vec3 matSpecular = glm::vec3(components[j]["objMesh"]["matSpecularX"].as<float>(), components[j]["objMesh"]["matSpecularY"].as<float>(), components[j]["objMesh"]["matSpecularZ"].as<float>());
-                            float matShininess = components[j]["objMesh"]["matShininess"].as<float>();
-                            ObjMesh* objMesh = ObjMesh::Load("Media/Models/suzanne.obj", allSceneObjects[i], texture);
-                            objMesh->SetMatAmbient(matAmbient);
-                            objMesh->SetMatDiffuse(matDiffuse);
-                            objMesh->SetMatSpecular(matSpecular);
-                            objMesh->SetMatShininess(matShininess);
-                            allSceneObjects[i]->AddComponent(objMesh);
-                        }
-                        if (components[j]["spinner"])
-                        { 
-                            Spinner* spinner = new Spinner(allSceneObjects[i]->GetModelPtr(), allSceneObjects[i]);
-                            spinner->SetSpeed(components[j]["spinner"]["speed"].as<float>());
-                            allSceneObjects[i]->AddComponent(spinner);
-                        }
+                        allSceneObjects = std::vector<SceneObject*>();
+
+                        std::cout << filePath << std::endl;
+                        allSceneObjects = SceneParser::LoadFileIntoSceneObjects(filePath);
+
+                        m_sceneObjectIndex = -1;
+                        selectedSceneObject = nullptr;
+                        m_selectedSceneObject = nullptr;
+                    }
+                    else 
+                    {
+                        puts("Wrong file extension.");
                     }
                 }
-                m_sceneObjectIndex = -1;
-                selectedSceneObject = nullptr;
-                m_selectedSceneObject = nullptr;
+                else if (result == NFD_CANCEL)
+                {
+                    puts("User pressed cancel.");
+                }
+                else
+                {
+                    printf("Error: %s\n", NFD_GetError());
+                }
             }
-            if (ImGui::MenuItem("Open Recent")) {}
+            if (ImGui::MenuItem("Open Recent")) 
+            {
+                std::cout << "Open Recent Scene." << std::endl;
+            }
             if (ImGui::MenuItem("Save")) 
             {
-                std::string path = "Media/Scenes/";
-                std::string name = "ExampleScene";
-                std::string extension = ".yaml";
-
-                std::ofstream newSceneFile{ path + name + extension };
-
-                YAML::Emitter out;
-                out << YAML::BeginMap; // SceneObjects Map
-
-                out << YAML::Key << "SceneObjects" << YAML::Value;
-                out << YAML::BeginSeq;
-                for (unsigned int i = 0; i < allSceneObjects.size(); i++)
-                {
-                    out << YAML::BeginMap; // Object Instance Map
-
-                    out << YAML::Key << "name" << YAML::Value << allSceneObjects[i]->GetName();
-                    out << YAML::Key << "glslProgramName" << YAML::Value << allSceneObjects[i]->GetGLSLProgram()->GetName();
-
-                    allSceneObjects[i]->GetDimensions()->Serialization(out);
-
-                    out << YAML::Key << "components" << YAML::Value;
-                    out << YAML::BeginSeq;
-
-                    for (unsigned int j = 0; j < allSceneObjects[i]->GetComponents().size(); j++)
-                    {
-                        allSceneObjects[i]->GetComponents()[j]->Serialization(out);
-                    }
-
-                    out << YAML::EndSeq;
-                    out << YAML::EndMap; // Object Instance Map 
-                }
-                out << YAML::EndSeq;
-                out << YAML::EndMap; // SceneObjects Map
-
-                newSceneFile << out.c_str();
-                newSceneFile.close();
+                std::cout << "Save Scene." << std::endl;
             }
-            if (ImGui::MenuItem("Save As")) {}
+            if (ImGui::MenuItem("Save As")) 
+            {
+                nfdchar_t* outPath = NULL;
+                nfdchar_t filters[] = "yaml";
+                nfdchar_t defaultPath[] = "Media\Scenes\\0";
+                nfdresult_t result = NFD_SaveDialog(filters, defaultPath, &outPath);
+
+                if (result == NFD_OKAY) {
+                    puts("Success!");
+                    bool isFileEx = false;
+                    std::string filePath = "";
+                    for (char c = *outPath; c; c = *++outPath)
+                    {
+                        if (c == '.')
+                        {
+                            isFileEx = true;
+                        }
+                        if (!isFileEx)
+                        {
+                            filePath.push_back(c);
+                        }
+                    }
+                    filePath.push_back('.');
+                    filePath.push_back('y');
+                    filePath.push_back('a');
+                    filePath.push_back('m');
+                    filePath.push_back('l');
+                    filePath.push_back('\0');
+                    SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
+                }
+                else if (result == NFD_CANCEL) {
+                    puts("User pressed cancel.");
+                }
+                else {
+                    printf("Error: %s\n", NFD_GetError());
+                }
+
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();

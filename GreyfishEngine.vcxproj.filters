@@ -204,5 +204,8 @@
     <ClInclude Include="Source\UserInterface\ImGuiUtils.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneParser.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
