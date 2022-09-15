@@ -1,3 +1,4 @@
+Program: GreyfishEngine
 SceneObjects:
   - name: Cube
     glslProgramName: PSX

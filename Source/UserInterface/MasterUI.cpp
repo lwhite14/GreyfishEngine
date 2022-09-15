@@ -274,14 +274,20 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     }
                     if (ex == "yaml") 
                     {
-                        allSceneObjects = std::vector<SceneObject*>();
-
                         std::cout << filePath << std::endl;
-                        allSceneObjects = SceneParser::LoadFileIntoSceneObjects(filePath);
-
-                        m_sceneObjectIndex = -1;
-                        selectedSceneObject = nullptr;
-                        m_selectedSceneObject = nullptr;
+                        bool success = SceneParser::IsValidFile(filePath);
+                        if (success) 
+                        {
+                            allSceneObjects = std::vector<SceneObject*>();
+                            allSceneObjects = SceneParser::LoadFileIntoSceneObjects(filePath); 
+                            m_sceneObjectIndex = -1;
+                            selectedSceneObject = nullptr;
+                            m_selectedSceneObject = nullptr;
+                        }
+                        else 
+                        {
+                            std::cout << "Not a valid yaml file." << std::endl;
+                        }
                     }
                     else 
                     {

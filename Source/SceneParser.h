@@ -7,6 +7,19 @@
 
 namespace SceneParser
 {
+    static inline bool IsValidFile(std::string filePath) 
+    {
+        YAML::Node config = YAML::LoadFile(filePath);
+        if (config["Program"])
+        {
+            if (config["Program"].as<std::string>() == "GreyfishEngine")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	static inline std::vector<SceneObject*> LoadFileIntoSceneObjects(std::string filePath)
 	{
         std::vector<SceneObject*> allSceneObjects = std::vector<SceneObject*>();
@@ -94,7 +107,9 @@ namespace SceneParser
         std::ofstream newSceneFile{ filePath };
 
         YAML::Emitter out;
-        out << YAML::BeginMap; // SceneObjects Map
+
+        out << YAML::BeginMap;
+        out << YAML::Key << "Program" << YAML::Value << "GreyfishEngine";      
 
         out << YAML::Key << "SceneObjects" << YAML::Value;
         out << YAML::BeginSeq;
@@ -119,7 +134,7 @@ namespace SceneParser
             out << YAML::EndMap; // Object Instance Map 
         }
         out << YAML::EndSeq;
-        out << YAML::EndMap; // SceneObjects Map
+        out << YAML::EndMap;
 
         newSceneFile << out.c_str();
         newSceneFile.close();
