@@ -25,11 +25,15 @@ void Dimensions::Render(GLSLProgram* prog)
 
 void Dimensions::DrawUI()
 {
-	ImGui::BeginChild("Dimensions", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
-	ImGui::Text("Dimensions");
-	ImGui::DragFloat3("Positon", m_positionArr, 0.05f, -1000.0f, 1000.0f);
-	ImGui::DragFloat3("Rotation", m_rotationArr, 1.0f, -360.0f, 360.0f);
-	ImGui::DragFloat3("Scale", m_scaleArr, 0.05f, -1000.0f, 1000.0f);
+    if (m_interfaceOpen) { ImGui::BeginChild("Dimensions", ImVec2(ImGui::GetContentRegionAvail().x, 100), true); }
+    else { ImGui::BeginChild("Dimensions", ImVec2(ImGui::GetContentRegionAvail().x, 20), true); }
+    if (ImGui::Selectable("Dimensions")) { m_interfaceOpen = !m_interfaceOpen; }
+    if (m_interfaceOpen)
+    {
+        ImGui::DragFloat3("Positon", m_positionArr, 0.05f, -1000.0f, 1000.0f);
+        ImGui::DragFloat3("Rotation", m_rotationArr, 1.0f, -360.0f, 360.0f);
+        ImGui::DragFloat3("Scale", m_scaleArr, 0.05f, -1000.0f, 1000.0f);
+    }
 	ImGui::EndChild();
 
 	SetPosition(glm::vec3(m_positionArr[0], m_positionArr[1], m_positionArr[2]));

@@ -6,12 +6,14 @@
 
 class Component 
 {
-private:
+protected:
 	std::string m_name;
+	bool m_interfaceOpen;
 
 public:
 	Component(std::string name) :
-		m_name{ name } 
+		m_name{ name },
+		m_interfaceOpen{ true }
 	{}
 
 	virtual void Update(float deltaTime) = 0;
@@ -20,6 +22,11 @@ public:
 	virtual void Serialization(YAML::Emitter& out) = 0;
 
 	std::string GetName() { return m_name; }
+	bool GetInterfaceOpen() { return m_interfaceOpen; }
+
+	void SetName(std::string name) { m_name = name; }
+	void SetInterfaceOpen(bool interfaceOpen) { m_interfaceOpen = interfaceOpen; }
+
 };
 
 #endif //COMPONENT_H

@@ -470,30 +470,34 @@ void ObjMesh::Render(GLSLProgram* prog)
 
 void ObjMesh::DrawUI()
 {
-    ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 160), true);
-    ImGui::Selectable("ObjMesh");
+    if (m_interfaceOpen) { ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 160), true); }
+    else { ImGui::BeginChild("ObjMesh", ImVec2(ImGui::GetContentRegionAvail().x, 20), true); }
+    if (ImGui::Selectable("ObjMesh")) { m_interfaceOpen = !m_interfaceOpen; }
     if (ImGui::BeginPopupContextItem())
     {
         if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
         ImGui::EndPopup();
     }
     if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
-    if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
+    if (m_interfaceOpen)
     {
-        for (int i = 0; i < MasterTextures::textureList.size(); i++)
+        if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
         {
-            if (ImGui::Selectable(MasterTextures::textureList[i]->GetName().c_str()))
+            for (int i = 0; i < MasterTextures::textureList.size(); i++)
             {
-                m_texture = MasterTextures::textureList[i];
+                if (ImGui::Selectable(MasterTextures::textureList[i]->GetName().c_str()))
+                {
+                    m_texture = MasterTextures::textureList[i];
+                }
             }
+            ImGui::EndCombo();
         }
-        ImGui::EndCombo();
+        ImGui::Text("Material");
+        ImGui::DragFloat3("Ambient", m_matAmbientArr, 0.05f, 0.0f, 1.0f);
+        ImGui::DragFloat3("Diffuse", m_matDiffuseArr, 0.05f, 0.0f, 1.0f);
+        ImGui::DragFloat3("Specular", m_matSpecularArr, 0.05f, 0.0f, 1.0f);
+        ImGui::DragFloat("Shininess", &m_matShininessArr, 1.0f, 0.0f, 128.0f);
     }
-    ImGui::Text("Material");
-    ImGui::DragFloat3("Ambient", m_matAmbientArr, 0.05f, 0.0f, 1.0f);
-    ImGui::DragFloat3("Diffuse", m_matDiffuseArr, 0.05f, 0.0f, 1.0f);
-    ImGui::DragFloat3("Specular", m_matSpecularArr, 0.05f, 0.0f, 1.0f);
-    ImGui::DragFloat("Shininess", &m_matShininessArr, 1.0f, 0.0f, 128.0f);
     ImGui::EndChild();
 
     SetMatAmbient(glm::vec3(m_matAmbientArr[0], m_matAmbientArr[1], m_matAmbientArr[2]));

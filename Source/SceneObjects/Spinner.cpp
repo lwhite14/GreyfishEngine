@@ -26,15 +26,19 @@ void Spinner::Render(GLSLProgram* prog)
 
 void Spinner::DrawUI()
 {
-    ImGui::BeginChild("Spinner", ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
-    ImGui::Selectable("Spinner");
+    if (m_interfaceOpen) { ImGui::BeginChild("Spinner", ImVec2(ImGui::GetContentRegionAvail().x, 50), true); }
+    else { ImGui::BeginChild("Spinner", ImVec2(ImGui::GetContentRegionAvail().x, 20), true); }
+    if (ImGui::Selectable("Spinner")) { m_interfaceOpen = !m_interfaceOpen; }
     if (ImGui::BeginPopupContextItem())
     {
         if (ImGui::Button("Remove Component")) { ImGui::CloseCurrentPopup(); m_associatedObject->RemoveComponent(this); }
         ImGui::EndPopup();
     }
     if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
-    ImGui::DragFloat("Spin Speed", &m_speed, 0.005f);
+    if (m_interfaceOpen)
+    {
+        ImGui::DragFloat("Spin Speed", &m_speed, 0.005f);
+    }
     ImGui::EndChild();
 }
 
