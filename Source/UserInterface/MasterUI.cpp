@@ -20,6 +20,7 @@ MasterUI::MasterUI() { }
 
 MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_openFile { "" },
+    m_recentFiles { std::vector<std::string>(5) },
     m_window{ window },
     m_size{ size },
     m_windowFlags{ 0 }, m_offset{ 0, 0 },
@@ -34,6 +35,8 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
 
 void MasterUI::Init()
 {
+    LoadRecentFiles();
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsClassic();
@@ -193,7 +196,7 @@ void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<Scene
         {
             ImVec2 size = ImVec2(100, 0);
             if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, selectedSceneObject)); }
-            if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Media/Models/suzanne.obj", selectedSceneObject, MasterTextures::textureList[0])); }
+            if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Assets/Models/suzanne.obj", selectedSceneObject, MasterTextures::textureList[0])); }
             if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr(), selectedSceneObject)); }
             ImGui::EndPopup();
         }
@@ -248,22 +251,21 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
         {
             if (ImGui::MenuItem("New")) 
             {
-                Console::AddMessage("Scene Dialog: New Scene");
                 allSceneObjects = std::vector<SceneObject*>();
                 m_sceneObjectIndex = -1;
                 selectedSceneObject = nullptr;
                 m_selectedSceneObject = nullptr;
+                m_openFile = "";
             }
             if (ImGui::MenuItem("Open")) 
             {
                 nfdchar_t* outPath = NULL;
                 nfdchar_t filters[] = "yaml";
-                nfdchar_t defaultPath[] = "Media\Scenes\\0";
+                nfdchar_t defaultPath[] = "Assets\Scenes\\0";
                 nfdresult_t result = NFD_OpenDialog(filters, defaultPath, &outPath);
 
                 if (result == NFD_OKAY)
                 {
-                    Console::AddMessage("Scene Dialog: Success!");
                     bool isFileEx = false;
                     std::string ex = "";
                     std::string filePath = "";
@@ -281,7 +283,6 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     }
                     if (ex == "yaml") 
                     {
-                        Console::AddMessage("Scene Dialog: " + filePath);
                         bool success = SceneParser::IsValidFile(filePath);
                         if (success) 
                         {
@@ -291,6 +292,10 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
                             m_openFile = filePath;
+                            if (m_openFile != m_recentFiles[0])
+                            {
+                                AddRecentFile(filePath);
+                            }
                         }
                         else 
                         {
@@ -302,29 +307,41 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                         Console::AddMessage("Scene Dialog: Wrong file extension.");
                     }
                 }
-                else if (result == NFD_CANCEL)
-                {
-                    Console::AddMessage("Scene Dialog: User pressed cancel.");
-                }
-                else
+                else if (result == NFD_ERROR)
                 {
                     Console::AddMessage("Scene Dialog: ", NFD_GetError());
                 }
             }
-            if (ImGui::MenuItem("Open Recent")) 
+            if (ImGui::BeginMenu("Open Recent")) 
             {
-                Console::AddMessage("Scene Dialog: Open Recent Scene.");
+                for (unsigned int i = 0; i < 5; i++) 
+                {
+                    if (m_recentFiles[i] != "") 
+                    {
+                        if (ImGui::MenuItem(m_recentFiles[i].c_str())) 
+                        {
+                            allSceneObjects = std::vector<SceneObject*>();
+                            allSceneObjects = SceneParser::LoadFileIntoSceneObjects(m_recentFiles[i]);
+                            m_sceneObjectIndex = -1;
+                            selectedSceneObject = nullptr;
+                            m_selectedSceneObject = nullptr;
+                            if (m_recentFiles[i] != m_recentFiles[0])
+                            {
+                                AddRecentFile(m_recentFiles[i]);
+                            }
+                        }
+                    }
+                }
+                ImGui::EndMenu();
             }
             if (ImGui::MenuItem("Save")) 
             {
-                Console::AddMessage(m_openFile);
                 if (m_openFile != "") 
                 {
                     SceneParser::SaveSceneObjectsIntoFile(m_openFile, allSceneObjects);
                 }
                 else 
                 {
-                    Console::AddMessage("Scene Dialog: No Open File.");
                     Save(allSceneObjects);
                 }
             }
@@ -350,12 +367,11 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
 {
     nfdchar_t* outPath = NULL;
     nfdchar_t filters[] = "yaml";
-    nfdchar_t defaultPath[] = "Media\Scenes\\0";
+    nfdchar_t defaultPath[] = "Assets\Scenes\\0";
     nfdresult_t result = NFD_SaveDialog(filters, defaultPath, &outPath);
 
     if (result == NFD_OKAY)
     {
-        Console::AddMessage("Scene Dialog: Success!");
         bool isFileEx = false;
         std::string filePath = "";
         for (char c = *outPath; c; c = *++outPath)
@@ -374,17 +390,53 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
         filePath.push_back('a');
         filePath.push_back('m');
         filePath.push_back('l');
-        filePath.push_back('\0');
         SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
         m_openFile = filePath;
+        if (m_openFile != m_recentFiles[0])
+        {
+            AddRecentFile(filePath);
+        }
     }
-    else if (result == NFD_CANCEL) 
-    {
-        Console::AddMessage("Scene Dialog: User pressed cancel!");
-    }
-    else 
+    else if (result == NFD_ERROR) 
     {
         Console::AddMessage("Scene Dialog: ", NFD_GetError());
+    }
+}
+
+void MasterUI::AddRecentFile(std::string recentFile)
+{
+    std::vector<std::string> temp = std::vector<std::string>(5);
+    temp[0] = recentFile;
+    temp[1] = m_recentFiles[0];
+    temp[2] = m_recentFiles[1];
+    temp[3] = m_recentFiles[2];
+    temp[4] = m_recentFiles[3];
+    m_recentFiles = temp;
+
+    std::ofstream newSceneFile{ "Settings/RecentFiles.yaml" };
+    YAML::Emitter out;
+
+    out << YAML::BeginSeq;
+    for (unsigned int i = 0; i < 5; i++) 
+    {
+        out << m_recentFiles[i]; 
+    }
+    out << YAML::EndSeq;
+
+    newSceneFile << out.c_str();
+    newSceneFile.close();
+}
+
+void MasterUI::LoadRecentFiles()
+{
+    YAML::Node config = YAML::LoadFile("Settings/RecentFiles.yaml");
+
+    for (unsigned int i = 0; i < 5; i++) 
+    {
+        if (config[i].as<std::string>() != "")
+        {
+            m_recentFiles[i] = config[i].as<std::string>();
+        }
     }
 }
 

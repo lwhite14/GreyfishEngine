@@ -84,7 +84,7 @@ namespace SceneParser
                     glm::vec3 matDiffuse = glm::vec3(components[j]["objMesh"]["matDiffuseX"].as<float>(), components[j]["objMesh"]["matDiffuseY"].as<float>(), components[j]["objMesh"]["matDiffuseZ"].as<float>());
                     glm::vec3 matSpecular = glm::vec3(components[j]["objMesh"]["matSpecularX"].as<float>(), components[j]["objMesh"]["matSpecularY"].as<float>(), components[j]["objMesh"]["matSpecularZ"].as<float>());
                     float matShininess = components[j]["objMesh"]["matShininess"].as<float>();
-                    ObjMesh* objMesh = ObjMesh::Load("Media/Models/suzanne.obj", allSceneObjects[i], texture);
+                    ObjMesh* objMesh = ObjMesh::Load("Assets/Models/suzanne.obj", allSceneObjects[i], texture);
                     objMesh->SetMatAmbient(matAmbient);
                     objMesh->SetMatDiffuse(matDiffuse);
                     objMesh->SetMatSpecular(matSpecular);

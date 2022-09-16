@@ -20,6 +20,7 @@ class MasterUI
 {
 private:
     std::string m_openFile;
+    std::vector<std::string> m_recentFiles;
 
     GLFWwindow* m_window;
     ImGuiWindowFlags m_windowFlags;
@@ -51,6 +52,9 @@ public:
     void GameViewWindow();
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
+
+    void AddRecentFile(std::string recentFile);
+    void LoadRecentFiles();
 
     GLFWwindow* GetWindow();
     SceneObject* GetSelectedSceneObject();
