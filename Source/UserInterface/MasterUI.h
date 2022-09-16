@@ -19,6 +19,8 @@
 class MasterUI 
 {
 private:
+    std::string m_openFile;
+
     GLFWwindow* m_window;
     ImGuiWindowFlags m_windowFlags;
     ImGuiIO* m_io;
@@ -47,6 +49,8 @@ public:
     void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void GameViewWindow();
+
+    void Save(std::vector<SceneObject*>& allSceneObjects);
 
     GLFWwindow* GetWindow();
     SceneObject* GetSelectedSceneObject();

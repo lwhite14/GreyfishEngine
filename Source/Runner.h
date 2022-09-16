@@ -36,7 +36,7 @@ public:
 
 		int iWidth, iHeight;
 		int channels;
-		unsigned char* iPixels = stbi_load("Media/Images/GreyfishEngine.png", &iWidth, &iHeight, &channels, 4);
+		unsigned char* iPixels = stbi_load("Settings/GreyfishEngine.png", &iWidth, &iHeight, &channels, 4);
 
 		GLFWimage images[1];
 		images[0].width = iWidth;

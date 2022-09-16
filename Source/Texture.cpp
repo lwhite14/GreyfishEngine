@@ -9,15 +9,6 @@ Texture::Texture()
 Texture::Texture(const char* filePath)
 {
     LoadTexture(filePath);
-    m_name = "";
-    std::string name = filePath;
-    for (unsigned int i = 0; i < name.size(); i++) 
-    {
-        if (!(i < 13)) 
-        {
-            m_name.push_back(name[i]);
-        }
-    }
 }
 
 void Texture::LoadTexture(const char* filePath) 
@@ -57,3 +48,8 @@ void Texture::Bind()
 
 GLuint Texture::GetTexture() { return m_texID; }
 std::string Texture::GetName() { return m_name; }
+
+void Texture::SetName(std::string name)
+{
+    m_name = name;
+}

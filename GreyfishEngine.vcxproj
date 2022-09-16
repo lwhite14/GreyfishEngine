@@ -116,6 +116,7 @@
     <None Include="imgui.ini" />
     <None Include="Makefile" />
     <None Include="README.md" />
+    <None Include="Settings\RecentFiles.yaml" />
     <None Include="Source\Shaders\Basic.frag" />
     <None Include="Source\Shaders\Basic.vert" />
     <None Include="Source\Shaders\BasicLit.frag" />

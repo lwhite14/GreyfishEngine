@@ -19,6 +19,7 @@
 MasterUI::MasterUI() { }
 
 MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
+    m_openFile { "" },
     m_window{ window },
     m_size{ size },
     m_windowFlags{ 0 }, m_offset{ 0, 0 },
@@ -40,7 +41,7 @@ void MasterUI::Init()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     m_io = &ImGui::GetIO();
-    m_io->Fonts->AddFontFromFileTTF("Media/Fonts/Roboto-Bold.ttf", 12);
+    m_io->Fonts->AddFontFromFileTTF("Settings/Fonts/Roboto-Bold.ttf", 12);
     ImGui::SetUpStyle();
 
     m_windowFlags |= ImGuiWindowFlags_NoResize;
@@ -248,6 +249,10 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             if (ImGui::MenuItem("New")) 
             {
                 Console::AddMessage("Scene Dialog: New Scene");
+                allSceneObjects = std::vector<SceneObject*>();
+                m_sceneObjectIndex = -1;
+                selectedSceneObject = nullptr;
+                m_selectedSceneObject = nullptr;
             }
             if (ImGui::MenuItem("Open")) 
             {
@@ -285,6 +290,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                             m_sceneObjectIndex = -1;
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
+                            m_openFile = filePath;
                         }
                         else 
                         {
@@ -311,45 +317,20 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             }
             if (ImGui::MenuItem("Save")) 
             {
-                Console::AddMessage("Scene Dialog: Save Scene.");
+                Console::AddMessage(m_openFile);
+                if (m_openFile != "") 
+                {
+                    SceneParser::SaveSceneObjectsIntoFile(m_openFile, allSceneObjects);
+                }
+                else 
+                {
+                    Console::AddMessage("Scene Dialog: No Open File.");
+                    Save(allSceneObjects);
+                }
             }
             if (ImGui::MenuItem("Save As")) 
             {
-                nfdchar_t* outPath = NULL;
-                nfdchar_t filters[] = "yaml";
-                nfdchar_t defaultPath[] = "Media\Scenes\\0";
-                nfdresult_t result = NFD_SaveDialog(filters, defaultPath, &outPath);
-
-                if (result == NFD_OKAY) {
-                    Console::AddMessage("Scene Dialog: Success!");
-                    bool isFileEx = false;
-                    std::string filePath = "";
-                    for (char c = *outPath; c; c = *++outPath)
-                    {
-                        if (c == '.')
-                        {
-                            isFileEx = true;
-                        }
-                        if (!isFileEx)
-                        {
-                            filePath.push_back(c);
-                        }
-                    }
-                    filePath.push_back('.');
-                    filePath.push_back('y');
-                    filePath.push_back('a');
-                    filePath.push_back('m');
-                    filePath.push_back('l');
-                    filePath.push_back('\0');
-                    SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
-                }
-                else if (result == NFD_CANCEL) {
-                    Console::AddMessage("Scene Dialog: User pressed cancel!");
-                }
-                else {
-                    Console::AddMessage("Scene Dialog: ", NFD_GetError());
-                }
-
+                Save(allSceneObjects);
             }
             ImGui::EndMenu();
         }
@@ -362,6 +343,48 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
+    }
+}
+
+void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
+{
+    nfdchar_t* outPath = NULL;
+    nfdchar_t filters[] = "yaml";
+    nfdchar_t defaultPath[] = "Media\Scenes\\0";
+    nfdresult_t result = NFD_SaveDialog(filters, defaultPath, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        Console::AddMessage("Scene Dialog: Success!");
+        bool isFileEx = false;
+        std::string filePath = "";
+        for (char c = *outPath; c; c = *++outPath)
+        {
+            if (c == '.')
+            {
+                isFileEx = true;
+            }
+            if (!isFileEx)
+            {
+                filePath.push_back(c);
+            }
+        }
+        filePath.push_back('.');
+        filePath.push_back('y');
+        filePath.push_back('a');
+        filePath.push_back('m');
+        filePath.push_back('l');
+        filePath.push_back('\0');
+        SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
+        m_openFile = filePath;
+    }
+    else if (result == NFD_CANCEL) 
+    {
+        Console::AddMessage("Scene Dialog: User pressed cancel!");
+    }
+    else 
+    {
+        Console::AddMessage("Scene Dialog: ", NFD_GetError());
     }
 }
 
