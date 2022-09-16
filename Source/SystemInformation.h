@@ -3,9 +3,13 @@
 
 #include <glad/glad.h>
 #include <iostream>
+#include "UserInterface/Console.h"
 
 namespace SystemInformation
 {
+    void OutputInformation();
+    std::string CreateString(const GLubyte* input);
+
     void OutputInformation()
     {
         const GLubyte* renderer = glGetString(GL_RENDERER);
@@ -19,15 +23,23 @@ namespace SystemInformation
         glGetIntegerv(GL_SAMPLES, &samples);
         glGetIntegerv(GL_SAMPLE_BUFFERS, &sampleBuffers);
 
-        printf("-------------------------------------------------------------\n");
-        printf("GL Vendor    : %s\n", vendor);
-        printf("GL Renderer  : %s\n", renderer);
-        printf("GL Version   : %s\n", version);
-        printf("GL Version   : %d.%d\n", major, minor);
-        printf("GLSL Version : %s\n", glslVersion);
-        printf("MSAA samples : %d\n", samples);
-        printf("MSAA buffers : %d\n", sampleBuffers);
-        printf("-------------------------------------------------------------\n");
+        Console::AddMessage("GL Vendor: " + CreateString(vendor));
+        Console::AddMessage("GL Renderer: " + CreateString(renderer));
+        Console::AddMessage("GL Version: " + CreateString(version));
+        Console::AddMessage("GL Version: " + std::to_string(major) + "." + std::to_string(minor));
+        Console::AddMessage("GLSL Version: " + CreateString(glslVersion));
+        Console::AddMessage("MSAA samples: " + std::to_string(samples));
+        Console::AddMessage("MSAA buffers: " + std::to_string(sampleBuffers));
+    }
+
+    std::string CreateString(const GLubyte* input)
+    {
+        std::string output = "";
+        for (char c = *input; c; c = *++input)
+        {
+            output.push_back(c);
+        }
+        return output;
     }
 }
 

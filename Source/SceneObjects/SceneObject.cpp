@@ -7,6 +7,7 @@
 #include "Dimensions.h"
 #include "../MasterShaders.h"
 #include "../Dependencies/imgui/imgui.h"
+#include "../UserInterface/Console.h"
 
 SceneObject::SceneObject(std::string name, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, GLSLProgram* prog) :
 	m_name{ name },
@@ -100,7 +101,7 @@ void SceneObject::AddComponent(Component* component)
 		}
 	}
 
-	if (isAlreadyOnObject) { std::cout << "UNABLE TO ADD COMPONENT (Component type already in scene)" << std::endl; component = NULL; }
+	if (isAlreadyOnObject) { Console::AddMessage("Unable to add Component: Component type already in scene."); component = NULL; }
 	else { m_components.push_back(component); }
 }
 

@@ -207,5 +207,8 @@
     <ClInclude Include="Source\SceneParser.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UserInterface\Console.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

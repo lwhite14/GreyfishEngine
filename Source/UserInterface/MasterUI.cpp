@@ -12,8 +12,9 @@
 #include "../SceneObjects/Spinner.h"
 #include "../MasterShaders.h"
 #include "../MasterTextures.h"
-#include "ImGuiUtils.h"
 #include "../SceneParser.h"
+#include "ImGuiUtils.h"
+#include "Console.h"
 
 MasterUI::MasterUI() { }
 
@@ -81,6 +82,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     OptionsWindow(selectedSceneObject, allSceneObjects);
     GameViewWindow();
     FramerateWindow();
+    if (Console::isOn) { Console::PerFrame(); }
     ImGui::End();
 
     ImGui::ShowDemoWindow();
@@ -245,7 +247,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
         {
             if (ImGui::MenuItem("New")) 
             {
-                std::cout << "New Scene." << std::endl;
+                Console::AddMessage("Scene Dialog: New Scene");
             }
             if (ImGui::MenuItem("Open")) 
             {
@@ -256,7 +258,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
 
                 if (result == NFD_OKAY)
                 {
-                    puts("Success!");
+                    Console::AddMessage("Scene Dialog: Success!");
                     bool isFileEx = false;
                     std::string ex = "";
                     std::string filePath = "";
@@ -274,7 +276,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     }
                     if (ex == "yaml") 
                     {
-                        std::cout << filePath << std::endl;
+                        Console::AddMessage("Scene Dialog: " + filePath);
                         bool success = SceneParser::IsValidFile(filePath);
                         if (success) 
                         {
@@ -286,30 +288,30 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                         }
                         else 
                         {
-                            std::cout << "Not a valid yaml file." << std::endl;
+                            Console::AddMessage("Scene Dialog: Not a valid yaml file.");
                         }
                     }
                     else 
                     {
-                        puts("Wrong file extension.");
+                        Console::AddMessage("Scene Dialog: Wrong file extension.");
                     }
                 }
                 else if (result == NFD_CANCEL)
                 {
-                    puts("User pressed cancel.");
+                    Console::AddMessage("Scene Dialog: User pressed cancel.");
                 }
                 else
                 {
-                    printf("Error: %s\n", NFD_GetError());
+                    Console::AddMessage("Scene Dialog: ", NFD_GetError());
                 }
             }
             if (ImGui::MenuItem("Open Recent")) 
             {
-                std::cout << "Open Recent Scene." << std::endl;
+                Console::AddMessage("Scene Dialog: Open Recent Scene.");
             }
             if (ImGui::MenuItem("Save")) 
             {
-                std::cout << "Save Scene." << std::endl;
+                Console::AddMessage("Scene Dialog: Save Scene.");
             }
             if (ImGui::MenuItem("Save As")) 
             {
@@ -319,7 +321,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                 nfdresult_t result = NFD_SaveDialog(filters, defaultPath, &outPath);
 
                 if (result == NFD_OKAY) {
-                    puts("Success!");
+                    Console::AddMessage("Scene Dialog: Success!");
                     bool isFileEx = false;
                     std::string filePath = "";
                     for (char c = *outPath; c; c = *++outPath)
@@ -342,12 +344,20 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
                 }
                 else if (result == NFD_CANCEL) {
-                    puts("User pressed cancel.");
+                    Console::AddMessage("Scene Dialog: User pressed cancel!");
                 }
                 else {
-                    printf("Error: %s\n", NFD_GetError());
+                    Console::AddMessage("Scene Dialog: ", NFD_GetError());
                 }
 
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("View")) 
+        {
+            if (ImGui::MenuItem("Console")) 
+            {
+                Console::isOn = true;
             }
             ImGui::EndMenu();
         }

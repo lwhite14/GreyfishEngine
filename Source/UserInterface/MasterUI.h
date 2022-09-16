@@ -33,6 +33,7 @@ private:
 
     ImVec2 m_gameViewSize;
     int m_sceneObjectIndex;
+
     
 public:
     MasterUI();

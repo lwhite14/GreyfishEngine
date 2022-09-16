@@ -19,7 +19,7 @@ namespace ImGui
         style.ScrollbarSize = 10.0f;
         style.GrabMinSize = 10.0f;
 
-        style.WindowBorderSize = 0.0f;
+        style.WindowBorderSize = 1.0f;
         style.ChildBorderSize = 1.0f;
         style.PopupBorderSize = 0.0f;
         style.FrameBorderSize = 0.0f;

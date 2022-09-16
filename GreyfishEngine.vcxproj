@@ -156,6 +156,7 @@
     <ClInclude Include="Source\MasterShaders.h" />
     <ClInclude Include="Source\SystemInformation.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\UserInterface\Console.h" />
     <ClInclude Include="Source\UserInterface\Framerate.h" />
     <ClInclude Include="Source\UserInterface\GameWindow.h" />
     <ClInclude Include="Source\UserInterface\ImGuiUtils.h" />

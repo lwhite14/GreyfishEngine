@@ -59,7 +59,7 @@ public:
     std::string ToString() 
     {
         std::stringstream stream;
-        stream << "AABB: min= (" << min.x << ", " << min.y << ", " << min.z << ") " << "max = (" << max.x << ", " << max.y << ", " << max.z << ")";
+        stream << "AABB: Min= (" << min.x << ", " << min.y << ", " << min.z << "), " << " Max = (" << max.x << ", " << max.y << ", " << max.z << ").";
         return stream.str();
     }
 };

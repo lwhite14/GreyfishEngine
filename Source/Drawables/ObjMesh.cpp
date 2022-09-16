@@ -17,6 +17,8 @@ using std::istringstream;
 #include "../Dependencies/imgui/imgui.h"
 #include "../MasterTextures.h"
 
+#include "../UserInterface/Console.h"
+
 ObjMesh::ObjMesh(Texture* texture, SceneObject* associatedObject) :
     Component{ "Drawable" },
     m_associatedObject{ associatedObject },
@@ -75,10 +77,13 @@ ObjMesh* ObjMesh::Load(const char* fileName, SceneObject* associatedObject, Text
         glMesh.tangents.empty() ? nullptr : (&glMesh.tangents)
     );
 
-    cout << "Loaded mesh from: " << fileName
-        << " vertices = " << (glMesh.points.size() / 3)
-        << " triangles = " << (glMesh.faces.size() / 3)
-        << endl << "    " << mesh->bbox.ToString() << endl;
+    std::string fileNameStr = "";
+    for (char c = *fileName; c; c = *++fileName)
+    {
+        fileNameStr.push_back(c);
+    }
+    Console::AddMessage("Loaded mesh from: " + fileNameStr + ". Vertices = " + std::to_string(glMesh.points.size() / 3) + ". Triangles = " + std::to_string(glMesh.faces.size() / 3) + ".");
+    Console::AddMessage(mesh->bbox.ToString());
 
     return mesh;
 }
