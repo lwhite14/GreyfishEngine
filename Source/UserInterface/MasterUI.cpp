@@ -44,7 +44,7 @@ void MasterUI::Init()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     m_io = &ImGui::GetIO();
-    m_io->Fonts->AddFontFromFileTTF("Settings/Fonts/Roboto-Bold.ttf", 12);
+    m_io->Fonts->AddFontFromFileTTF("Settings/EngineAssets/Fonts/Roboto-Bold.ttf", 12);
     ImGui::SetUpStyle();
 
     m_windowFlags |= ImGuiWindowFlags_NoResize;
