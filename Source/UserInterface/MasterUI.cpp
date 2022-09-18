@@ -292,10 +292,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
                             m_openFile = filePath;
-                            if (m_openFile != m_recentFiles[0])
-                            {
-                                AddRecentFile(filePath);
-                            }
+                            AddRecentFile(filePath);
                         }
                         else 
                         {
@@ -325,10 +322,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                             m_sceneObjectIndex = -1;
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
-                            if (m_recentFiles[i] != m_recentFiles[0])
-                            {
-                                AddRecentFile(m_recentFiles[i]);
-                            }
+                            AddRecentFile(m_recentFiles[i]);
                         }
                     }
                 }
@@ -392,10 +386,7 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
         filePath.push_back('l');
         SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
         m_openFile = filePath;
-        if (m_openFile != m_recentFiles[0])
-        {
-            AddRecentFile(filePath);
-        }
+        AddRecentFile(filePath);   
     }
     else if (result == NFD_ERROR) 
     {
@@ -405,6 +396,17 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
 
 void MasterUI::AddRecentFile(std::string recentFile)
 {
+    bool alreadyExists = false;
+    int index = -1;
+    for (unsigned int i = 0; i < m_recentFiles.size(); i++) 
+    {
+        if (recentFile == m_recentFiles[i]) { alreadyExists = true; index = i; break; }
+    }
+
+    if (alreadyExists) 
+    {
+        m_recentFiles.erase(m_recentFiles.begin() + index);
+    }
     std::vector<std::string> temp = std::vector<std::string>(5);
     temp[0] = recentFile;
     temp[1] = m_recentFiles[0];
