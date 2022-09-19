@@ -29,7 +29,6 @@ private:
     ImGuiIO* m_io;
     SceneObject* m_selectedSceneObject;
 
-    bool m_hasResized;
     ImVec2 m_size;
     ImVec2 m_offset;
     unsigned int m_gameViewFbo;

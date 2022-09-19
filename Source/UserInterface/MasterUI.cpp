@@ -26,7 +26,6 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_size{ size },
     m_windowFlags{ 0 }, m_offset{ 0, 0 },
     m_gameViewFbo{ 0 },
-    m_hasResized{ false },
     m_mouseWheel{ 0.0f },
     m_camMotion{ false, false, false, false },
     m_sceneObjectIndex{ 0 }
@@ -96,12 +95,6 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
 
 
     // Workspace Window
-    if (!m_hasResized)
-    {
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(m_size);
-        m_hasResized = true;
-    }
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     ImGuiID dockspace_id = ImGui::GetID("DockSpace");
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), m_dockspaceFlags);
