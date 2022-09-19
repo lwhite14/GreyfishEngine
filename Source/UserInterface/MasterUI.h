@@ -35,8 +35,12 @@ private:
     float m_mouseWheel;
     Motion m_camMotion;
 
-    ImVec2 m_gameViewSize;
+    ImVec2 m_sceneViewSize;
     int m_sceneObjectIndex;
+
+    bool m_objectsViewOn;
+    bool m_optionsViewOn;
+    bool m_sceneViewOn;
 
     
 public:
@@ -47,9 +51,9 @@ public:
     void CleanUp();
 
     void Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
-    void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
+    void ObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
-    void GameViewWindow();
+    void SceneWindow();
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
     void AddRecentFile(std::string recentFile);

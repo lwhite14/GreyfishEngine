@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Assets\Assets.md" />
     <None Include="imgui.ini" />
     <None Include="Makefile" />
     <None Include="README.md" />

@@ -28,7 +28,10 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_gameViewFbo{ 0 },
     m_mouseWheel{ 0.0f },
     m_camMotion{ false, false, false, false },
-    m_sceneObjectIndex{ 0 }
+    m_sceneObjectIndex{ 0 },
+    m_objectsViewOn{ true },
+    m_optionsViewOn{ true },
+    m_sceneViewOn{ true }
 {
     
 }
@@ -101,9 +104,9 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     Menu(selectedSceneObject, allSceneObjects);
     ImGui::End();
 
-    SceneObjectsWindow(selectedSceneObject, allSceneObjects);
-    OptionsWindow(selectedSceneObject, allSceneObjects);
-    GameViewWindow();
+    if (m_objectsViewOn) { ObjectsWindow(selectedSceneObject, allSceneObjects); }
+    if (m_optionsViewOn) { OptionsWindow(selectedSceneObject, allSceneObjects); }
+    if (m_sceneViewOn) { SceneWindow(); }
     if (Console::isOn) { Console::PerFrame(); }
 
     ImGui::ShowDemoWindow();
@@ -119,10 +122,10 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
 }
 
-void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     // SceneObjects Child
-    ImGui::Begin("SceneObjects", (bool*)0, m_windowFlagsChild);
+    ImGui::Begin("Objects", &m_objectsViewOn, m_windowFlagsChild);
     ImGui::Text("SceneObjects in Scene:");
     ImGui::Spacing();
     //m_sceneObjectIndex = 0;
@@ -185,7 +188,7 @@ void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<
 void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     // Options Child
-    ImGui::Begin("Options", (bool*)0, m_windowFlagsChild);
+    ImGui::Begin("Options", &m_optionsViewOn, m_windowFlagsChild);
     if (selectedSceneObject != nullptr)
     {
         selectedSceneObject->DrawHeaderUI();
@@ -205,12 +208,12 @@ void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<Scene
     ImGui::End();
 }
 
-void MasterUI::GameViewWindow()
+void MasterUI::SceneWindow()
 {
     // Game View Child
-    ImGui::Begin("Scene", (bool*)0, m_windowFlagsChild);
-    m_gameViewSize = ImGui::GetContentRegionAvail();
-    ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_gameViewSize.x, m_gameViewSize.y), ImVec2(0, 1), ImVec2(1, 0), 0);
+    ImGui::Begin("Scene", &m_sceneViewOn, m_windowFlagsChild);
+    m_sceneViewSize = ImGui::GetContentRegionAvail();
+    ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_sceneViewSize.x, m_sceneViewSize.y), ImVec2(0, 1), ImVec2(1, 0), 0);
     if (ImGui::IsItemHovered())
     {
         if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
@@ -347,10 +350,10 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
         }
         if (ImGui::BeginMenu("View")) 
         {
-            if (ImGui::MenuItem("Console")) 
-            {
-                Console::isOn = true;
-            }
+            ImGui::MenuItem("Objects", NULL, &m_objectsViewOn);
+            ImGui::MenuItem("Options", NULL, &m_optionsViewOn);
+            ImGui::MenuItem("Game", NULL, &m_sceneViewOn);
+            ImGui::MenuItem("Console", NULL, &Console::isOn);
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -456,7 +459,7 @@ ImVec2 MasterUI::GetOffset() { return m_offset; }
 unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 float MasterUI::GetMouseWheel() { return m_mouseWheel; }
 Motion MasterUI::GetCamMotion() { return m_camMotion; }
-ImVec2 MasterUI::GetGameViewSize() { return m_gameViewSize; }
+ImVec2 MasterUI::GetGameViewSize() { return m_sceneViewSize; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
@@ -464,4 +467,4 @@ void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }
 void MasterUI::SetCamMotion(Motion motion) { m_camMotion = motion; }
-void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_gameViewSize = gameViewSize; }
+void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_sceneViewSize = gameViewSize; }

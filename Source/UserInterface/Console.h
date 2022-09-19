@@ -18,13 +18,13 @@ public:
     {
         static bool isFirstFrame = true;
 
-        ImGuiWindowFlags windowFlags = 0;
+        ImGuiWindowFlags windowFlags = ImGuiModFlags_None;
         //windowFlags |= ImGuiWindowFlags_NoResize;
         //windowFlags |= ImGuiWindowFlags_NoTitleBar;
         //windowFlags |= ImGuiWindowFlags_NoScrollbar;
         //windowFlags |= ImGuiWindowFlags_MenuBar;
         //windowFlags |= ImGuiWindowFlags_NoMove;
-        //windowFlags |= ImGuiWindowFlags_NoCollapse;
+        windowFlags |= ImGuiWindowFlags_NoCollapse;
         //windowFlags |= ImGuiWindowFlags_NoNav;
         //windowFlags |= ImGuiWindowFlags_NoBackground;
         //windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;

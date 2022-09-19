@@ -98,6 +98,7 @@
     <None Include="Source\Shaders\PSX.vert" />
     <None Include="Source\Shaders\PSX.frag" />
     <None Include="Settings\RecentFiles.yaml" />
+    <None Include="Assets\Assets.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">
