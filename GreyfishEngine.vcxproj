@@ -141,6 +141,7 @@
     <ClInclude Include="Source\Dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\MasterModels.h" />
     <ClInclude Include="Source\MasterTextures.h" />
     <ClInclude Include="Source\Motion.h" />
     <ClInclude Include="Source\Runner.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Source\SystemInformation.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\UserInterface\Console.h" />
+    <ClInclude Include="Source\UserInterface\ConsoleMessage.h" />
     <ClInclude Include="Source\UserInterface\Framerate.h" />
     <ClInclude Include="Source\UserInterface\GameWindow.h" />
     <ClInclude Include="Source\UserInterface\ImGuiUtils.h" />

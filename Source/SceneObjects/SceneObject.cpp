@@ -101,7 +101,7 @@ void SceneObject::AddComponent(Component* component)
 		}
 	}
 
-	if (isAlreadyOnObject) { Console::AddMessage("Unable to add Component: Component type already in scene."); component = NULL; }
+	if (isAlreadyOnObject) { Console::AddWarningMessage("Unable to add Component: Component type already in scene."); component = NULL; }
 	else { m_components.push_back(component); }
 }
 

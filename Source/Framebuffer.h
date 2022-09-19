@@ -46,7 +46,7 @@ public:
         // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            Console::AddMessage("Framebuffer is not complete!");
+            Console::AddErrorMessage("Framebuffer is not complete!");
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }

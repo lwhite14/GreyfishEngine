@@ -211,5 +211,11 @@
     <ClInclude Include="Source\UserInterface\Console.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UserInterface\ConsoleMessage.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MasterModels.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

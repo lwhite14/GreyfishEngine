@@ -296,17 +296,17 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                         }
                         else 
                         {
-                            Console::AddMessage("Scene Dialog: Not a valid yaml file.");
+                            Console::AddWarningMessage("Scene Dialog: Not a valid yaml file.");
                         }
                     }
                     else 
                     {
-                        Console::AddMessage("Scene Dialog: Wrong file extension.");
+                        Console::AddWarningMessage("Scene Dialog: Wrong file extension.");
                     }
                 }
                 else if (result == NFD_ERROR)
                 {
-                    Console::AddMessage("Scene Dialog: ", NFD_GetError());
+                    Console::AddErrorMessage("Scene Dialog: ", NFD_GetError());
                 }
             }
             if (ImGui::BeginMenu("Open Recent")) 
@@ -390,7 +390,7 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
     }
     else if (result == NFD_ERROR) 
     {
-        Console::AddMessage("Scene Dialog: ", NFD_GetError());
+        Console::AddErrorMessage("Scene Dialog: ", NFD_GetError());
     }
 }
 
