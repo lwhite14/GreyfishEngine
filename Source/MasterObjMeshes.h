@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Drawables/ObjMesh.h"
+#include "UserInterface/Console.h"
 
 class MasterObjMeshes
 {
@@ -11,14 +12,35 @@ public:
 
     inline static void NewObjMesh(std::string objMeshName)
     {
-        std::string str = "Assets/Models/";
+        bool isName = false;
+        std::string str = "";
         for (unsigned int i = 0; i < objMeshName.size(); i++)
         {
-            if (objMeshName[i] != '\0') { str.push_back(objMeshName[i]); }
-            else { break; }
+            if (objMeshName[i] == '.')
+            {
+                isName = true;
+            }
+            if (!isName)
+            {
+                str.push_back(objMeshName[i]);
+                if ((objMeshName[i] == '/') || (objMeshName[i] == '\\'))
+                {
+                    str = "";
+                }
+            }
         }
-        ObjMesh* objMesh = ObjMesh::Load(str.c_str());
-        objMesh->SetName(objMeshName);
+
+        for (unsigned int i = 0; i < objMeshList.size(); i++)
+        {
+            if (objMeshList[i]->GetName() == str)
+            {
+                Console::AddMessage("MasterObjMeshes: ObjMesh already added.");
+                return;
+            }
+        }
+
+        ObjMesh* objMesh = ObjMesh::Load(objMeshName.c_str());
+        objMesh->SetName(str);
         objMeshList.push_back(objMesh);
     }
 };

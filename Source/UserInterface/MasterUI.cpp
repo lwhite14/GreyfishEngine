@@ -1,9 +1,6 @@
 #include "MasterUI.h"
 
 #include <yaml-cpp/yaml.h>
-#include <nfd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "../Dependencies/imgui/imgui.h"
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
@@ -11,7 +8,7 @@
 #include "../SceneObjects/Spinner.h"
 #include "../MasterShaders.h"
 #include "../MasterTextures.h"
-#include "../SceneParser.h"
+#include "../GreyfishParsing.h"
 #include "ImGuiUtils.h"
 #include "Console.h"
 #include "../MasterObjMeshes.h"
@@ -286,11 +283,11 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     }
                     if (ex == "yaml") 
                     {
-                        bool success = SceneParser::IsValidFile(filePath);
+                        bool success = GreyfishParsing::IsValidFile(filePath);
                         if (success) 
                         {
                             allSceneObjects = std::vector<SceneObject*>();
-                            allSceneObjects = SceneParser::LoadFileIntoSceneObjects(filePath); 
+                            allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(filePath);
                             m_sceneObjectIndex = -1;
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
@@ -321,7 +318,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                         if (ImGui::MenuItem(m_recentFiles[i].c_str())) 
                         {
                             allSceneObjects = std::vector<SceneObject*>();
-                            allSceneObjects = SceneParser::LoadFileIntoSceneObjects(m_recentFiles[i]);
+                            allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(m_recentFiles[i]);
                             m_sceneObjectIndex = -1;
                             selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
@@ -335,7 +332,7 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             {
                 if (m_openFile != "") 
                 {
-                    SceneParser::SaveSceneObjectsIntoFile(m_openFile, allSceneObjects);
+                    GreyfishParsing::SaveSceneObjectsIntoFile(m_openFile, allSceneObjects);
                 }
                 else 
                 {
@@ -354,6 +351,28 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             ImGui::MenuItem("Options", NULL, &m_optionsViewOn);
             ImGui::MenuItem("Game", NULL, &m_sceneViewOn);
             ImGui::MenuItem("Console", NULL, &Console::isOn);
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Add"))
+        {
+            if (ImGui::MenuItem("Image")) 
+            {
+                nfdchar_t filters[] = "png,jpg,jpeg";
+                nfdchar_t defaultPath[] = "Assets\Images\\0";
+                LoadAsset(defaultPath, filters, "Image");
+            }
+            if (ImGui::MenuItem("Model")) 
+            {
+                nfdchar_t defaultPath[] = "Assets\Models\\0";
+                nfdchar_t filters[] = "obj";
+                LoadAsset(defaultPath, filters, "Model");
+            }
+            if (ImGui::MenuItem("Shader")) 
+            {
+                nfdchar_t defaultPath[] = "Assets\Shaders\\0";
+                nfdchar_t filters[] = "vert";
+                LoadAsset(defaultPath, filters, "Shader");
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -387,7 +406,7 @@ void MasterUI::Save(std::vector<SceneObject*>& allSceneObjects)
         filePath.push_back('a');
         filePath.push_back('m');
         filePath.push_back('l');
-        SceneParser::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
+        GreyfishParsing::SaveSceneObjectsIntoFile(filePath, allSceneObjects);
         m_openFile = filePath;
         AddRecentFile(filePath);   
     }
@@ -442,6 +461,63 @@ void MasterUI::LoadRecentFiles()
         {
             m_recentFiles[i] = config[i].as<std::string>();
         }
+    }
+}
+
+void MasterUI::LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string type) 
+{
+    nfdchar_t* outPath = NULL;
+    nfdresult_t result = NFD_OpenDialog(filters, defaultPath, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        bool isFileEx = false;
+        std::string ex = "";
+        std::string filePath = "";
+        for (char c = *outPath; c; c = *++outPath)
+        {
+            filePath.push_back(c);
+            if (isFileEx)
+            {
+                ex.push_back(c);
+            }
+            if (c == '.')
+            {
+                isFileEx = true;
+            }
+        }
+        if ((type == "Image") && ((ex == "png") || (ex == "jpg") || (ex == "jpeg")))
+        {
+            Console::AddMessage("Asset Dialog: Image Success!");
+            MasterTextures::NewTexture(filePath);
+        }
+        else if ((type == "Model") && (ex == "obj"))
+        {
+            Console::AddMessage("Asset Dialog: Model Success!");
+            MasterObjMeshes::NewObjMesh(filePath);
+        }
+        else if ((type == "Shader") && (ex == "vert"))
+        {
+            Console::AddMessage("Asset Dialog: Shader Success!");
+            std::string filePathProper = "";
+            for (unsigned int i = 0; i < filePath.size(); i++)
+            {
+                if (filePath[i] == '.') 
+                {
+                    break;
+                }
+                filePathProper.push_back(filePath[i]);
+            }
+            MasterShaders::NewShader(filePathProper);
+        }
+        else
+        {
+            Console::AddWarningMessage("Scene Dialog: Wrong file extension.");
+        }
+    }
+    else if (result == NFD_ERROR)
+    {
+        Console::AddErrorMessage("Asset Dialog: ", NFD_GetError());
     }
 }
 

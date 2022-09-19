@@ -1,8 +1,9 @@
-#ifndef SCENEPARSER_H
-#define SCENEPARSER_H
+#ifndef GREYFISHPARSING_H
+#define GREYFISHPARSING_H
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include "SceneObjects/SceneObject.h"
 #include "Drawables/Model.h"
 #include "Drawables/ObjMesh.h"
@@ -10,8 +11,10 @@
 #include "SceneObjects/Component.h"
 #include "SceneObjects/Spinner.h"
 #include "MasterObjMeshes.h"
+#include "MasterShaders.h"
+#include "MasterTextures.h"
 
-namespace SceneParser
+namespace GreyfishParsing
 {
     static inline bool IsValidFile(std::string filePath) 
     {
@@ -156,4 +159,4 @@ namespace SceneParser
     }
 }
 
-#endif //SCENEPARSER_H
+#endif //GREYFISHPARSING_H

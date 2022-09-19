@@ -24,19 +24,19 @@ void BasicScene::Start(GLFWwindow* window)
 
     m_framebuffer = Framebuffer(m_width, m_height);
 
-    MasterTextures::NewTexture("devtex1.jpg");
-    MasterTextures::NewTexture("awesomeface.png");
-    MasterTextures::NewTexture("container.jpg");
-    MasterTextures::NewTexture("metal.jpg");
+    MasterTextures::NewTexture("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Images\\devtex1.jpg");
+    MasterTextures::NewTexture("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Images\\awesomeface.png");
+    MasterTextures::NewTexture("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Images\\container.jpg");
+    MasterTextures::NewTexture("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Images\\metal.jpg");
 
-    MasterShaders::NewShader("Basic");
-    MasterShaders::NewShader("BasicLit");
-    MasterShaders::NewShader("PSX");
+    MasterShaders::NewShader("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Shaders\\Basic");
+    MasterShaders::NewShader("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Shaders\\BasicLit");
+    MasterShaders::NewShader("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Shaders\\PSX");
     MasterShaders::shaderList[2]->Use();
     MasterShaders::shaderList[2]->SetUniform("FogColour", glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
-    MasterObjMeshes::NewObjMesh("suzanne.obj");
-    MasterObjMeshes::NewObjMesh("car.obj");
+    MasterObjMeshes::NewObjMesh("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Models\\suzanne.obj");
+    MasterObjMeshes::NewObjMesh("C:\\Users\\Luker\\Documents\\GitHub\\GreyfishEngine\\Assets\\Models\\car.obj");
 
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));

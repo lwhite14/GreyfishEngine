@@ -12,7 +12,7 @@ private:
 	inline static std::vector<ConsoleMessage> messages;
 
 public:
-    inline static bool isOn = false;
+    inline static bool isOn = true;
 
 	inline static void PerFrame() 
     {

@@ -83,22 +83,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Shaders\Basic.vert">
+    <None Include="Assets\Shaders\Basic.vert">
       <Filter>Source\Private</Filter>
     </None>
-    <None Include="Source\Shaders\Basic.frag">
+    <None Include="Assets\Shaders\Basic.frag">
       <Filter>Source\Private</Filter>
     </None>
-    <None Include="Source\Shaders\BasicLit.frag" />
-    <None Include="Source\Shaders\BasicLit.vert" />
+    <None Include="Assets\Shaders\BasicLit.frag" />
+    <None Include="Assets\Shaders\BasicLit.vert" />
     <None Include=".gitignore" />
     <None Include="imgui.ini" />
     <None Include="Makefile" />
     <None Include="README.md" />
-    <None Include="Source\Shaders\PSX.vert" />
-    <None Include="Source\Shaders\PSX.frag" />
+    <None Include="Assets\Shaders\PSX.vert" />
+    <None Include="Assets\Shaders\PSX.frag" />
     <None Include="Settings\RecentFiles.yaml" />
     <None Include="Assets\Assets.md" />
+    <None Include="Settings\Assets.yaml" />
+    <None Include="Assets\Shaders\Yellow.vert" />
+    <None Include="Assets\Shaders\Yellow.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">
@@ -209,7 +212,7 @@
     <ClInclude Include="Source\UserInterface\ImGuiUtils.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneParser.h">
+    <ClInclude Include="Source\GreyfishParsing.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\UserInterface\Console.h">

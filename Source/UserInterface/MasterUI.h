@@ -7,6 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <nfd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Dependencies/imgui/imgui.h"
@@ -58,6 +61,8 @@ public:
     void Save(std::vector<SceneObject*>& allSceneObjects);
     void AddRecentFile(std::string recentFile);
     void LoadRecentFiles();
+
+    void LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string type);
 
     GLFWwindow* GetWindow();
     SceneObject* GetSelectedSceneObject();
