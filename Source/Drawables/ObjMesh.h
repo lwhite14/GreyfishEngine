@@ -14,40 +14,23 @@
 #include "../SceneObjects/SceneObject.h"
 
 
-class ObjMesh : public TriangleMesh, public Component 
+class ObjMesh : public TriangleMesh
 {
 private:
     bool m_drawAdj;
-    SceneObject* m_associatedObject;
-    Texture* m_texture;
-    glm::vec3 m_matAmbient;
-    glm::vec3 m_matDiffuse;
-    glm::vec3 m_matSpecular;
-    float m_matShininess;
-
-    float m_matAmbientArr[3];
-    float m_matDiffuseArr[3];
-    float m_matSpecularArr[3];
-    float m_matShininessArr;
+    std::string m_name;
 
 public:
-    static ObjMesh* Load(const char* fileName, SceneObject* associatedObject, Texture* texture = nullptr, bool center = false, bool genTangents = false);
-    static ObjMesh* LoadWithAdjacency(const char* fileName, SceneObject* associatedObject, Texture* texture = nullptr, bool center = false);
-
-    void Update(float deltaTime);
-    void Render(GLSLProgram* prog);
-    void DrawUI();
-    void Serialization(YAML::Emitter& out);
-
-    void SetMatAmbient(glm::vec3 matAmbient);
-    void SetMatDiffuse(glm::vec3 matDiffuse);
-    void SetMatSpecular(glm::vec3 matSpecular);
-    void SetMatShininess(float matShininess);
+    static ObjMesh* Load(const char* fileName, bool center = false, bool genTangents = false);
+    static ObjMesh* LoadWithAdjacency(const char* fileName, bool center = false);
 
     void RenderDrawable() override;
 
+    void SetName(std::string name);
+    std::string GetName();
+
 protected:
-    ObjMesh(Texture* texture, SceneObject* associatedObject);
+    ObjMesh();
 
     Aabb bbox;
 

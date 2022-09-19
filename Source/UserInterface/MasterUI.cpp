@@ -8,13 +8,14 @@
 #include "../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../Dependencies/imgui/imgui_impl_opengl3.h"
 #include "../Drawables/Cube.h"
-#include "../Drawables/ObjMesh.h"
 #include "../SceneObjects/Spinner.h"
 #include "../MasterShaders.h"
 #include "../MasterTextures.h"
 #include "../SceneParser.h"
 #include "ImGuiUtils.h"
 #include "Console.h"
+#include "../MasterObjMeshes.h"
+#include "../Drawables/Model.h"
 
 MasterUI::MasterUI() { }
 
@@ -196,7 +197,7 @@ void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<Scene
         {
             ImVec2 size = ImVec2(100, 0);
             if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, selectedSceneObject)); }
-            if (ImGui::Selectable("ObjMesh", false, 0, size)) { selectedSceneObject->AddComponent(ObjMesh::Load("Assets/Models/suzanne.obj", selectedSceneObject, MasterTextures::textureList[0])); }
+            if (ImGui::Selectable("Model", false, 0, size)) { selectedSceneObject->AddComponent(new Model(MasterObjMeshes::objMeshList[0], selectedSceneObject, MasterTextures::textureList[0])); }
             if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr(), selectedSceneObject)); }
             ImGui::EndPopup();
         }

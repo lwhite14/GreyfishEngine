@@ -4,6 +4,12 @@
 #include <string>
 #include <vector>
 #include "SceneObjects/SceneObject.h"
+#include "Drawables/Model.h"
+#include "Drawables/ObjMesh.h"
+#include "Drawables/Cube.h"
+#include "SceneObjects/Component.h"
+#include "SceneObjects/Spinner.h"
+#include "MasterObjMeshes.h"
 
 namespace SceneParser
 {
@@ -69,10 +75,10 @@ namespace SceneParser
                     cube->SetMatShininess(matShininess);
                     allSceneObjects[i]->AddComponent(cube);
                 }
-                if (components[j]["objMesh"])
+                if (components[j]["model"])
                 {
-                    std::string texName = components[j]["objMesh"]["texture"].as<std::string>();
-                    Texture* texture = new Texture;
+                    std::string texName = components[j]["model"]["texture"].as<std::string>();
+                    Texture* texture = nullptr;
                     for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
                     {
                         if (texName == MasterTextures::textureList[y]->GetName())
@@ -80,16 +86,25 @@ namespace SceneParser
                             texture = MasterTextures::textureList[y];
                         }
                     }
-                    glm::vec3 matAmbient = glm::vec3(components[j]["objMesh"]["matAmbientX"].as<float>(), components[j]["objMesh"]["matAmbientY"].as<float>(), components[j]["objMesh"]["matAmbientZ"].as<float>());
-                    glm::vec3 matDiffuse = glm::vec3(components[j]["objMesh"]["matDiffuseX"].as<float>(), components[j]["objMesh"]["matDiffuseY"].as<float>(), components[j]["objMesh"]["matDiffuseZ"].as<float>());
-                    glm::vec3 matSpecular = glm::vec3(components[j]["objMesh"]["matSpecularX"].as<float>(), components[j]["objMesh"]["matSpecularY"].as<float>(), components[j]["objMesh"]["matSpecularZ"].as<float>());
-                    float matShininess = components[j]["objMesh"]["matShininess"].as<float>();
-                    ObjMesh* objMesh = ObjMesh::Load("Assets/Models/suzanne.obj", allSceneObjects[i], texture);
-                    objMesh->SetMatAmbient(matAmbient);
-                    objMesh->SetMatDiffuse(matDiffuse);
-                    objMesh->SetMatSpecular(matSpecular);
-                    objMesh->SetMatShininess(matShininess);
-                    allSceneObjects[i]->AddComponent(objMesh);
+                    glm::vec3 matAmbient = glm::vec3(components[j]["model"]["matAmbientX"].as<float>(), components[j]["model"]["matAmbientY"].as<float>(), components[j]["model"]["matAmbientZ"].as<float>());
+                    glm::vec3 matDiffuse = glm::vec3(components[j]["model"]["matDiffuseX"].as<float>(), components[j]["model"]["matDiffuseY"].as<float>(), components[j]["model"]["matDiffuseZ"].as<float>());
+                    glm::vec3 matSpecular = glm::vec3(components[j]["model"]["matSpecularX"].as<float>(), components[j]["model"]["matSpecularY"].as<float>(), components[j]["model"]["matSpecularZ"].as<float>());
+                    float matShininess = components[j]["model"]["matShininess"].as<float>();
+                    std::string objMeshName = components[j]["model"]["objMesh"].as<std::string>();
+                    ObjMesh* objMesh = nullptr;
+                    for (unsigned int y = 0; y < MasterObjMeshes::objMeshList.size(); y++) 
+                    {
+                        if (objMeshName == MasterObjMeshes::objMeshList[y]->GetName())
+                        {
+                            objMesh = MasterObjMeshes::objMeshList[y];
+                        }
+                    }
+                    Model* model = new Model(objMesh, allSceneObjects[i], texture);
+                    model->SetMatAmbient(matAmbient);
+                    model->SetMatDiffuse(matDiffuse);
+                    model->SetMatSpecular(matSpecular);
+                    model->SetMatShininess(matShininess);
+                    allSceneObjects[i]->AddComponent(model);
                 }
                 if (components[j]["spinner"])
                 {

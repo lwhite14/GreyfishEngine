@@ -1,0 +1,28 @@
+Program: GreyfishEngine
+SceneObjects:
+  - name: Car
+    glslProgramName: BasicLit
+    dimensions:
+      posX: -0.250000
+      posY: -0.250000
+      posZ: -4.000000
+      rotX: 20.000000
+      rotY: 35.000000
+      rotZ: 0.000000
+      scaX: 1.000000
+      scaY: 1.000000
+      scaZ: 1.000000
+    components:
+      - model:
+          objMesh: car.obj
+          texture: devtex1.jpg
+          matAmbientX: 0.250000
+          matAmbientY: 0.600000
+          matAmbientZ: 0.250000
+          matDiffuseX: 0.450000
+          matDiffuseY: 0.250000
+          matDiffuseZ: 0.250000
+          matSpecularX: 0.500000
+          matSpecularY: 0.500000
+          matSpecularZ: 0.500000
+          matShininess: 64.000000

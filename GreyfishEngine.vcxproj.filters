@@ -78,6 +78,9 @@
     <ClCompile Include="Source\SceneObjects\Spinner.cpp">
       <Filter>Source\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Drawables\Model.cpp">
+      <Filter>Source\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\Shaders\Basic.vert">
@@ -196,7 +199,7 @@
     <ClInclude Include="Source\MasterShaders.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MasterTextures.h">
+    <ClInclude Include="Source\MasterObjMeshes.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneObjects\Spinner.h">
@@ -214,7 +217,10 @@
     <ClInclude Include="Source\UserInterface\ConsoleMessage.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MasterModels.h">
+    <ClInclude Include="Source\Drawables\Model.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MasterTextures.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
   </ItemGroup>

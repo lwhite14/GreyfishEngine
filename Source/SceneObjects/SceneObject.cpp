@@ -1,9 +1,6 @@
 #include "SceneObject.h"
 
 #include <iostream>
-#include "../Drawables/Drawable.h"
-#include "../Drawables/ObjMesh.h"
-#include "../Drawables/Cube.h"
 #include "Dimensions.h"
 #include "../MasterShaders.h"
 #include "../Dependencies/imgui/imgui.h"
