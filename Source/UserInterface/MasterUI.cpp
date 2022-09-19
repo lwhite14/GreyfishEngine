@@ -46,19 +46,40 @@ void MasterUI::Init()
 
     m_io = &ImGui::GetIO();
     m_io->Fonts->AddFontFromFileTTF("Settings/EngineAssets/Fonts/Roboto-Bold.ttf", 12);
+    m_io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::SetUpStyle();
 
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
+    ImGui::SetNextWindowViewport(viewport->ID);
     m_windowFlags |= ImGuiWindowFlags_NoResize;
     m_windowFlags |= ImGuiWindowFlags_NoTitleBar;
-    m_windowFlags |= ImGuiWindowFlags_NoScrollbar;
+    //m_windowFlags |= ImGuiWindowFlags_NoScrollbar;
     m_windowFlags |= ImGuiWindowFlags_MenuBar;
     m_windowFlags |= ImGuiWindowFlags_NoMove;
     m_windowFlags |= ImGuiWindowFlags_NoCollapse;
     //m_windowFlags |= ImGuiWindowFlags_NoNav;
     //m_windowFlags |= ImGuiWindowFlags_NoBackground;
     m_windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
-    //m_windowFlags |= ImGuiWindowFlags_NoDocking;
+    m_windowFlags |= ImGuiWindowFlags_NoDocking;
     //m_windowFlags |= ImGuiWindowFlags_UnsavedDocument;
+    m_windowFlags |= ImGuiWindowFlags_NoNavFocus;
+
+    m_dockspaceFlags = ImGuiDockNodeFlags_None;
+
+    m_windowFlagsChild = ImGuiModFlags_None;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoResize;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoTitleBar;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoScrollbar;
+    //m_windowFlagsChild |= ImGuiWindowFlags_MenuBar;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoMove;
+    m_windowFlagsChild |= ImGuiWindowFlags_NoCollapse;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoNav;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoBackground;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    //m_windowFlagsChild |= ImGuiWindowFlags_NoDocking;
+    //m_windowFlagsChild |= ImGuiWindowFlags_UnsavedDocument;
 }
 
 void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
@@ -73,22 +94,24 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     // Windows //
     /////////////
 
+
     // Workspace Window
-    if (!m_hasResized) 
+    if (!m_hasResized)
     {
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::SetNextWindowSize(m_size);
         m_hasResized = true;
     }
-
     ImGui::Begin("Workspace", NULL, m_windowFlags);
+    ImGuiID dockspace_id = ImGui::GetID("DockSpace");
+    ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), m_dockspaceFlags);
     Menu(selectedSceneObject, allSceneObjects);
+    ImGui::End();
+
     SceneObjectsWindow(selectedSceneObject, allSceneObjects);
     OptionsWindow(selectedSceneObject, allSceneObjects);
     GameViewWindow();
-    FramerateWindow();
     if (Console::isOn) { Console::PerFrame(); }
-    ImGui::End();
 
     ImGui::ShowDemoWindow();
 
@@ -103,25 +126,10 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
 }
 
-void MasterUI::FramerateWindow() 
-{
-    bool p_open = true;
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(ImVec2(ImGui::GetContentRegionAvail().x - 80, 30));
-    ImGui::SetNextWindowSize(ImVec2(75, 20));
-    ImGui::SetNextWindowViewport(viewport->ID);
-    if (ImGui::Begin("Example: Simple overlay", &p_open, window_flags))
-    {
-        ImGui::Text("FPS: %.1f", m_io->Framerate);
-    }
-    ImGui::End();
-}
-
 void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     // SceneObjects Child
-    ImGui::BeginChild("##", ImVec2(m_size.x * 0.15f, ImGui::GetContentRegionAvail().y), true);
+    ImGui::Begin("SceneObjects", (bool*)0, m_windowFlagsChild);
     ImGui::Text("SceneObjects in Scene:");
     ImGui::Spacing();
     //m_sceneObjectIndex = 0;
@@ -178,14 +186,13 @@ void MasterUI::SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<
         ImGui::Text("Rename your new SceneObject first!");
         ImGui::EndPopup();
     }
-    ImGui::EndChild();
-    ImGui::SameLine();
+    ImGui::End();
 }
 
 void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
 {
     // Options Child
-    ImGui::BeginChild("Game View Options", ImVec2(m_size.x * 0.25f, ImGui::GetContentRegionAvail().y), true);
+    ImGui::Begin("Options", (bool*)0, m_windowFlagsChild);
     if (selectedSceneObject != nullptr)
     {
         selectedSceneObject->DrawHeaderUI();
@@ -202,14 +209,13 @@ void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<Scene
             ImGui::EndPopup();
         }
     }
-    ImGui::EndChild();
-    ImGui::SameLine();
+    ImGui::End();
 }
 
 void MasterUI::GameViewWindow()
 {
     // Game View Child
-    ImGui::BeginChild("Game View", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true);
+    ImGui::Begin("Scene", (bool*)0, m_windowFlagsChild);
     m_gameViewSize = ImGui::GetContentRegionAvail();
     ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_gameViewSize.x, m_gameViewSize.y), ImVec2(0, 1), ImVec2(1, 0), 0);
     if (ImGui::IsItemHovered())
@@ -241,7 +247,7 @@ void MasterUI::GameViewWindow()
         m_camMotion.Down = false;
         m_camMotion.Up = false;
     }
-    ImGui::EndChild();
+    ImGui::End();
 }
 
 void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)

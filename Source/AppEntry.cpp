@@ -5,7 +5,7 @@
 
 int main()
 {
-	Runner runner = Runner("Greyfish Engine", 1200, 600);
+	Runner runner = Runner("Greyfish Engine", 1200, 800);
 	Scene* base;
 	BasicScene derived;
 	base = &derived;

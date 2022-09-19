@@ -24,6 +24,8 @@ private:
 
     GLFWwindow* m_window;
     ImGuiWindowFlags m_windowFlags;
+    ImGuiDockNodeFlags m_dockspaceFlags;
+    ImGuiWindowFlags m_windowFlagsChild;
     ImGuiIO* m_io;
     SceneObject* m_selectedSceneObject;
 
@@ -45,14 +47,12 @@ public:
     void PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void CleanUp();
 
-    void FramerateWindow();
     void Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void SceneObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
     void GameViewWindow();
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
-
     void AddRecentFile(std::string recentFile);
     void LoadRecentFiles();
 
