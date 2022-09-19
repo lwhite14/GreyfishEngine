@@ -41,6 +41,7 @@ public:
 
         ObjMesh* objMesh = ObjMesh::Load(objMeshName.c_str());
         objMesh->SetName(str);
+        objMesh->SetFilePath(objMeshName);
         objMeshList.push_back(objMesh);
     }
 };

@@ -19,6 +19,7 @@ class ObjMesh : public TriangleMesh
 private:
     bool m_drawAdj;
     std::string m_name;
+    std::string m_filePath;
 
 public:
     static ObjMesh* Load(const char* fileName, bool center = false, bool genTangents = false);
@@ -27,7 +28,9 @@ public:
     void RenderDrawable() override;
 
     void SetName(std::string name);
+    void SetFilePath(std::string filePath);
     std::string GetName();
+    std::string GetFilePath();
 
 protected:
     ObjMesh();

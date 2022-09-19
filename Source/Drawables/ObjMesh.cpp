@@ -439,4 +439,6 @@ void ObjMesh::GlMeshData::ConvertFacesToAdjancencyFormat()
 }
 
 void ObjMesh::SetName(std::string name) { m_name = name; }
+void ObjMesh::SetFilePath(std::string filePath) { m_filePath = filePath; }
 std::string ObjMesh::GetName() { return m_name; }
+std::string ObjMesh::GetFilePath() { return m_filePath; }

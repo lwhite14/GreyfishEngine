@@ -7,6 +7,7 @@ class Texture
 {
 private:
 	std::string m_name;
+	std::string m_filePath;
 	GLuint m_texID;
 
 	void LoadTexture(const char* filePath);
@@ -19,8 +20,10 @@ public:
 
 	GLuint GetTexture();
 	std::string GetName();
+	std::string GetFilePath();
 
 	void SetName(std::string name);
+	void SetFilePath(std::string filePath);
 
 };
 

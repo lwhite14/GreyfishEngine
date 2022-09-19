@@ -44,6 +44,7 @@ public:
 
         Texture* texture = new Texture(textureName.c_str());
         texture->SetName(str);
+        texture->SetFilePath(textureName);
         textureList.push_back(texture);
     }
 

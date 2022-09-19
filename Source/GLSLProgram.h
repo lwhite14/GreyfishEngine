@@ -31,6 +31,7 @@ namespace GLSLShader {
 class GLSLProgram {
 private:
     std::string name;
+    std::string filePath;
     GLuint handle;
     bool linked;
     std::map<std::string, int> uniformLocations;
@@ -82,7 +83,9 @@ public:
     const char *getTypeString(GLenum type);
 
     std::string GetName();
+    std::string GetFilePath();
     void SetName(std::string newName);
+    void SetFilePath(std::string newFilePath);
 };
 
 int GLSLProgram::GetUniformLocation(const char *name) {

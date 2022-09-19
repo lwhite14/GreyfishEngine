@@ -49,7 +49,17 @@ void Texture::Bind()
 GLuint Texture::GetTexture() { return m_texID; }
 std::string Texture::GetName() { return m_name; }
 
+std::string Texture::GetFilePath()
+{
+    return m_filePath;
+}
+
 void Texture::SetName(std::string name)
 {
     m_name = name;
+}
+
+void Texture::SetFilePath(std::string filePath)
+{
+    m_filePath = filePath;
 }

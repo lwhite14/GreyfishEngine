@@ -504,9 +504,19 @@ std::string GLSLProgram::GetName()
     return name;
 }
 
+std::string GLSLProgram::GetFilePath()
+{
+    return filePath;
+}
+
 void GLSLProgram::SetName(std::string newName)
 {
     name = newName;
+}
+
+void GLSLProgram::SetFilePath(std::string newFilePath)
+{
+    filePath = newFilePath;
 }
 
 void GLSLProgram::Validate() {

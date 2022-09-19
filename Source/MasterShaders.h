@@ -54,6 +54,7 @@ public:
             prog->CompileShader(frag.c_str());
             prog->Link();
             prog->SetName(name);
+            prog->SetFilePath(shaderName);
             shaderList.push_back(prog);
         }
         catch (GLSLProgramException& e)

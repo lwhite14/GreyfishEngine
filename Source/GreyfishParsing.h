@@ -157,6 +157,59 @@ namespace GreyfishParsing
         newSceneFile << out.c_str();
         newSceneFile.close();
     }
+
+    static inline void SaveAssets() 
+    {
+        std::ofstream newSceneFile{ "Settings/Assets.yaml" };
+        YAML::Emitter out;
+
+        out << YAML::BeginMap;
+        out << YAML::Key << "images";
+        out << YAML::Value << YAML::BeginSeq;
+        for (unsigned int i = 0; i < MasterTextures::textureList.size(); i++)
+        {
+            out << MasterTextures::textureList[i]->GetFilePath();
+        }
+        out << YAML::EndSeq;
+
+        out << YAML::Key << "objMeshes";
+        out << YAML::Value << YAML::BeginSeq;
+        for (unsigned int i = 0; i < MasterObjMeshes::objMeshList.size(); i++)
+        {
+            out << MasterObjMeshes::objMeshList[i]->GetFilePath();
+        }
+        out << YAML::EndSeq;
+
+        out << YAML::Key << "shaders";
+        out << YAML::Value << YAML::BeginSeq;
+        for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++)
+        {
+            out << MasterShaders::shaderList[i]->GetFilePath();
+        }
+        out << YAML::EndSeq;
+        out << YAML::EndMap;
+
+        newSceneFile << out.c_str();
+        newSceneFile.close();
+    }
+
+    static inline void LoadAssets() 
+    {
+        YAML::Node config = YAML::LoadFile("Settings/Assets.yaml");
+
+        for (unsigned int i = 0; i < config["images"].size(); i++) 
+        {
+            MasterTextures::NewTexture(config["images"][i].as<std::string>());
+        }
+        for (unsigned int i = 0; i < config["objMeshes"].size(); i++) 
+        {
+            MasterObjMeshes::NewObjMesh(config["objMeshes"][i].as<std::string>());
+        }
+        for (unsigned int i = 0; i < config["shaders"].size(); i++) 
+        {
+            MasterShaders::NewShader(config["shaders"][i].as<std::string>());
+        }
+    }
 }
 
 #endif //GREYFISHPARSING_H

@@ -8,7 +8,7 @@ in float FogDensity;
 
 layout( location = 0 ) out vec4 FragColor;
 
-uniform vec4 FogColour = vec4(0.4f, 0.4f, 0.4f, 1.0f);
+uniform vec4 FogColour = vec4(0.2, 0.3, 0.3, 1.0);
 
 uniform sampler2D Texture;
 

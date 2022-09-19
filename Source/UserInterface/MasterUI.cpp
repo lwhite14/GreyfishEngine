@@ -490,11 +490,13 @@ void MasterUI::LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string
         {
             Console::AddMessage("Asset Dialog: Image Success!");
             MasterTextures::NewTexture(filePath);
+            GreyfishParsing::SaveAssets();
         }
         else if ((type == "Model") && (ex == "obj"))
         {
             Console::AddMessage("Asset Dialog: Model Success!");
             MasterObjMeshes::NewObjMesh(filePath);
+            GreyfishParsing::SaveAssets();
         }
         else if ((type == "Shader") && (ex == "vert"))
         {
@@ -509,6 +511,7 @@ void MasterUI::LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string
                 filePathProper.push_back(filePath[i]);
             }
             MasterShaders::NewShader(filePathProper);
+            GreyfishParsing::SaveAssets();
         }
         else
         {
