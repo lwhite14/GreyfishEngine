@@ -60,8 +60,8 @@ public:
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
     void AddRecentFile(std::string recentFile);
+    void SaveRecentFileList();
     void LoadRecentFiles();
-
     void LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string type);
 
     GLFWwindow* GetWindow();

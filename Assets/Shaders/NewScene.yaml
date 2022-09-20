@@ -14,7 +14,7 @@ SceneObjects:
       scaZ: 2.000000
     components:
       - cube:
-          texture: devtex1.jpg
+          texture: devtex1
           matAmbientX: 0.250000
           matAmbientY: 0.250000
           matAmbientZ: 0.250000
@@ -39,8 +39,8 @@ SceneObjects:
       scaZ: 1.000000
     components:
       - model:
-          objMesh: suzanne.obj
-          texture: devtex1.jpg
+          objMesh: suzanne
+          texture: devtex1
           matAmbientX: 0.250000
           matAmbientY: 0.250000
           matAmbientZ: 0.250000

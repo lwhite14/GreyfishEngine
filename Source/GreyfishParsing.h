@@ -29,6 +29,21 @@ namespace GreyfishParsing
         return false;
     }
 
+    static inline bool DoesFileExist(std::string filePath)
+    {
+        YAML::Node config;
+        try
+        {
+            YAML::Node config = YAML::LoadFile(filePath);
+            return true;
+        }
+        catch (YAML::Exception ex)
+        {
+            Console::AddErrorMessage("GreyfishParsing: " + ex.msg);
+            return false;
+        }
+    }
+
 	static inline std::vector<SceneObject*> LoadFileIntoSceneObjects(std::string filePath)
 	{
         std::vector<SceneObject*> allSceneObjects = std::vector<SceneObject*>();

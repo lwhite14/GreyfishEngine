@@ -317,12 +317,22 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                     {
                         if (ImGui::MenuItem(m_recentFiles[i].c_str())) 
                         {
-                            allSceneObjects = std::vector<SceneObject*>();
-                            allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(m_recentFiles[i]);
-                            m_sceneObjectIndex = -1;
-                            selectedSceneObject = nullptr;
-                            m_selectedSceneObject = nullptr;
-                            AddRecentFile(m_recentFiles[i]);
+                            if (GreyfishParsing::DoesFileExist(m_recentFiles[i])) 
+                            {
+                                allSceneObjects = std::vector<SceneObject*>();
+                                allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(m_recentFiles[i]);
+                                m_sceneObjectIndex = -1;
+                                selectedSceneObject = nullptr;
+                                m_selectedSceneObject = nullptr;
+                                AddRecentFile(m_recentFiles[i]);
+                            }
+                            else 
+                            {
+                                m_recentFiles.erase(m_recentFiles.begin() + i);
+                                m_recentFiles.push_back("");
+                                SaveRecentFileList();
+                                Console::AddWarningMessage("MasterUI: Removing recent file entry.");
+                            }
                         }
                     }
                 }
@@ -437,13 +447,18 @@ void MasterUI::AddRecentFile(std::string recentFile)
     temp[4] = m_recentFiles[3];
     m_recentFiles = temp;
 
+    SaveRecentFileList();
+}
+
+void MasterUI::SaveRecentFileList() 
+{
     std::ofstream newSceneFile{ "Settings/RecentFiles.yaml" };
     YAML::Emitter out;
 
     out << YAML::BeginSeq;
-    for (unsigned int i = 0; i < 5; i++) 
+    for (unsigned int i = 0; i < 5; i++)
     {
-        out << m_recentFiles[i]; 
+        out << m_recentFiles[i];
     }
     out << YAML::EndSeq;
 
