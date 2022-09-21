@@ -51,13 +51,12 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    unsigned int GetFramebuffer() 
-    {
-        return m_framebuffer;
-    }
-
+    unsigned int GetFramebuffer() { return m_framebuffer; }
     int GetGameViewWidth() { return m_gameViewWidth; }
     int GetGameViewHeight() { return m_gameViewHeight; }
+
+    void SetGameViewWidth(int gameViewWidth) { m_gameViewWidth = gameViewWidth; }
+    void SetGameViewHeight(int gameViewHeight) { m_gameViewHeight = gameViewHeight; }
 };
 
 #endif //FRAMEBUFFER_H

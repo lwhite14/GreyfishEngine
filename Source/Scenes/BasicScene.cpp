@@ -19,11 +19,11 @@ void BasicScene::Start(GLFWwindow* window)
     m_masterUI = MasterUI(window, ImVec2(m_width, m_height));
     m_masterUI.Init();
 
-    m_cameraGameView = new CameraGameView(m_width, m_height);
+    m_cameraGameView = new CameraGameView(1920, 1080);
 
     glEnable(GL_DEPTH_TEST);
 
-    m_framebuffer = Framebuffer(m_width, m_height);
+    m_framebuffer = new Framebuffer(m_width, m_height);
 
     GreyfishParsing::LoadAssets();
 
@@ -48,11 +48,11 @@ void BasicScene::Update(GLFWwindow* window, float deltaTime)
 
 void BasicScene::Render()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer.GetFramebuffer());
+    glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer->GetFramebuffer());
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, m_framebuffer.GetGameViewWidth(), m_framebuffer.GetGameViewHeight());
+    glViewport(0, 0, m_framebuffer->GetGameViewWidth(), m_framebuffer->GetGameViewHeight());
   
     for (unsigned int i = 0; i < m_sceneObjects.size(); i++) { m_sceneObjects[i]->Render(m_view, m_projection); }
 
@@ -61,9 +61,11 @@ void BasicScene::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, m_width, m_height);
-    m_masterUI.SetGameViewFBO(m_framebuffer.GetFramebuffer());
+    m_masterUI.SetSceneFramebuffer(m_framebuffer);
     m_masterUI.PerFrame(m_selectedObject, m_sceneObjects);
     m_selectedObject = m_masterUI.GetSelectedSceneObject();
+
+    Resize(m_masterUI.GetSceneViewSize().x, m_masterUI.GetSceneViewSize().y);
 }
 
 void BasicScene::CleanUp()

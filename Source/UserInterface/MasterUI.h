@@ -18,33 +18,40 @@
 #include "../Motion.h"
 #include "../SceneObjects/Component.h"
 #include "../SceneObjects/SceneObject.h"
+#include "../Framebuffer.h"
 
 class MasterUI 
 {
 private:
     std::string m_openFile;
+
     std::vector<std::string> m_recentFiles;
 
     GLFWwindow* m_window;
+
     ImGuiWindowFlags m_windowFlags;
-    ImGuiDockNodeFlags m_dockspaceFlags;
     ImGuiWindowFlags m_windowFlagsChild;
+
+    ImGuiDockNodeFlags m_dockspaceFlags;
+
     ImGuiIO* m_io;
+
     SceneObject* m_selectedSceneObject;
 
     ImVec2 m_size;
     ImVec2 m_offset;
-    unsigned int m_gameViewFbo;
-    float m_mouseWheel;
+    ImVec2 m_sceneViewSize;
+
     Motion m_camMotion;
 
-    ImVec2 m_sceneViewSize;
+    float m_mouseWheel;
     int m_sceneObjectIndex;
 
     bool m_objectsViewOn;
     bool m_optionsViewOn;
     bool m_sceneViewOn;
 
+    Framebuffer* m_sceneFramebuffer;
     
 public:
     MasterUI();
@@ -68,18 +75,18 @@ public:
     SceneObject* GetSelectedSceneObject();
     ImVec2 GetSize();
     ImVec2 GetOffset();
-    unsigned int GetGameViewFBO();
     float GetMouseWheel();
     Motion GetCamMotion();
-    ImVec2 GetGameViewSize();
+    ImVec2 GetSceneViewSize();
+    Framebuffer* GetSceneFramebuffer();
 
     void SetWindow(GLFWwindow* window);
     void SetSize(ImVec2 size);
     void SetOffset(ImVec2 offset);
-    void SetGameViewFBO(unsigned int gameViewFbo);
     void SetMouseWheel(float mouseWheel);
     void SetCamMotion(Motion motion);
-    void SetGameViewSize(ImVec2 gameViewSize);
+    void SetSceneViewSize(ImVec2 gameViewSize);
+    void SetSceneFramebuffer(Framebuffer* sceneFramebuffer);
 };
 
 #endif //MASTERUI_H

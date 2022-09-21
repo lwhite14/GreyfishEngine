@@ -22,7 +22,6 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_window{ window },
     m_size{ size },
     m_windowFlags{ 0 }, m_offset{ 0, 0 },
-    m_gameViewFbo{ 0 },
     m_mouseWheel{ 0.0f },
     m_camMotion{ false, false, false, false },
     m_sceneObjectIndex{ 0 },
@@ -210,7 +209,7 @@ void MasterUI::SceneWindow()
     // Game View Child
     ImGui::Begin("Scene", &m_sceneViewOn, m_windowFlagsChild);
     m_sceneViewSize = ImGui::GetContentRegionAvail();
-    ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_gameViewFbo), ImVec2(m_sceneViewSize.x, m_sceneViewSize.y), ImVec2(0, 1), ImVec2(1, 0), 0);
+    ImGui::ImageButton(reinterpret_cast<ImTextureID>(m_sceneFramebuffer->GetFramebuffer()), ImVec2(m_sceneViewSize.x, m_sceneViewSize.y), ImVec2(0, 1), ImVec2(1, 0), 0);
     if (ImGui::IsItemHovered())
     {
         if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
@@ -550,15 +549,15 @@ GLFWwindow* MasterUI::GetWindow() { return m_window; }
 SceneObject* MasterUI::GetSelectedSceneObject() { return m_selectedSceneObject; }
 ImVec2 MasterUI::GetSize() { return m_size; }
 ImVec2 MasterUI::GetOffset() { return m_offset; }
-unsigned int MasterUI::GetGameViewFBO() { return m_gameViewFbo; }
 float MasterUI::GetMouseWheel() { return m_mouseWheel; }
 Motion MasterUI::GetCamMotion() { return m_camMotion; }
-ImVec2 MasterUI::GetGameViewSize() { return m_sceneViewSize; }
+ImVec2 MasterUI::GetSceneViewSize() { return m_sceneViewSize; }
+Framebuffer* MasterUI::GetSceneFramebuffer() { return m_sceneFramebuffer; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
 void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
-void MasterUI::SetGameViewFBO(unsigned int gameViewFbo) { m_gameViewFbo = gameViewFbo; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }
 void MasterUI::SetCamMotion(Motion motion) { m_camMotion = motion; }
-void MasterUI::SetGameViewSize(ImVec2 gameViewSize) { m_sceneViewSize = gameViewSize; }
+void MasterUI::SetSceneViewSize(ImVec2 gameViewSize) { m_sceneViewSize = gameViewSize; }
+void MasterUI::SetSceneFramebuffer(Framebuffer* sceneFramebuffer) { m_sceneFramebuffer = sceneFramebuffer; }
