@@ -80,13 +80,11 @@ void MasterUI::Init()
     //m_windowFlagsChild |= ImGuiWindowFlags_UnsavedDocument;
 }
 
-void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::PerFrame(std::vector<SceneObject*>& allSceneObjects)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
-    m_selectedSceneObject = selectedSceneObject;
 
     /////////////
     // Windows //
@@ -97,11 +95,11 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     ImGui::Begin("Workspace", NULL, m_windowFlags);
     ImGuiID dockspace_id = ImGui::GetID("DockSpace");
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), m_dockspaceFlags);
-    Menu(selectedSceneObject, allSceneObjects);
+    Menu(allSceneObjects);
     ImGui::End();
 
-    if (m_objectsViewOn) { ObjectsWindow(selectedSceneObject, allSceneObjects); }
-    if (m_optionsViewOn) { OptionsWindow(selectedSceneObject, allSceneObjects); }
+    if (m_objectsViewOn) { ObjectsWindow(allSceneObjects); }
+    if (m_optionsViewOn) { OptionsWindow(allSceneObjects); }
     if (m_sceneViewOn) { SceneWindow(); }
     if (Console::isOn) { Console::PerFrame(); }
 
@@ -118,7 +116,7 @@ void MasterUI::PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObjec
     }
 }
 
-void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::ObjectsWindow(std::vector<SceneObject*>& allSceneObjects)
 {
     // SceneObjects Child
     ImGui::Begin("Objects", &m_objectsViewOn, m_windowFlagsChild);
@@ -131,7 +129,7 @@ void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<Scene
         if (ImGui::Selectable(allSceneObjects[i]->GetName().c_str(), isSelected)) { m_selectedSceneObject = allSceneObjects[i]; m_sceneObjectIndex = i; }
         if (isSelected) { ImGui::SetItemDefaultFocus(); }
 
-        if (allSceneObjects[i] == selectedSceneObject)
+        if (allSceneObjects[i] == m_selectedSceneObject)
         {
             if (ImGui::BeginPopupContextItem())
             {
@@ -143,12 +141,11 @@ void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<Scene
                     int indexToRemove = -1;
                     for (unsigned int j = 0; j < allSceneObjects.size(); j++)
                     {
-                        if (allSceneObjects[j] == selectedSceneObject)
+                        if (allSceneObjects[j] == m_selectedSceneObject)
                         {
                             indexToRemove = j;
                         }
                     }
-                    selectedSceneObject = nullptr;
                     m_selectedSceneObject = nullptr;
                     allSceneObjects.erase(allSceneObjects.begin() + indexToRemove);
                 }
@@ -168,7 +165,6 @@ void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<Scene
         else
         {
             allSceneObjects.push_back(new SceneObject("?", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[0]));
-            selectedSceneObject = allSceneObjects[allSceneObjects.size() - 1];
             m_selectedSceneObject = allSceneObjects[allSceneObjects.size() - 1];
             m_sceneObjectIndex = allSceneObjects.size() - 1;
         }
@@ -181,23 +177,23 @@ void MasterUI::ObjectsWindow(SceneObject* selectedSceneObject, std::vector<Scene
     ImGui::End();
 }
 
-void MasterUI::OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::OptionsWindow(std::vector<SceneObject*>& allSceneObjects)
 {
     // Options Child
     ImGui::Begin("Options", &m_optionsViewOn, m_windowFlagsChild);
-    if (selectedSceneObject != nullptr)
+    if (m_selectedSceneObject != nullptr)
     {
-        selectedSceneObject->DrawHeaderUI();
-        std::vector<Component*> components = selectedSceneObject->GetAllComponents();
+        m_selectedSceneObject->DrawHeaderUI();
+        std::vector<Component*> components = m_selectedSceneObject->GetAllComponents();
         for (unsigned int i = 0; i < components.size(); i++) { components[i]->DrawUI(); }
         if (ImGui::Button("  +  ", ImVec2(ImGui::GetContentRegionAvail().x, 0))) { ImGui::OpenPopup("AddComponentPopup"); }
         ImGui::SameLine();
         if (ImGui::BeginPopup("AddComponentPopup"))
         {
             ImVec2 size = ImVec2(100, 0);
-            if (ImGui::Selectable("Cube", false, 0, size)) { selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, selectedSceneObject)); }
-            if (ImGui::Selectable("Model", false, 0, size)) { selectedSceneObject->AddComponent(new Model(MasterObjMeshes::objMeshList[0], selectedSceneObject, MasterTextures::textureList[0])); }
-            if (ImGui::Selectable("Spinner", false, 0, size)) { selectedSceneObject->AddComponent(new Spinner(selectedSceneObject->GetModelPtr(), selectedSceneObject)); }
+            if (ImGui::Selectable("Cube", false, 0, size)) { m_selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, m_selectedSceneObject)); }
+            if (ImGui::Selectable("Model", false, 0, size)) { m_selectedSceneObject->AddComponent(new Model(MasterObjMeshes::objMeshList[0], m_selectedSceneObject, MasterTextures::textureList[0])); }
+            if (ImGui::Selectable("Spinner", false, 0, size)) { m_selectedSceneObject->AddComponent(new Spinner(m_selectedSceneObject->GetModelPtr(), m_selectedSceneObject)); }
             ImGui::EndPopup();
         }
     }
@@ -242,7 +238,7 @@ void MasterUI::SceneWindow()
     ImGui::End();
 }
 
-void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects)
+void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
 {
     if (ImGui::BeginMenuBar())
     {
@@ -252,7 +248,6 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             {
                 allSceneObjects = std::vector<SceneObject*>();
                 m_sceneObjectIndex = -1;
-                selectedSceneObject = nullptr;
                 m_selectedSceneObject = nullptr;
                 m_openFile = "";
             }
@@ -288,7 +283,6 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                             allSceneObjects = std::vector<SceneObject*>();
                             allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(filePath);
                             m_sceneObjectIndex = -1;
-                            selectedSceneObject = nullptr;
                             m_selectedSceneObject = nullptr;
                             m_openFile = filePath;
                             AddRecentFile(filePath);
@@ -321,7 +315,6 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
                                 allSceneObjects = std::vector<SceneObject*>();
                                 allSceneObjects = GreyfishParsing::LoadFileIntoSceneObjects(m_recentFiles[i]);
                                 m_sceneObjectIndex = -1;
-                                selectedSceneObject = nullptr;
                                 m_selectedSceneObject = nullptr;
                                 AddRecentFile(m_recentFiles[i]);
                             }
@@ -384,6 +377,8 @@ void MasterUI::Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>&
             }
             ImGui::EndMenu();
         }
+        ImGui::Spacing();ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();ImGui::Spacing();
+        ImGui::Text("%.1f", m_io->Framerate);
         ImGui::EndMenuBar();
     }
 }
@@ -555,6 +550,7 @@ ImVec2 MasterUI::GetSceneViewSize() { return m_sceneViewSize; }
 Framebuffer* MasterUI::GetSceneFramebuffer() { return m_sceneFramebuffer; }
 
 void MasterUI::SetWindow(GLFWwindow* window) { m_window = window; }
+void MasterUI::SetSelectedSceneObject(SceneObject* selectedSceneObject) { m_selectedSceneObject = selectedSceneObject; }
 void MasterUI::SetSize(ImVec2 size) { m_size = size; }
 void MasterUI::SetOffset(ImVec2 offset) { m_offset = offset; }
 void MasterUI::SetMouseWheel(float mouseWheel) { m_mouseWheel = mouseWheel; }

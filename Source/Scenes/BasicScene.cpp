@@ -34,7 +34,7 @@ void BasicScene::Start(GLFWwindow* window)
     m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, m_sceneObjects[m_sceneObjects.size() - 1]));
     m_sceneObjects.push_back(new SceneObject("Monkey", glm::vec3(-3.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), MasterShaders::shaderList[2]));
     m_sceneObjects[m_sceneObjects.size() - 1]->AddComponent(new Model(MasterObjMeshes::objMeshList[0], m_sceneObjects[m_sceneObjects.size() - 1], MasterTextures::textureList[0]));
-    m_selectedObject = m_sceneObjects[0];
+    m_masterUI.SetSelectedSceneObject(m_sceneObjects[0]);
 
 
     Console::AddMessage("---- INITIALIZATION COMPLETED ----");
@@ -62,8 +62,7 @@ void BasicScene::Render()
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, m_width, m_height);
     m_masterUI.SetSceneFramebuffer(m_framebuffer);
-    m_masterUI.PerFrame(m_selectedObject, m_sceneObjects);
-    m_selectedObject = m_masterUI.GetSelectedSceneObject();
+    m_masterUI.PerFrame(m_sceneObjects);
 
     Resize(m_masterUI.GetSceneViewSize().x, m_masterUI.GetSceneViewSize().y);
 }

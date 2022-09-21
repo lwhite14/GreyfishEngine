@@ -18,7 +18,6 @@ class BasicScene : public Scene
 {
 private:
 	std::vector<SceneObject*> m_sceneObjects;
-	SceneObject* m_selectedObject;
 	MasterUI m_masterUI;
 	CameraGameView* m_cameraGameView;
 	Framebuffer* m_framebuffer;

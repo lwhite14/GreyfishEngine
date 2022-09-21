@@ -57,12 +57,12 @@ public:
     MasterUI();
     MasterUI(GLFWwindow* window, ImVec2 size);
     void Init();
-    void PerFrame(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
+    void PerFrame(std::vector<SceneObject*>& allSceneObjects);
     void CleanUp();
 
-    void Menu(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
-    void ObjectsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
-    void OptionsWindow(SceneObject* selectedSceneObject, std::vector<SceneObject*>& allSceneObjects);
+    void Menu(std::vector<SceneObject*>& allSceneObjects);
+    void ObjectsWindow(std::vector<SceneObject*>& allSceneObjects);
+    void OptionsWindow(std::vector<SceneObject*>& allSceneObjects);
     void SceneWindow();
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
@@ -81,6 +81,7 @@ public:
     Framebuffer* GetSceneFramebuffer();
 
     void SetWindow(GLFWwindow* window);
+    void SetSelectedSceneObject(SceneObject* selectedSceneObject);
     void SetSize(ImVec2 size);
     void SetOffset(ImVec2 offset);
     void SetMouseWheel(float mouseWheel);
