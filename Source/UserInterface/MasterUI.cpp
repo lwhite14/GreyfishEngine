@@ -27,7 +27,8 @@ MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
     m_sceneObjectIndex{ 0 },
     m_objectsViewOn{ true },
     m_optionsViewOn{ true },
-    m_sceneViewOn{ true }
+    m_sceneViewOn{ true },
+    m_assetViewOn{ true }
 {
     
 }
@@ -101,6 +102,7 @@ void MasterUI::PerFrame(std::vector<SceneObject*>& allSceneObjects)
     if (m_objectsViewOn) { ObjectsWindow(allSceneObjects); }
     if (m_optionsViewOn) { OptionsWindow(allSceneObjects); }
     if (m_sceneViewOn) { SceneWindow(); }
+    if (m_assetViewOn) { AssetWindow(); }
     if (Console::isOn) { Console::PerFrame(); }
 
     ImGui::ShowDemoWindow();
@@ -238,6 +240,36 @@ void MasterUI::SceneWindow()
     ImGui::End();
 }
 
+void MasterUI::AssetWindow() 
+{
+    ImGui::Begin("Assets", &m_assetViewOn, m_windowFlagsChild);
+    if (ImGui::TreeNode("Images"))
+    {
+        for (unsigned int i = 0; i < MasterTextures::textureList.size(); i++)
+        {
+            ImGui::Text(MasterTextures::textureList[i]->GetName().c_str());
+        }
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Models"))
+    {
+        for (unsigned int i = 0; i < MasterObjMeshes::objMeshList.size(); i++)
+        {
+            ImGui::Text(MasterObjMeshes::objMeshList[i]->GetName().c_str());
+        }
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Shaders"))
+    {
+        for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++)
+        {
+            ImGui::Text(MasterShaders::shaderList[i]->GetName().c_str());
+        }
+        ImGui::TreePop();
+    }
+    ImGui::End();
+}
+
 void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
 {
     if (ImGui::BeginMenuBar())
@@ -353,6 +385,7 @@ void MasterUI::Menu(std::vector<SceneObject*>& allSceneObjects)
             ImGui::MenuItem("Options", NULL, &m_optionsViewOn);
             ImGui::MenuItem("Game", NULL, &m_sceneViewOn);
             ImGui::MenuItem("Console", NULL, &Console::isOn);
+            ImGui::MenuItem("Assets", NULL, &m_assetViewOn);
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Add"))

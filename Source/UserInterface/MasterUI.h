@@ -50,6 +50,7 @@ private:
     bool m_objectsViewOn;
     bool m_optionsViewOn;
     bool m_sceneViewOn;
+    bool m_assetViewOn;
 
     Framebuffer* m_sceneFramebuffer;
     
@@ -64,6 +65,7 @@ public:
     void ObjectsWindow(std::vector<SceneObject*>& allSceneObjects);
     void OptionsWindow(std::vector<SceneObject*>& allSceneObjects);
     void SceneWindow();
+    void AssetWindow();
 
     void Save(std::vector<SceneObject*>& allSceneObjects);
     void AddRecentFile(std::string recentFile);
