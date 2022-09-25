@@ -44,6 +44,17 @@ public:
         objMesh->SetFilePath(objMeshName);
         objMeshList.push_back(objMesh);
     }
+
+    inline static void RemoveObjMesh(std::string fileName)
+    {
+        for (unsigned int i = 0; i < objMeshList.size(); i++)
+        {
+            if (objMeshList[i]->GetName() == fileName)
+            {
+                objMeshList.erase(objMeshList.begin() + i);
+            }
+        }
+    }
 };
 
 #endif //MASTEROBJMESHES_H

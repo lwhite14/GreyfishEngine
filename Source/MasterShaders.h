@@ -64,6 +64,16 @@ public:
         }
 	}
 
+    inline static void RemoveShader(std::string fileName)
+    {
+        for (unsigned int i = 0; i < shaderList.size(); i++)
+        {
+            if (shaderList[i]->GetName() == fileName)
+            {
+                shaderList.erase(shaderList.begin() + i);
+            }
+        }
+    }
 };
 
 #endif //MASTERSHADERS_H

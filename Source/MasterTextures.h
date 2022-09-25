@@ -48,6 +48,16 @@ public:
         textureList.push_back(texture);
     }
 
+    inline static void RemoveTexture(std::string fileName) 
+    {
+        for (unsigned int i = 0; i < textureList.size(); i++)
+        {
+            if (textureList[i]->GetName() == fileName)
+            {
+                textureList.erase(textureList.begin() + i);
+            }
+        }
+    }
 };
 
 #endif //MASTERTEXTURES_H

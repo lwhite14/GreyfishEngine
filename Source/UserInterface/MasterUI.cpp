@@ -245,26 +245,50 @@ void MasterUI::AssetWindow()
     ImGui::Begin("Assets", &m_assetViewOn, m_windowFlagsChild);
     if (ImGui::TreeNode("Images"))
     {
+        ImGui::Indent(20.0f);
         for (unsigned int i = 0; i < MasterTextures::textureList.size(); i++)
         {
-            ImGui::Text(MasterTextures::textureList[i]->GetName().c_str());
+            ImGui::Selectable(MasterTextures::textureList[i]->GetName().c_str());
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterTextures::RemoveTexture(MasterTextures::textureList[i]->GetName()); GreyfishParsing::SaveAssets(); }
+                ImGui::EndPopup();
+            }
+            if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
         }
+        ImGui::Unindent(20.0f);
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Models"))
     {
+        ImGui::Indent(20.0f);
         for (unsigned int i = 0; i < MasterObjMeshes::objMeshList.size(); i++)
         {
-            ImGui::Text(MasterObjMeshes::objMeshList[i]->GetName().c_str());
+            ImGui::Selectable(MasterObjMeshes::objMeshList[i]->GetName().c_str());
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterObjMeshes::RemoveObjMesh(MasterObjMeshes::objMeshList[i]->GetName()); GreyfishParsing::SaveAssets(); }
+                ImGui::EndPopup();
+            }
+            if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
         }
+        ImGui::Unindent(20.0f);
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Shaders"))
     {
+        ImGui::Indent(20.0f);
         for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++)
         {
-            ImGui::Text(MasterShaders::shaderList[i]->GetName().c_str());
+            ImGui::Selectable(MasterShaders::shaderList[i]->GetName().c_str());
+            if (ImGui::BeginPopupContextItem())
+            {
+                if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterShaders::RemoveShader(MasterShaders::shaderList[i]->GetName()); GreyfishParsing::SaveAssets(); }
+                ImGui::EndPopup();
+            }
+            if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
         }
+        ImGui::Unindent(20.0f);
         ImGui::TreePop();
     }
     ImGui::End();
