@@ -5,11 +5,6 @@ images:
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\metal.jpg
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\crate.jpg
 objMeshes:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\suzanne.obj
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\car.obj
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\tree.obj
+  []
 shaders:
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Basic
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\BasicLit
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\PSX
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Yellow

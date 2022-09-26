@@ -17,14 +17,16 @@
 MasterUI::MasterUI() { }
 
 MasterUI::MasterUI(GLFWwindow* window, ImVec2 size) :
+    m_selectedSceneObject{ nullptr },
     m_openFile { "" },
     m_recentFiles { std::vector<std::string>(5) },
     m_window{ window },
     m_size{ size },
-    m_windowFlags{ 0 }, m_offset{ 0, 0 },
+    m_windowFlags{ 0 }, 
+    m_offset{ 0, 0 },
     m_mouseWheel{ 0.0f },
     m_camMotion{ false, false, false, false },
-    m_sceneObjectIndex{ 0 },
+    m_sceneObjectIndex{ -1 },
     m_objectsViewOn{ true },
     m_optionsViewOn{ true },
     m_sceneViewOn{ true },
@@ -193,8 +195,8 @@ void MasterUI::OptionsWindow(std::vector<SceneObject*>& allSceneObjects)
         if (ImGui::BeginPopup("AddComponentPopup"))
         {
             ImVec2 size = ImVec2(100, 0);
-            if (ImGui::Selectable("Cube", false, 0, size)) { m_selectedSceneObject->AddComponent(new Cube(MasterTextures::textureList[0], 1.0f, m_selectedSceneObject)); }
-            if (ImGui::Selectable("Model", false, 0, size)) { m_selectedSceneObject->AddComponent(new Model(MasterObjMeshes::objMeshList[0], m_selectedSceneObject, MasterTextures::textureList[0])); }
+            if (ImGui::Selectable("Cube", false, 0, size)) { m_selectedSceneObject->AddComponent(new Cube(nullptr, 1.0f, m_selectedSceneObject)); }
+            if (ImGui::Selectable("Model", false, 0, size)) { m_selectedSceneObject->AddComponent(new Model(nullptr, m_selectedSceneObject, nullptr)); }
             if (ImGui::Selectable("Spinner", false, 0, size)) { m_selectedSceneObject->AddComponent(new Spinner(m_selectedSceneObject->GetModelPtr(), m_selectedSceneObject)); }
             ImGui::EndPopup();
         }
@@ -281,12 +283,15 @@ void MasterUI::AssetWindow()
         for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++)
         {
             ImGui::Selectable(MasterShaders::shaderList[i]->GetName().c_str());
-            if (ImGui::BeginPopupContextItem())
+            if (MasterShaders::shaderList.size() > 1)
             {
-                if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterShaders::RemoveShader(MasterShaders::shaderList[i]->GetName()); GreyfishParsing::SaveAssets(); }
-                ImGui::EndPopup();
+                if (ImGui::BeginPopupContextItem())
+                {
+                    if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterShaders::RemoveShader(MasterShaders::shaderList[i]->GetName()); GreyfishParsing::SaveAssets(); }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
             }
-            if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
         }
         ImGui::Unindent(20.0f);
         ImGui::TreePop();

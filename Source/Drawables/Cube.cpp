@@ -74,6 +74,12 @@ void Cube::Render(GLSLProgram* prog)
         m_texture->Bind();
         prog->SetUniform("Texture", m_texture->GetTexture());
     }
+    else 
+    {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        prog->SetUniform("Texture", 0);
+    }
     prog->SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
     prog->SetUniform("Light.La", glm::vec3(0.6f));
     prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.85f, 0.85f));
@@ -98,7 +104,11 @@ void Cube::DrawUI()
     if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
     if (m_interfaceOpen)
     {
-        if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
+        std::string textureCombo = "";
+        if (m_texture == nullptr) { textureCombo = "--No Texture Selected--"; }
+        else { textureCombo = m_texture->GetName(); }
+
+        if (ImGui::BeginCombo("Texture", textureCombo.c_str()))
         {
             for (int i = 0; i < MasterTextures::textureList.size(); i++)
             {

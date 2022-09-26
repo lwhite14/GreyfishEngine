@@ -59,12 +59,18 @@ namespace GreyfishParsing
             glm::vec3 rotation = glm::vec3(dimensions["rotX"].as<float>(), dimensions["rotY"].as<float>(), dimensions["rotZ"].as<float>());
             glm::vec3 scale = glm::vec3(dimensions["scaX"].as<float>(), dimensions["scaY"].as<float>(), dimensions["scaZ"].as<float>());
             GLSLProgram* prog = new GLSLProgram;
+            bool doesExist = false;
             for (unsigned int j = 0; j < MasterShaders::shaderList.size(); j++)
             {
                 if (progName == MasterShaders::shaderList[j]->GetName())
                 {
+                    doesExist = true;
                     prog = MasterShaders::shaderList[j];
                 }
+            }
+            if (!doesExist) 
+            {
+                prog = MasterShaders::shaderList[0];
             }
             allSceneObjects.push_back(new SceneObject(node["name"].as<std::string>(), position, rotation, scale, prog));
 
@@ -74,7 +80,7 @@ namespace GreyfishParsing
                 if (components[j]["cube"])
                 {
                     std::string texName = components[j]["cube"]["texture"].as<std::string>();
-                    Texture* texture = new Texture;
+                    Texture* texture = nullptr;
                     for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
                     {
                         if (texName == MasterTextures::textureList[y]->GetName())

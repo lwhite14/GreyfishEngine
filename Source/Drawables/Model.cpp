@@ -40,6 +40,12 @@ void Model::Render(GLSLProgram* prog)
         m_texture->Bind();
         prog->SetUniform("Texture", m_texture->GetTexture());
     }
+    else
+    {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        prog->SetUniform("Texture", 0);
+    }
     prog->SetUniform("Light.Position", glm::vec4(5.0f, 5.0f, 5.0f, 1.0f));
     prog->SetUniform("Light.La", glm::vec3(0.6f));
     prog->SetUniform("Light.Ld", glm::vec3(0.85f, 0.85f, 0.85f));
@@ -48,7 +54,10 @@ void Model::Render(GLSLProgram* prog)
     prog->SetUniform("Material.Kd", m_matDiffuse);
     prog->SetUniform("Material.Ks", m_matSpecular);
     prog->SetUniform("Material.Shininess", m_matShininess);
-    m_objMesh->RenderDrawable();
+    if (m_objMesh != nullptr) 
+    {
+        m_objMesh->RenderDrawable();
+    }
 }
 
 void Model::DrawUI()
@@ -64,7 +73,11 @@ void Model::DrawUI()
     if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open Component options"); }
     if (m_interfaceOpen)
     {
-        if (ImGui::BeginCombo("ObjMesh", m_objMesh->GetName().c_str()))
+        std::string meshCombo = "";
+        if (m_objMesh == nullptr) { meshCombo = "--No Mesh Selected--"; }
+        else { meshCombo = m_objMesh->GetName(); }
+
+        if (ImGui::BeginCombo("ObjMesh", meshCombo.c_str()))
         {
             for (int i = 0; i < MasterObjMeshes::objMeshList.size(); i++)
             {
@@ -75,7 +88,12 @@ void Model::DrawUI()
             }
             ImGui::EndCombo();
         }
-        if (ImGui::BeginCombo("Texture", m_texture->GetName().c_str()))
+
+        std::string textureCombo = "";
+        if (m_texture == nullptr) { textureCombo = "--No Texture Selected--"; }
+        else { textureCombo = m_texture->GetName(); }
+
+        if (ImGui::BeginCombo("Texture", textureCombo.c_str()))
         {
             for (int i = 0; i < MasterTextures::textureList.size(); i++)
             {

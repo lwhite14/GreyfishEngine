@@ -66,6 +66,11 @@ public:
 
     inline static void RemoveShader(std::string fileName)
     {
+        if (shaderList.size() == 1) 
+        {
+            Console::AddWarningMessage("There must always be at least one shader!");
+            return;
+        }
         for (unsigned int i = 0; i < shaderList.size(); i++)
         {
             if (shaderList[i]->GetName() == fileName)
