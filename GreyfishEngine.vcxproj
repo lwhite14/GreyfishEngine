@@ -46,8 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(ProjectName)\Intermediate\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\Luker\Documents\OpenGLProjects\dependancies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Luker\Documents\OpenGLProjects\dependancies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Luker\Documents\Cpp\Dependancies\include;C:\Users\Luker\Documents\OpenGL\Dependancies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Luker\Documents\Cpp\Dependancies\lib;C:\Users\Luker\Documents\OpenGL\Dependancies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\</OutDir>
@@ -59,15 +59,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;yaml-cppd.lib;nfd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,16 +83,101 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\glad.c" />
-    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="Source\Drawables\Cube.cpp" />
+    <ClCompile Include="Source\Drawables\Model.cpp" />
+    <ClCompile Include="Source\Drawables\ObjMesh.cpp" />
+    <ClCompile Include="Source\GLSLProgram.cpp" />
+    <ClCompile Include="Source\AppEntry.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Source\Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\SceneObjects\CameraGameView.cpp" />
+    <ClCompile Include="Source\SceneObjects\Dimensions.cpp" />
+    <ClCompile Include="Source\SceneObjects\SceneObject.cpp" />
+    <ClCompile Include="Source\SceneObjects\Spinner.cpp" />
+    <ClCompile Include="Source\Scenes\BasicScene.cpp" />
+    <ClCompile Include="Source\Dependencies\stb\stb_image.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\UserInterface\MasterUI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="Assets\Assets.md" />
+    <None Include="imgui.ini" />
+    <None Include="Makefile" />
+    <None Include="README.md" />
+    <None Include="Settings\Assets.yaml" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.frag" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.vert" />
+    <None Include="Settings\RecentFiles.yaml" />
+    <None Include="Assets\Shaders\Basic.frag" />
+    <None Include="Assets\Shaders\Basic.vert" />
+    <None Include="Assets\Shaders\PSX.frag" />
+    <None Include="Assets\Shaders\PSX.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Settings\resource.h" />
+    <ClInclude Include="Source\Drawables\aabb.h" />
+    <ClInclude Include="Source\Drawables\Cube.h" />
+    <ClInclude Include="Source\Drawables\Drawable.h" />
+    <ClInclude Include="Source\Drawables\Model.h" />
+    <ClInclude Include="Source\Drawables\ObjMesh.h" />
+    <ClInclude Include="Source\Drawables\TriangleMesh.h" />
+    <ClInclude Include="Source\Framebuffer.h" />
+    <ClInclude Include="Source\GLSLProgram.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imconfig.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imgui.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="Source\Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\MasterObjMeshes.h" />
+    <ClInclude Include="Source\MasterTextures.h" />
+    <ClInclude Include="Source\Motion.h" />
+    <ClInclude Include="Source\Runner.h" />
+    <ClInclude Include="Source\SceneObjects\CameraGameView.h" />
+    <ClInclude Include="Source\SceneObjects\Component.h" />
+    <ClInclude Include="Source\SceneObjects\Dimensions.h" />
+    <ClInclude Include="Source\SceneObjects\SceneObject.h" />
+    <ClInclude Include="Source\SceneObjects\Spinner.h" />
+    <ClInclude Include="Source\GreyfishParsing.h" />
+    <ClInclude Include="Source\Scenes\BasicScene.h" />
+    <ClInclude Include="Source\Scenes\Scene.h" />
+    <ClInclude Include="Source\Dependencies\stb\stb_image.h" />
+    <ClInclude Include="Source\Dependencies\stb\stb_image_write.h" />
+    <ClInclude Include="Source\MasterShaders.h" />
+    <ClInclude Include="Source\SystemInformation.h" />
+    <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\UserInterface\Console.h" />
+    <ClInclude Include="Source\UserInterface\ConsoleMessage.h" />
+    <ClInclude Include="Source\UserInterface\Framerate.h" />
+    <ClInclude Include="Source\UserInterface\GameWindow.h" />
+    <ClInclude Include="Source\UserInterface\ImGuiUtils.h" />
+    <ClInclude Include="Source\UserInterface\MasterUI.h" />
+    <ClInclude Include="Source\UserInterface\UserInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Settings\GreyfishEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Settings\EngineAssets\Images\GreyfishEngine.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

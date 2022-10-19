@@ -1,0 +1,37 @@
+#ifndef DIMENSIONS_H
+#define DIMENSIONS_H
+
+#include "Component.h"
+#include <glm/glm.hpp>
+
+class Dimensions : public Component
+{
+private:
+	glm::vec3 m_position;
+	glm::vec3 m_rotation;
+	glm::vec3 m_scale;
+
+	float m_positionArr[3];
+	float m_rotationArr[3];
+	float m_scaleArr[3];
+
+public:
+	Dimensions(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
+	void Update(float deltaTime);
+	void Render(GLSLProgram* prog);
+	void DrawUI();
+	void Serialization(YAML::Emitter& out);
+
+	void SetPosition(glm::vec3 position);
+	void SetRotation(glm::vec3 rotation);
+	void SetScale(glm::vec3 scale);
+
+	glm::vec3 GetPosition();
+	glm::vec3* GetPositionPtr();
+	glm::vec3 GetRotation();
+	glm::vec3* GetRotationPtr();
+	glm::vec3 GetScale();
+	glm::vec3* GetScalePtr();
+};
+
+#endif

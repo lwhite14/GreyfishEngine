@@ -1,0 +1,53 @@
+Program: GreyfishEngine
+SceneObjects:
+  - name: Monkey
+    glslProgramName: PSX
+    dimensions:
+      posX: -3.000000
+      posY: 0.000000
+      posZ: -8.000000
+      rotX: 0.000000
+      rotY: 0.000000
+      rotZ: 0.000000
+      scaX: 1.000000
+      scaY: 1.000000
+      scaZ: 1.000000
+    components:
+      - model:
+          objMesh: suzanne
+          texture: devtex1
+          matAmbientX: 0.250000
+          matAmbientY: 0.250000
+          matAmbientZ: 0.250000
+          matDiffuseX: 0.250000
+          matDiffuseY: 0.250000
+          matDiffuseZ: 0.250000
+          matSpecularX: 0.500000
+          matSpecularY: 0.500000
+          matSpecularZ: 0.500000
+          matShininess: 64.000000
+  - name: Cube
+    glslProgramName: PSX
+    dimensions:
+      posX: 3.000000
+      posY: 0.000000
+      posZ: -8.000000
+      rotX: 0.000000
+      rotY: 0.000000
+      rotZ: 0.000000
+      scaX: 2.000000
+      scaY: 2.000000
+      scaZ: 2.000000
+    components:
+      - cube:
+          texture: devtex1
+          matAmbientX: 0.250000
+          matAmbientY: 0.250000
+          matAmbientZ: 0.250000
+          matDiffuseX: 0.250000
+          matDiffuseY: 0.250000
+          matDiffuseZ: 0.250000
+          matSpecularX: 0.500000
+          matSpecularY: 0.500000
+          matSpecularZ: 0.500000
+          matShininess: 64.000000

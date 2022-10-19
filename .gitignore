@@ -70,7 +70,7 @@ StyleCopReport.xml
 *_h.h
 *.ilk
 *.meta
-*.obj
+#*.obj
 *.iobj
 *.pch
 *.pdb
@@ -348,3 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# ------------------------------------------------------
+# Added By Luke White
+# ------------------------------------------------------
+glad.c
+*.out
+*.o
+.vscode/**
