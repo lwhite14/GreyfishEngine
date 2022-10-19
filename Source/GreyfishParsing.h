@@ -71,7 +71,7 @@ namespace GreyfishParsing
             if (!doesExist) 
             {
                 prog = MasterShaders::shaderList[0];
-                Console::AddWarningMessage("Shader: '" + progName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within project, the object shader has switched to an inbuilt shader.");
+                Console::AddWarningMessage("Shader: '" + progName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within project, the object shader has switched to an another shader.");
             }
             allSceneObjects.push_back(new SceneObject(node["name"].as<std::string>(), position, rotation, scale, prog));
 

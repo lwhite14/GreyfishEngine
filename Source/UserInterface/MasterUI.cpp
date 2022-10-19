@@ -597,6 +597,8 @@ void MasterUI::LoadAsset(nfdchar_t* defaultPath, nfdchar_t* filters, std::string
 
 void MasterUI::CleanUp() 
 {
+    GreyfishParsing::SaveAssets();
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
