@@ -125,8 +125,12 @@ void Model::Serialization(YAML::Emitter& out)
     out << YAML::Key << "model" << YAML::Value;
     out << YAML::BeginMap; // ObjMesh Map
 
-    out << YAML::Key << "objMesh" << YAML::Value << m_objMesh->GetName();
-    out << YAML::Key << "texture" << YAML::Value << m_texture->GetName();
+    if (m_objMesh != nullptr) { out << YAML::Key << "objMesh" << YAML::Value << m_objMesh->GetName(); }
+    else { out << YAML::Key << "objMesh" << YAML::Value << "NO OBJMESH"; }
+
+    if (m_texture != nullptr) { out << YAML::Key << "texture" << YAML::Value << m_texture->GetName(); }
+    else { out << YAML::Key << "texture" << YAML::Value << "NO TEXTURE"; }
+
     out << YAML::Key << "matAmbientX" << YAML::Value << std::to_string(m_matAmbient.x);
     out << YAML::Key << "matAmbientY" << YAML::Value << std::to_string(m_matAmbient.y);
     out << YAML::Key << "matAmbientZ" << YAML::Value << std::to_string(m_matAmbient.z);

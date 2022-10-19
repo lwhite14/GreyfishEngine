@@ -140,7 +140,9 @@ void Cube::Serialization(YAML::Emitter& out)
     out << YAML::Key << "cube" << YAML::Value;
     out << YAML::BeginMap; // Cube Map
 
-    out << YAML::Key << "texture" << YAML::Value << m_texture->GetName();
+    if (m_texture != nullptr) { out << YAML::Key << "texture" << YAML::Value << m_texture->GetName(); }
+    else { out << YAML::Key << "texture" << YAML::Value << "NO TEXTURE"; }
+
     out << YAML::Key << "matAmbientX" << YAML::Value << std::to_string(m_matAmbient.x);
     out << YAML::Key << "matAmbientY" << YAML::Value << std::to_string(m_matAmbient.y);
     out << YAML::Key << "matAmbientZ" << YAML::Value << std::to_string(m_matAmbient.z);
