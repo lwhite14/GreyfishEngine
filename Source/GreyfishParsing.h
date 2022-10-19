@@ -71,6 +71,7 @@ namespace GreyfishParsing
             if (!doesExist) 
             {
                 prog = MasterShaders::shaderList[0];
+                Console::AddWarningMessage("Shader: '" + progName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within project, the object shader has switched to an inbuilt shader.");
             }
             allSceneObjects.push_back(new SceneObject(node["name"].as<std::string>(), position, rotation, scale, prog));
 
@@ -81,12 +82,18 @@ namespace GreyfishParsing
                 {
                     std::string texName = components[j]["cube"]["texture"].as<std::string>();
                     Texture* texture = nullptr;
+                    doesExist = false;
                     for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
                     {
                         if (texName == MasterTextures::textureList[y]->GetName())
                         {
                             texture = MasterTextures::textureList[y];
+                            doesExist = true;
                         }
+                    }
+                    if (!doesExist) 
+                    {
+                        Console::AddWarningMessage("Texture: '" + texName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within the project, make sure to add a texture to this drawable before saving.");
                     }
                     glm::vec3 matAmbient = glm::vec3(components[j]["cube"]["matAmbientX"].as<float>(), components[j]["cube"]["matAmbientY"].as<float>(), components[j]["cube"]["matAmbientZ"].as<float>());
                     glm::vec3 matDiffuse = glm::vec3(components[j]["cube"]["matDiffuseX"].as<float>(), components[j]["cube"]["matDiffuseY"].as<float>(), components[j]["cube"]["matDiffuseZ"].as<float>());
@@ -103,12 +110,18 @@ namespace GreyfishParsing
                 {
                     std::string texName = components[j]["model"]["texture"].as<std::string>();
                     Texture* texture = nullptr;
+                    doesExist = false;
                     for (unsigned int y = 0; y < MasterTextures::textureList.size(); y++)
                     {
                         if (texName == MasterTextures::textureList[y]->GetName())
                         {
                             texture = MasterTextures::textureList[y];
+                            doesExist = true;
                         }
+                    }
+                    if (!doesExist) 
+                    {
+                        Console::AddWarningMessage("Texture: '" + texName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within the project, make sure to add a texture to this drawable before saving.");
                     }
                     glm::vec3 matAmbient = glm::vec3(components[j]["model"]["matAmbientX"].as<float>(), components[j]["model"]["matAmbientY"].as<float>(), components[j]["model"]["matAmbientZ"].as<float>());
                     glm::vec3 matDiffuse = glm::vec3(components[j]["model"]["matDiffuseX"].as<float>(), components[j]["model"]["matDiffuseY"].as<float>(), components[j]["model"]["matDiffuseZ"].as<float>());
@@ -116,12 +129,18 @@ namespace GreyfishParsing
                     float matShininess = components[j]["model"]["matShininess"].as<float>();
                     std::string objMeshName = components[j]["model"]["objMesh"].as<std::string>();
                     ObjMesh* objMesh = nullptr;
+                    doesExist = false;
                     for (unsigned int y = 0; y < MasterObjMeshes::objMeshList.size(); y++) 
                     {
                         if (objMeshName == MasterObjMeshes::objMeshList[y]->GetName())
                         {
                             objMesh = MasterObjMeshes::objMeshList[y];
+                            doesExist = true;
                         }
+                    }
+                    if (!doesExist) 
+                    {
+                        Console::AddWarningMessage("ObjMesh: '" + objMeshName + "' on SceneObject: '" + node["name"].as<std::string>() + "' in the scene file does not exist within the project, make sure to add a texture to this drawable before saving.");
                     }
                     Model* model = new Model(objMesh, allSceneObjects[i], texture);
                     model->SetMatAmbient(matAmbient);

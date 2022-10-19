@@ -1,5 +1,4 @@
 images:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\devtex1.jpg
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\awesomeface.png
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\container.jpg
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\metal.jpg
@@ -8,3 +7,4 @@ objMeshes:
   []
 shaders:
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Basic
+  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\PSX
