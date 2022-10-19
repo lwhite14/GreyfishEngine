@@ -1,12 +1,7 @@
 images:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\awesomeface.png
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\container.jpg
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\metal.jpg
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\crate.jpg
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\devtex1.jpg
 objMeshes:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\car.obj
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\suzanne.obj
 shaders:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Basic
   - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\PSX
+  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Basic

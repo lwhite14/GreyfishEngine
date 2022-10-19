@@ -36,7 +36,7 @@ public:
         }
         else
         {
-            Console::AddWarningMessage("Shader: '" + str + "' location is not valid, file has either been moved or deleted.");
+            Console::AddWarningMessage("ObjMesh: '" + str + "' location is not valid, file has either been moved or deleted.");
             return;
         }
 

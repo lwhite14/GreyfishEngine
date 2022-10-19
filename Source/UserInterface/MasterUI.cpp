@@ -285,12 +285,15 @@ void MasterUI::AssetWindow()
             ImGui::Selectable(MasterShaders::shaderList[i]->GetName().c_str());
             if (MasterShaders::shaderList.size() > 1)
             {
-                if (ImGui::BeginPopupContextItem())
+                if (MasterShaders::shaderList[i]->GetFilePath() != "Settings/EngineAssets/InEngineShaders/Lit")
                 {
-                    if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterShaders::RemoveShader(MasterShaders::shaderList[i]->GetName()); GreyfishParsing::SaveAssets(); }
-                    ImGui::EndPopup();
+                    if (ImGui::BeginPopupContextItem())
+                    {
+                        if (ImGui::Selectable("Remove", false, 0, ImVec2(100, 0))) { MasterShaders::RemoveShader(MasterShaders::shaderList[i]->GetName()); GreyfishParsing::SaveAssets(); }
+                        ImGui::EndPopup();
+                    }
+                    if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
                 }
-                if (ImGui::IsItemHovered()) { ImGui::SetTooltip("Right-click to open asset options"); }
             }
         }
         ImGui::Unindent(20.0f);

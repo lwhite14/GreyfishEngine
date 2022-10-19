@@ -12,7 +12,7 @@ class MasterShaders
 public:
 	inline static std::vector<GLSLProgram*> shaderList;
 
-    inline static void NewShader(std::string shaderName)
+    inline static void NewShader(std::string shaderName, bool canRemove = true)
 	{
         std::string vertEnd = ".vert";
         std::string fragEnd = ".frag";
@@ -68,6 +68,7 @@ public:
             prog->CompileShader(frag.c_str());
             prog->Link();
             prog->SetName(name);
+            prog->SetCanRemove(canRemove);
             prog->SetFilePath(shaderName);
             shaderList.push_back(prog);
         }

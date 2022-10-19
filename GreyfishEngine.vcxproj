@@ -119,8 +119,8 @@
     <None Include="Makefile" />
     <None Include="README.md" />
     <None Include="Settings\Assets.yaml" />
-    <None Include="Settings\EngineAssets\DefaultShaders\Lit.frag" />
-    <None Include="Settings\EngineAssets\DefaultShaders\Lit.vert" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.frag" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.vert" />
     <None Include="Settings\RecentFiles.yaml" />
     <None Include="Assets\Shaders\Basic.frag" />
     <None Include="Assets\Shaders\Basic.vert" />
@@ -128,6 +128,7 @@
     <None Include="Assets\Shaders\PSX.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Settings\resource.h" />
     <ClInclude Include="Source\Drawables\aabb.h" />
     <ClInclude Include="Source\Drawables\Cube.h" />
     <ClInclude Include="Source\Drawables\Drawable.h" />
@@ -169,6 +170,12 @@
     <ClInclude Include="Source\UserInterface\ImGuiUtils.h" />
     <ClInclude Include="Source\UserInterface\MasterUI.h" />
     <ClInclude Include="Source\UserInterface\UserInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Settings\GreyfishEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Settings\EngineAssets\Images\GreyfishEngine.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

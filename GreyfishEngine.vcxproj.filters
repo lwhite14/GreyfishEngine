@@ -98,8 +98,8 @@
     <None Include="Settings\RecentFiles.yaml" />
     <None Include="Assets\Assets.md" />
     <None Include="Settings\Assets.yaml" />
-    <None Include="Settings\EngineAssets\DefaultShaders\Lit.vert" />
-    <None Include="Settings\EngineAssets\DefaultShaders\Lit.frag" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.vert" />
+    <None Include="Settings\EngineAssets\InEngineShaders\Lit.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">
@@ -225,5 +225,18 @@
     <ClInclude Include="Source\MasterTextures.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\resource.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Settings\GreyfishEngine.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Settings\EngineAssets\Images\GreyfishEngine.ico">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

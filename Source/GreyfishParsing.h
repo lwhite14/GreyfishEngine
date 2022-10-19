@@ -224,7 +224,10 @@ namespace GreyfishParsing
         out << YAML::Value << YAML::BeginSeq;
         for (unsigned int i = 0; i < MasterShaders::shaderList.size(); i++)
         {
-            out << MasterShaders::shaderList[i]->GetFilePath();
+            if (MasterShaders::shaderList[i]->GetFilePath() != "Settings/EngineAssets/InEngineShaders/Lit")
+            {
+                out << MasterShaders::shaderList[i]->GetFilePath();
+            }
         }
         out << YAML::EndSeq;
         out << YAML::EndMap;
@@ -237,6 +240,8 @@ namespace GreyfishParsing
     {
         YAML::Node config = YAML::LoadFile("Settings/Assets.yaml");
 
+
+        MasterShaders::NewShader("Settings/EngineAssets/InEngineShaders/Lit", false);
         for (unsigned int i = 0; i < config["images"].size(); i++) 
         {
             MasterTextures::NewTexture(config["images"][i].as<std::string>());

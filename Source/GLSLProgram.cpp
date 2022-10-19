@@ -504,6 +504,11 @@ std::string GLSLProgram::GetName()
     return name;
 }
 
+bool GLSLProgram::GetCanRemove()
+{
+    return canRemove;
+}
+
 std::string GLSLProgram::GetFilePath()
 {
     return filePath;
@@ -512,6 +517,11 @@ std::string GLSLProgram::GetFilePath()
 void GLSLProgram::SetName(std::string newName)
 {
     name = newName;
+}
+
+void GLSLProgram::SetCanRemove(bool newCanRemove)
+{
+    canRemove = newCanRemove;
 }
 
 void GLSLProgram::SetFilePath(std::string newFilePath)

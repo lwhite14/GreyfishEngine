@@ -34,6 +34,7 @@ private:
     std::string filePath;
     GLuint handle;
     bool linked;
+    bool canRemove;
     std::map<std::string, int> uniformLocations;
 
     inline GLint GetUniformLocation(const char *name);
@@ -83,8 +84,11 @@ public:
     const char *getTypeString(GLenum type);
 
     std::string GetName();
+    bool GetCanRemove();
     std::string GetFilePath();
+
     void SetName(std::string newName);
+    void SetCanRemove(bool newCanRemove);
     void SetFilePath(std::string newFilePath);
 };
 
