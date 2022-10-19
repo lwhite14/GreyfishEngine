@@ -38,6 +38,20 @@ public:
             }
         }
 
+        FILE* fileVert = fopen(vert.c_str(), "r");
+        FILE* fileFrag = fopen(frag.c_str(), "r");
+
+        if (fileVert && fileFrag)
+        {
+            fclose(fileVert);
+            fclose(fileFrag);
+        }
+        else
+        {
+            Console::AddWarningMessage("Shader: '" + name + "' location is not valid, file has either been moved or deleted.");
+            return;
+        }
+
         for (unsigned int i = 0; i < shaderList.size(); i++)
         {
             if (shaderList[i]->GetName() == name) 

@@ -33,6 +33,16 @@ public:
 
         }
 
+        if (FILE* file = fopen(textureName.c_str(), "r"))
+        {
+            fclose(file);
+        }
+        else
+        {
+            Console::AddWarningMessage("Texture: '" + str + "' location is not valid, file has either been moved or deleted.");
+            return;
+        }
+
         for (unsigned int i = 0; i < textureList.size(); i++)
         {
             if (textureList[i]->GetName() == str)

@@ -59,7 +59,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -115,17 +115,15 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Assets.md" />
-    <None Include="Assets\Shaders\Yellow.frag" />
-    <None Include="Assets\Shaders\Yellow.vert" />
     <None Include="imgui.ini" />
     <None Include="Makefile" />
     <None Include="README.md" />
     <None Include="Settings\Assets.yaml" />
+    <None Include="Settings\EngineAssets\DefaultShaders\Lit.frag" />
+    <None Include="Settings\EngineAssets\DefaultShaders\Lit.vert" />
     <None Include="Settings\RecentFiles.yaml" />
     <None Include="Assets\Shaders\Basic.frag" />
     <None Include="Assets\Shaders\Basic.vert" />
-    <None Include="Assets\Shaders\BasicLit.frag" />
-    <None Include="Assets\Shaders\BasicLit.vert" />
     <None Include="Assets\Shaders\PSX.frag" />
     <None Include="Assets\Shaders\PSX.vert" />
   </ItemGroup>

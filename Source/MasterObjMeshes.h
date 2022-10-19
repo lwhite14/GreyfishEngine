@@ -30,6 +30,16 @@ public:
             }
         }
 
+        if (FILE* file = fopen(objMeshName.c_str(), "r"))
+        {
+            fclose(file);
+        }
+        else
+        {
+            Console::AddWarningMessage("Shader: '" + str + "' location is not valid, file has either been moved or deleted.");
+            return;
+        }
+
         for (unsigned int i = 0; i < objMeshList.size(); i++)
         {
             if (objMeshList[i]->GetName() == str)

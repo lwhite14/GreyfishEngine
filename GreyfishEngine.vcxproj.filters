@@ -89,8 +89,6 @@
     <None Include="Assets\Shaders\Basic.frag">
       <Filter>Source\Private</Filter>
     </None>
-    <None Include="Assets\Shaders\BasicLit.frag" />
-    <None Include="Assets\Shaders\BasicLit.vert" />
     <None Include=".gitignore" />
     <None Include="imgui.ini" />
     <None Include="Makefile" />
@@ -100,8 +98,8 @@
     <None Include="Settings\RecentFiles.yaml" />
     <None Include="Assets\Assets.md" />
     <None Include="Settings\Assets.yaml" />
-    <None Include="Assets\Shaders\Yellow.vert" />
-    <None Include="Assets\Shaders\Yellow.frag" />
+    <None Include="Settings\EngineAssets\DefaultShaders\Lit.vert" />
+    <None Include="Settings\EngineAssets\DefaultShaders\Lit.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Runner.h">
