@@ -1,7 +1,6 @@
 images:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Images\container.jpg
+  []
 objMeshes:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Models\suzanne.obj
+  []
 shaders:
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\PSX
-  - C:\Users\Luker\Documents\GitHub\GreyfishEngine\Assets\Shaders\Basic
+  []
