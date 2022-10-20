@@ -38,10 +38,15 @@ public:
             }
         }
 
-        FILE* fileVert = fopen(vert.c_str(), "r");
-        FILE* fileFrag = fopen(frag.c_str(), "r");
 
-        if (fileVert && fileFrag)
+        FILE* fileVert;
+        FILE* fileFrag;
+        errno_t errVert;
+        errVert = fopen_s(&fileVert, vert.c_str(), "r");
+        errno_t errFrag;
+        errFrag = fopen_s(&fileFrag, frag.c_str(), "r");
+
+        if (errVert == 0 && errFrag == 0)
         {
             fclose(fileVert);
             fclose(fileFrag);

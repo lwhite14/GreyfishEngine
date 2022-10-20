@@ -107,8 +107,6 @@ void MasterUI::PerFrame(std::vector<SceneObject*>& allSceneObjects)
     if (m_assetViewOn) { AssetWindow(); }
     if (Console::isOn) { Console::PerFrame(); }
 
-    ImGui::ShowDemoWindow();
-
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

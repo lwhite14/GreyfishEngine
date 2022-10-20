@@ -33,7 +33,11 @@ public:
 
         }
 
-        if (FILE* file = fopen(textureName.c_str(), "r"))
+        FILE* file;
+        errno_t err;
+        err = fopen_s(&file, textureName.c_str(), "r");
+
+        if (err == 0)
         {
             fclose(file);
         }
